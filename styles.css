@@ -1,0 +1,18 @@
+.nav-custom-col-blue{
+    background-color: #5773d7  !important;
+}
+
+
+.nav-custom-col-drk-blue{
+    background-color: #4056a5  !important;
+  
+}
+
+body{
+    width:100%;
+    height:auto;
+}
+
+.custom-toggler {
+   color: white;
+}
