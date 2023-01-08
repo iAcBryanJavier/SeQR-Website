@@ -10,7 +10,7 @@ import { UserNavbarComponent } from './user-navbar/user-navbar.component';
 @NgModule({
   declarations: [
     AppComponent,
-    UserNavbarComponent,
+    UserNavbarComponent
   ],
   imports: [
     BrowserModule,

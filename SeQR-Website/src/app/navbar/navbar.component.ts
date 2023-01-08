@@ -9,6 +9,6 @@ import { RouterLink } from '@angular/router';
   standalone: true,
 	imports: [NgbCollapseModule, RouterLink]
 })
-export class NavbarComponent {
+export class NavbarComponent{
   isMenuCollapsed = true;
 }
