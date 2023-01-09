@@ -1,0 +1,22 @@
+.container{
+    margin-top: 20px;
+}
+
+.container .row .col{
+    text-align: center;
+    padding: 20px;
+}
+
+.container .row .username{
+    text-align: left;
+}
+
+.container .row .col-4{
+    text-align: center;
+    padding: 20px;
+}
+
+.user{
+    height: 120px;
+    width: 120px;
+}

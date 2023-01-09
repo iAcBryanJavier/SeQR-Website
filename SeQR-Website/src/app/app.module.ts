@@ -11,6 +11,7 @@ import { AddStudentComponent } from './add-student/add-student.component';
 import { EditStudentComponent } from './edit-student/edit-student.component';
 import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ReportLogsComponent } from './report-logs/report-logs.component';
     EditStudentComponent,
     ChangeLogsComponent,
     ReportLogsComponent,
+    DashboardComponent,
    
   ],
   imports: [
