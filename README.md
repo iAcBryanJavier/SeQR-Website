@@ -10,3 +10,6 @@ Steps:
 
 Use this for Bootstrap Components:
 - https://ng-bootstrap.github.io/#/components/accordion/examples
+
+Research Paper:
+- https://docs.google.com/document/d/1yDaPnc3p8NkKC_klqTo4ZalB5rf-X0XohdpmvqIJAO4/edit
