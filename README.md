@@ -6,3 +6,7 @@ Steps:
 1. cd into SeQR-Website folder
 2. execute 'npm install'
 3. execute 'ng serve'
+
+
+Use this for Bootstrap Components:
+- https://ng-bootstrap.github.io/#/components/accordion/examples
