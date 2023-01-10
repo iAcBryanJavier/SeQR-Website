@@ -30,6 +30,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     NgbModule,
     NavbarComponent,
     RouterModule.forRoot([
+      {path: '',  component: DashboardComponent},
+      {path: 'dashboard', component: DashboardComponent},
       {path: 'add-student', component: AddStudentComponent},
       {path: 'change-logs', component: ChangeLogsComponent},
       {path: 'edit-student', component: EditStudentComponent},
