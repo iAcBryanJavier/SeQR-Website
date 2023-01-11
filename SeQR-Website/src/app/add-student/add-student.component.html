@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="container">
+<div class="container d-flex flex-column">
   <div class="row">
     <div class="col">
       <h2>ADD STUDENT RECORD 
@@ -9,15 +9,15 @@
         </svg>
       </h2>
     </div>
-    <div class="col">
-      <div class="csv-file btn btn-lg btn-primary">
+    <div class="col d-flex align-items-end ">
+      <div class="csv-file btn btn-wo-ib btn-lg btn-primary">
         Upload CSV
         <input class="csv-btn" type="file" name="file" />
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-3">
+    <div class="col-3 col-side-qry">
       <label for="formFile" class="form-label">
         <h4>ID Picture:</h4>
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@
     </div>
     <div class="col">
       <h4>FULL NAME:</h4>
-      <div class="row">
+      <div class="row ">
         <input class="form-control" type="text" placeholder="First Name" aria-label="default input example">
         <input class="form-control" type="text" placeholder="Middle Name" aria-label="default input example">
         <input class="form-control" type="text" placeholder="Last Name" aria-label="default input example">
@@ -39,7 +39,6 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-3"></div>
     <div class="col">
       <h4>COURSE: <input class="form-control" type="text" placeholder="Default input"
           aria-label="default input example"></h4>

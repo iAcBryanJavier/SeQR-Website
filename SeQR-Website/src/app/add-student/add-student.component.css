@@ -1,11 +1,33 @@
 .container{
     margin-top: 10px;
+  
+}
+
+.f-d-mobile{
+    flex-direction:row !important;
+}
+.btn-wo-ib{
+    display: flex !important; 
+    width: auto !important;
 }
 
 .container .row .col{
     /* border-style: solid; */
     padding: 20px;
 }
+
+@media screen and (max-width: 992px) {
+    .col-side-qry {
+        width:100% !important;
+      
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .f-d-mobile{
+        flex-direction:column !important;
+    }
+  }
 
 .container .row .submit-btn{
     text-align: center;
