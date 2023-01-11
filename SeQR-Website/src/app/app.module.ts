@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ScanQrComponent } from './scan-qr/scan-qr.component';
@@ -16,7 +17,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ScanQrComponent,
     AddStudentComponent,
     EditStudentComponent,
     ChangeLogsComponent,
@@ -27,6 +27,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ZXingScannerModule,
     NgbModule,
     NavbarComponent
   ],
