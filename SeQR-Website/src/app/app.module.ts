@@ -12,6 +12,10 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
+
+
 
 @NgModule({
   declarations: [
@@ -22,13 +26,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
+    LoginComponent,
    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    NavbarComponent
+    NavbarComponent,
+    FormsModule
   ],
 
 
