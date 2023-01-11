@@ -1,49 +1,38 @@
-.container{
+.container {
     margin-top: 10px;
-  
+
 }
 
-.f-d-mobile{
-    flex-direction:row !important;
+.f-d-mobile {
+    flex-direction: row !important;
 }
-.btn-wo-ib{
-    display: flex !important; 
+
+.btn-wo-ib {
+    display: flex !important;
     width: auto !important;
 }
 
-.container .row .col{
+.container .row .col {
     /* border-style: solid; */
     padding: 20px;
 }
 
-@media screen and (max-width: 992px) {
-    .col-side-qry {
-        width:100% !important;
-      
-    }
-  }
 
-  @media screen and (max-width: 768px) {
-    .f-d-mobile{
-        flex-direction:column !important;
-    }
-  }
-
-.container .row .submit-btn{
+.container .row .submit-btn {
     text-align: center;
 }
 
-input{
+input {
     margin: 8px 0 8px 0;
 }
 
-.btn{
+.btn {
     font-size: 120%;
     padding: 20px;
     width: 50%;
 }
 
-.add-student-plus{
+.add-student-plus {
     width: 30px;
     height: 30px;
 }
@@ -51,8 +40,8 @@ input{
 .csv-file {
     position: relative;
     overflow: hidden;
-    margin-left: auto; 
-    margin-right: 0;        
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .csv-btn {
@@ -61,4 +50,17 @@ input{
     opacity: 0;
     right: 0;
     top: 0;
+}
+
+@media screen and (max-width: 992px) {
+    .col-side-qry {
+        width: 100% !important;
+
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .f-d-mobile {
+        flex-direction: column !important;
+    }
 }
