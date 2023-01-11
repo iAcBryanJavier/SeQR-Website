@@ -24,3 +24,15 @@ input{
     width: 30px;
     height: 30px;
 }
+
+
+/**** MEDIA QUIRIES *****/
+
+@media screen and (max-width: 992px) {
+    .col-side-qry {
+        width:100% !important;
+        display: flex;
+        flex-direction: column;
+      
+    }
+  }
