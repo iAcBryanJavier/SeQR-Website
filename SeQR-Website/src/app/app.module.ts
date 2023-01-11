@@ -29,17 +29,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
-    NavbarComponent,
-    RouterModule.forRoot([
-      {path: '',  component: DashboardComponent},
-      {path: 'dashboard', component: DashboardComponent},
-      {path: 'add-student', component: AddStudentComponent},
-      {path: 'change-logs', component: ChangeLogsComponent},
-      {path: 'edit-student', component: EditStudentComponent},
-      {path: 'report-logs', component: ReportLogsComponent},
-      {path: 'scan-qr', component: ScanQrComponent}
-      
-    ]),
+    NavbarComponent
   ],
 
 
