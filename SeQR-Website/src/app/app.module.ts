@@ -13,6 +13,7 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
+    ManageAccountComponent,
    
   ],
   imports: [
@@ -29,17 +31,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
-    NavbarComponent,
-    RouterModule.forRoot([
-      {path: '',  component: DashboardComponent},
-      {path: 'dashboard', component: DashboardComponent},
-      {path: 'add-student', component: AddStudentComponent},
-      {path: 'change-logs', component: ChangeLogsComponent},
-      {path: 'edit-student', component: EditStudentComponent},
-      {path: 'report-logs', component: ReportLogsComponent},
-      {path: 'scan-qr', component: ScanQrComponent}
-      
-    ]),
+    NavbarComponent
   ],
 
 
