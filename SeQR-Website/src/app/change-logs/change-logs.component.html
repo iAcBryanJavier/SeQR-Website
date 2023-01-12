@@ -44,24 +44,33 @@
 
     <div class="row">
         <div class="col">
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Time & Date</th>
-                    <th scope="col">Action</th>
-                    <th scope="col">User</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Time & Date</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">User</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>11/01/2023, 7:52 PM</td>
-                    <td>Added New Student</td>
-                    <td>bryanjavier</td>
-                  </tr>
+                    <tr *ngFor="let country of countries; index as i">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>
+                            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2"
+                                style="width: 20px" />
+                            {{ country.name }}
+                        </td>
+                        <td>{{ country.area | number }}</td>
+                        <td>{{ country.population | number }}</td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-secondary">Export to CSV</button>
+        </div>
     </div>
+</div>

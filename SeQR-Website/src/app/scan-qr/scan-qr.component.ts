@@ -6,8 +6,6 @@ import { NavbarComponent } from "../navbar/navbar.component";
     selector: 'app-scan-qr',
     templateUrl: './scan-qr.component.html',
     styleUrls: ['./scan-qr.component.css'],
-    standalone: true,
-    imports: [ZXingScannerModule, NavbarComponent]
 })
 export class ScanQrComponent  {
   scannerEnabled = false;
