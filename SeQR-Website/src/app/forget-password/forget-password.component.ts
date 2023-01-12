@@ -6,14 +6,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./forget-password.component.css']
 })
 export class ForgetPasswordComponent implements OnInit {
-  hide : boolean = true;
-  showPassword!: boolean;
-  showPasswordOnPress!: boolean;
+  showNewPassword: boolean = false;
+  showOldPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+  icon:string | undefined;
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
+
+  showNewHidePassword() {
+    this.showNewPassword = !this.showNewPassword;
+
+  }
+  showOldHidePassword() {
+    this.showOldPassword = !this.showOldPassword;
+
+  }
+  showConfirmHidePassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+
+  }
   
   name = 'Angular';
 }
+
+
+
+
