@@ -14,6 +14,7 @@ import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
     ReportLogsComponent,
     DashboardComponent,
     ManageAccountComponent,
+    ForgetPasswordComponent,
    
   ],
   imports: [
