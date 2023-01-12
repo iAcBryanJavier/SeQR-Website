@@ -33,11 +33,11 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
-    NavbarComponent
+    NavbarComponent,
+    NgbDropdownModule,
+    DecimalPipe,
+    NgFor
   ],
-
-
- 
   providers: [],
   bootstrap: [AppComponent]
 })
