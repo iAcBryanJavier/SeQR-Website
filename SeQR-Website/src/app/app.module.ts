@@ -14,6 +14,8 @@ import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { DecimalPipe, NgFor } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,19 +25,18 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
-    ManageAccountComponent,
-   
+    ManageAccountComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
-    NavbarComponent
+    NavbarComponent,
+    NgbDropdownModule,
+    DecimalPipe,
+    NgFor
   ],
-
-
- 
   providers: [],
   bootstrap: [AppComponent]
 })
