@@ -14,8 +14,7 @@ import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { DecimalPipe, NgFor } from '@angular/common';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +24,9 @@ import { DecimalPipe, NgFor } from '@angular/common';
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
-    ManageAccountComponent
+    ManageAccountComponent,
+    ForgetPasswordComponent,
+   
   ],
   imports: [
     BrowserModule,
