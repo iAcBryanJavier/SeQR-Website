@@ -14,8 +14,9 @@ import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
-
-
+import { ManongGuard } from './manong.guard';
+import { HttpClientModule } from '@angular/common/http';
+import { ManongService } from './manong.service';
 
 @NgModule({
   declarations: [
@@ -34,12 +35,13 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     NgbModule,
     NavbarComponent,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
 
 
  
-  providers: [],
+  providers: [ManongGuard, ManongService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

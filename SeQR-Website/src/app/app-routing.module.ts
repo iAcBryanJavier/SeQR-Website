@@ -7,12 +7,13 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { ScanQrComponent } from './scan-qr/scan-qr.component';
 import { LoginComponent } from './login/login.component';
+import { ManongGuard } from './manong.guard';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
-  { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent,},
+  { path: 'login', component: LoginComponent},
+  { path: 'dashboard', component: DashboardComponent, canActivate: [ManongGuard]},
   { path: 'add-student', component: AddStudentComponent },
   { path: 'change-logs', component: ChangeLogsComponent },
   { path: 'edit-student', component: EditStudentComponent },

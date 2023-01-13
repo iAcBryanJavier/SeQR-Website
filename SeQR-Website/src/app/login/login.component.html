@@ -1,53 +1,39 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html>
 <head>
-    <title> SEQR </title>
-
-    <!-- Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    
-
+	<title>Slide Navbar</title>
+	<link rel="stylesheet" type="text/css" href="login.component.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    
-    <div class="login">
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
 
-        <h1 class="text-center">SeQR LOGIN</h1>
+        <div class="signin">
 
-        <form class ="needs-validation">
+            <form class ="needs-validation">
 
-            <div class="form-group was-validated">
-                <label class="form-label" for="email">Email address</label>
-                <input class="form-control" type="email" id="email" [(ngModel)]= "email" [ngModelOptions]="{standalone:  true}" required>
-
-                <div class="invalid-feedback">
-                    Please enter your email address
-                </div>
+            <div class ="form-group was-validated">
+                <label for="chk" aria-hidden="true">SeQR</label>
+                <input class="form-control" type="email" id="email" [(ngModel)]= "email" placeholder="email" [ngModelOptions]="{standalone:  true}" required>              
             </div>
 
-            <div class="form-group was-validated">
-                <label class="form-label" for="password">Password</label>
-                <input class="form-control" type="password" id="password" [(ngModel)]= "password" [ngModelOptions]="{standalone:  true}" required>
-
-                <div class="invalid-feedback">
-                    Please enter your password
-                </div>
+            <div class ="form-group was-validated">
+                <input type="password" id="password" [(ngModel)]= "password" placeholder="password" [ngModelOptions]="{standalone:  true}" required>
+                <button (click)="onClick()" type="submit">Login</button>
             </div>
+                
+            </form>
+			
+        </div>
 
-            <div class="form-group form-check">
-                <input class="form-check-input" type="checkbox" id="check">
-                <label class="form-check-label" for ="check">Remember me</label>
-            </div>
-
-            <br>
-            <input class="btn btn-success w-100" (click)="onClick()" type="submit" value="SIGN IN">
-            <input class="btn btn-success w-100" type="submit" value="CONTACT SUPPORT">
-
-        </form>
-    </div>
+		<div class="contactSupport">
+            <form>
+                <label class="labelClass" for="chk" aria-hidden="true">Contact Support</label>
+                <input type="password" name="pswd" [(ngModel)]= "password"placeholder="Email" required="">
+                <button (click)="onClick()">Contact Support</button>
+            </form>
+        </div>
+	</div>
 </body>
 </html>
