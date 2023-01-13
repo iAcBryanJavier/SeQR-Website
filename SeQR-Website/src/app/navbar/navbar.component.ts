@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  standalone: true,
+	imports: [NgbCollapseModule, RouterLink, RouterModule]
 })
 export class NavbarComponent{
   isMenuCollapsed = true;

@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { NavbarComponent } from "../navbar/navbar.component";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-scan-qr',
-    templateUrl: './scan-qr.component.html',
-    styleUrls: ['./scan-qr.component.css'],
+  selector: 'app-scan-qr',
+  templateUrl: './scan-qr.component.html',
+  styleUrls: ['./scan-qr.component.css']
 })
-export class ScanQrComponent  {
-  scannerEnabled = false;
-  
+export class ScanQrComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }
