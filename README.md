@@ -14,4 +14,5 @@ Use this for Bootstrap Components:
 Research Paper:
 - https://docs.google.com/document/d/1yDaPnc3p8NkKC_klqTo4ZalB5rf-X0XohdpmvqIJAO4/edit
 
-*For ngxscanner error change ngxscanner version in 'package.json' to '3.6.0'
+For ngxscanner error:
+- change ngxscanner version in 'package.json' to '3.6.0'
