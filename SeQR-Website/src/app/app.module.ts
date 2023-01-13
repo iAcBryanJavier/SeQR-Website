@@ -13,6 +13,11 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 import { ChangeLogsComponent } from './change-logs/change-logs.component';
 import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
+import { ManongGuard } from './manong.guard';
+import { HttpClientModule } from '@angular/common/http';
+import { ManongService } from './manong.service';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +32,7 @@ import { DecimalPipe, NgFor } from '@angular/common';
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
+    LoginComponent,
     ManageAccountComponent,
     ForgetPasswordComponent,
     NavbarComponent,
@@ -37,13 +43,16 @@ import { DecimalPipe, NgFor } from '@angular/common';
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
+    NavbarComponent,
+    FormsModule,
+    HttpClientModule,
     NgbDropdownModule,
     DecimalPipe,
     NgFor,
     NgbCollapseModule,
     RouterLink
   ],
-  providers: [],
+  providers: [ManongGuard, ManongService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
