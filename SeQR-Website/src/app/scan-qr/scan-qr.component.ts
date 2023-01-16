@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scan-qr.component.css']
 })
 export class ScanQrComponent implements OnInit {
-
+  scanResult: any = '';
+  scannerEnabled = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onCodeResult(result: string){
+    this.scanResult = result;
   }
 
 }

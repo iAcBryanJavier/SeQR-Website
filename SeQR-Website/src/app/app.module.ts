@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+// import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { ManongGuard } from './manong.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManongService } from './manong.service';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,8 @@ import { ManongService } from './manong.service';
     ReportLogsComponent,
     DashboardComponent,
     LoginComponent,
+    ManageAccountComponent,
+    ForgetPasswordComponent,
    
   ],
   imports: [
@@ -36,7 +41,8 @@ import { ManongService } from './manong.service';
     NgbModule,
     NavbarComponent,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    
   ],
 
 

@@ -20,3 +20,29 @@
     height: 120px;
     width: 120px;
 }
+
+.btn{
+    font-size: 18px;
+    height: 100px;
+    width: 150px;
+    padding: 10px;
+}
+
+.mbl{
+    display: none;
+}
+
+@media only screen and (max-width: 1000px){
+    .desktop{
+        display: none;
+    }
+
+    .mbl{
+        display: block;
+    }
+	.btn{
+        height: 100px;
+        width: 150px;
+        padding: 10px;
+    }
+}

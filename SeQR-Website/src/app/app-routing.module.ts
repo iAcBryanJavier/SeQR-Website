@@ -8,6 +8,8 @@ import { ReportLogsComponent } from './report-logs/report-logs.component';
 import { ScanQrComponent } from './scan-qr/scan-qr.component';
 import { LoginComponent } from './login/login.component';
 import { ManongGuard } from './manong.guard';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 
 const routes: Routes = [
@@ -18,7 +20,9 @@ const routes: Routes = [
   { path: 'change-logs', component: ChangeLogsComponent },
   { path: 'edit-student', component: EditStudentComponent },
   { path: 'report-logs', component: ReportLogsComponent },
-  { path: 'scan-qr', component: ScanQrComponent }
+  { path: 'scan-qr', component: ScanQrComponent },
+  { path: 'manage-account', component: ManageAccountComponent },
+  { path: 'forget-password', component: ForgetPasswordComponent }
 ];
 
 @NgModule({
