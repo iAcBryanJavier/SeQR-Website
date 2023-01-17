@@ -6,6 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
+
 import { NavbarComponent } from './navbar/navbar.component';
 import { ScanQrComponent } from './scan-qr/scan-qr.component';
 import { AddStudentComponent } from './add-student/add-student.component';
@@ -22,12 +25,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChangeLogsComponent,
     ReportLogsComponent,
     DashboardComponent,
+    ScanQrComponent
    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     ZXingScannerModule,
+
     NgbModule,
     NavbarComponent,
     RouterModule.forRoot([
