@@ -1,0 +1,20 @@
+.container{
+    margin-top: 10px;
+}
+
+.container .row .align-right{
+    text-align: right;
+}
+
+.container .row .align-left{
+    text-align: left;
+}
+
+.info{
+    font-size: 24px;
+}
+
+.manage-svg{
+    width: 30px;
+    height: 30px;
+}
