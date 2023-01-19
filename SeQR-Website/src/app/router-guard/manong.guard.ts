@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ManongService } from './manong.service';
+import { ManongService } from '../services/manong.service';
 
 @Injectable()
 
