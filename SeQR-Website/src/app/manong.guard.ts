@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router,  RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
 import { ManongService } from './manong.service';
-
 
 @Injectable()
 
@@ -19,7 +17,6 @@ constructor(private router: Router, private manongService: ManongService) { }
       window.alert('Permission denied for this page. Please login first')
       this.router.navigate(['']);
       return false;
-      
     }
   }
   

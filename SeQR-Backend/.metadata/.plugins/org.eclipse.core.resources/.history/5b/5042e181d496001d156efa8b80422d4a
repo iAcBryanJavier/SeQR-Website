@@ -1,0 +1,5 @@
+package com.seqr.api;
+
+public class SeQRService {
+
+}

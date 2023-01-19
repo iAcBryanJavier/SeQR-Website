@@ -95,6 +95,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "SeQR-Website:build:production",
+            "firebaseProject": "seqr-e7c21",
+            "firebaseHostingSite": "seqr-e7c21"
+          }
         }
       }
     }
