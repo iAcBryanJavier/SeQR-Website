@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "seqr-e7c21": {
+      "hosting": {
+        "SeQR-Website": [
+          "seqr-e7c21"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "seqr-e7c21"
+  }
+}

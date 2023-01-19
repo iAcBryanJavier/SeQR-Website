@@ -19,6 +19,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ManongService } from './manong.service';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { provideMessaging,getMessaging } from '@angular/fire/messaging';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 @NgModule({
   declarations: [
@@ -42,7 +53,11 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
     NavbarComponent,
     FormsModule,
     HttpClientModule,
-    
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFirestoreModule,
+    AngularFireDatabaseModule
   ],
 
 

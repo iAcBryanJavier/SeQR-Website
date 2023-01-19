@@ -16,13 +16,13 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [ManongGuard]},
-  { path: 'add-student', component: AddStudentComponent },
-  { path: 'change-logs', component: ChangeLogsComponent },
-  { path: 'edit-student', component: EditStudentComponent },
-  { path: 'report-logs', component: ReportLogsComponent },
-  { path: 'scan-qr', component: ScanQrComponent },
-  { path: 'manage-account', component: ManageAccountComponent },
-  { path: 'forget-password', component: ForgetPasswordComponent }
+  { path: 'add-student', component: AddStudentComponent, canActivate: [ManongGuard] },
+  { path: 'change-logs', component: ChangeLogsComponent, canActivate: [ManongGuard] },
+  { path: 'edit-student', component: EditStudentComponent, canActivate: [ManongGuard] },
+  { path: 'report-logs', component: ReportLogsComponent, canActivate: [ManongGuard] },
+  { path: 'scan-qr', component: ScanQrComponent, canActivate: [ManongGuard] },
+  { path: 'manage-account', component: ManageAccountComponent, canActivate: [ManongGuard] },
+  { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [ManongGuard] }
 ];
 
 @NgModule({

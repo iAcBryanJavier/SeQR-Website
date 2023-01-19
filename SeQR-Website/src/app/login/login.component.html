@@ -20,7 +20,7 @@
 
             <div class ="form-group was-validated">
                 <input type="password" id="password" [(ngModel)]= "password" placeholder="password" [ngModelOptions]="{standalone:  true}" required>
-                <button (click)="onClick()" type="submit">Login</button>
+                <button (click)="login()" type="submit">Login</button>
             </div>
                 
             </form>
@@ -31,7 +31,7 @@
             <form>
                 <label class="labelClass" for="chk" aria-hidden="true">Contact Support</label>
                 <input type="password" name="pswd" [(ngModel)]= "password"placeholder="Email" required="">
-                <button (click)="onClick()">Contact Support</button>
+                <button (click)="login()">Contact Support</button>
             </form>
         </div>
 	</div>
