@@ -39,6 +39,7 @@ export class ScanQrComponent  {
 
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
+    alert(this.qrResultString);
   }
 
 
