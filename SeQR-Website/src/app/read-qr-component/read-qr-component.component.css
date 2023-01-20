@@ -1,8 +1,8 @@
-.hide-component{
-    
--moz-user-select: none;
--webkit-user-select: none;
-user-select: none;
+.upload-qr{
+margin: 0 auto;
+width: 50%;
+height: auto;
+
 }
 .no-click{
     pointer-events: none

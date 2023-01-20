@@ -96,6 +96,7 @@
               "src/styles.css"
             ],
             "scripts": [
+              "src/assets/js/decode-script.js"
             ]
           }
         }
