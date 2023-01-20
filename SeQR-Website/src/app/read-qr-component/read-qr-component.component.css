@@ -1,0 +1,9 @@
+.hide-component{
+    
+-moz-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+}
+.no-click{
+    pointer-events: none
+}
