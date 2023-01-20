@@ -1,8 +1,0 @@
-INDEX VERSION 1.4+C:\Users\Acer\Documents\GitHub\SeQR-Website\SeQR-Backend\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1125623324.index
-202992557.index
-2478351631.index
-878547917.index
-661211972.index
-3210932468.index
-2376736223.index
