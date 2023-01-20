@@ -1,0 +1,25 @@
+<main class="wrapper" style="padding-top:2em">
+
+
+      <div class="hide-component upload-qr ">
+          <img class="no-click " unselectable="on" id="img" [src]="url" height="auto" width="60%">
+          <label class="image-upload-container btn btn-bwm">
+            <span>Select Image</span>
+            <input #imageInput
+                   type="file"
+                   accept="image/*"
+                   (change)="processFile(imageInput)">
+          </label>
+          <br>
+      </div>
+
+    
+
+     
+      
+
+  
+
+
+
+</main>

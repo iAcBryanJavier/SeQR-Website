@@ -3,7 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// QR CODE SCANNING
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+// QR CODE READER
+//
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ScanQrComponent } from './components/scan-qr/scan-qr.component';
@@ -18,6 +21,7 @@ import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ReadQrComponentComponent } from "./read-qr-component/read-qr-component.component";
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
