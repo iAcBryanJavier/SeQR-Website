@@ -1,114 +1,62 @@
 <app-navbar></app-navbar>
-<!-- Desktop Version Container -->
-<div class="container desktop">
-    <div class="row">
-        <div class="col-4">
-            <i>
-                <svg class="user" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z">
-                    </path>
-                </svg>
-            </i>
-        </div>
-        <div class="col username">
-            IACADEMY
-            <br>
-            iacademy@school.seqr.com
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Add Account</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Search Account</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Manage Account</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Verify QR</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Log History</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="d-grid gap-2 col-5 mx-auto">
-                <button class="btn btn-primary" type="button">Reports</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Mobile Version Container -->
-<div class="container mbl">
-    <div class="row">
-        <div class="col-4">
-            <i>
-                <svg class="user" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z">
-                    </path>
-                </svg>
-            </i>
-        </div>
-        <div class="col username">
-            IACADEMY
-            <br>
-            iacademy@school.seqr.com
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="">
-                <button class="btn btn-primary" type="button">Search Account</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="">
-                <button class="btn btn-primary" type="button">Add Account</button>
-            </div>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Navbar</title>
+	<link rel="stylesheet" type="text/css" href="dashboard.component.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
 
-    <div class="row">
-        <div class="col">
-            <div class="">
-                <button class="btn btn-primary" type="button">Verify QR</button>
+    <div class ="container container-custom">
+        <div class="row">
+            <div class="col align-self-center">
+                <h1>SeQR</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
+                in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <button type="button">Explore</button>
             </div>
-        </div>
-        <div class="col">
-            <div class="">
-                <button class="btn btn-primary" type="button">Manage Account</button>
-            </div>
-        </div>
-    </div>
+            <div class="col">
+                <div class="card card1" routerLink="/add-student">
+                    <div class="align-center-custom">
+                        <h5 class="align-self-center">Add Account</h5>
+                        <p class="align-self-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col">
-            
-                <button class="btn btn-primary" type="button">Reports</button>
-            
+                <div class="card card2" routerLink="/edit-student">
+                    <h5>Edit Student</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </div>
+
+                <div class="card card3" routerLink="/manage-account">
+                    <h5>Account</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </div>
+
+                <div class="card card4" routerLink="/scan-qr">
+                    <h5>Scan QR</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </div>
+
+                <div class="card card5" routerLink="/change-logs">
+                    <h5>Logs</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </div>
+
+                <div class="card card6" routerLink="/report-logs">
+                    <h5>Reports</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </div>
+
+            </div>
         </div>
-        <div class="col">
-            
-                <button class="btn btn-primary" type="button">Log History</button>
-            
-        </div>
+
     </div>
-</div>
+  
+       
+   
+</body>
+</html>

@@ -41,8 +41,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ManageAccountComponent,
     ForgetPasswordComponent,
     ScanQrComponent,
-    NavbarComponent
-   
+    NavbarComponent,
+    ReadQrComponentComponent
   ],
   imports: [
     BrowserModule,

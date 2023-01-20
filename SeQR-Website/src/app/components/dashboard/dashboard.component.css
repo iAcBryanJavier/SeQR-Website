@@ -1,48 +1,100 @@
-.container{
-    margin-top: 20px;
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #2b5876   , #4e4376);
 }
 
-.container .row .col{
+.col {
+    flex-basis: 50%;
+}
+
+h1 {
+    color: #fff;
+    font-size: 100px;
+}
+
+p {
+    color: #fff;
+    font-size:15px;
+}
+
+.card {
+    width: 200px;
+    height: 230px;
+    display: inline-block;
+    border-radius: 20px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 20px 35px;
+    /* background-image: url(images); */
+    background-position: center;
+    background-size: cover;
+    transition: 0.5s;
+
+}
+
+.card1 {
+    background-image: url(../../../assets/img/card.jpg);
+}
+
+.card2 {
+    background-image: url(../../../assets/img/card1.jpg);
+}
+
+.card3 {
+    background-image: url(../../../assets/img/card.jpg);
+}
+
+.card4 {
+    background-image: url(../../../assets/img/card1.jpg);
+}
+
+.card5 {
+    background-image: url(../../../assets/img/card.jpg);
+}
+
+.card6 {
+    background-image: url(../../../assets/img/card1.jpg);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+h5 {
     text-align: center;
-    padding: 20px;
+    color: #fff;
+    text-shadow: 0 0 5px #999;
+    font-size: 20px;
 }
 
-.container .row .username{
-    text-align: left;
+.card p {
+    text-shadow: 0 0 15px #000;
+    font-size: 15px;
 }
 
-.container .row .col-4{
-    text-align: center;
-    padding: 20px;
+button {
+    height: 30px;
+    width: 180px;
+    color: #000;
+    font-size: 12px 0;
+    background: #fff;
+    border: 0;
+    border-radius: 20px;
+    outline: none;
+    margin-top: 30px
 }
 
-.user{
-    height: 120px;
-    width: 120px;
+.container-custom {
+    max-width: 90%;
 }
 
-.btn{
-    font-size: 18px;
-    height: 100px;
-    width: 150px;
-    padding: 10px;
-}
-
-.mbl{
-    display: none;
-}
-
-@media only screen and (max-width: 1000px){
-    .desktop{
-        display: none;
-    }
-
-    .mbl{
-        display: block;
-    }
-	.btn{
-        height: 100px;
-        width: 150px;
-        padding: 10px;
-    }
+.align-center-custom {
+    justify-content: center;
 }
