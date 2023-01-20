@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { ManongService } from "src/app/services/manong.service";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { AuthService } from "src/app/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +16,17 @@ import { AngularFireAuth } from "@angular/fire/compat/auth";
 
 export class LoginComponent implements OnInit  {
   
-  constructor(private router: Router, private authService: ManongService, private fireAuth: AngularFireAuth) {}
-  ngOnInit(): void {}
+  constructor(private router: Router, private authService: AuthService) {}
+  ngOnInit(): void {
+    if(localStorage.getItem('token')){
+      this.router.navigateByUrl('dashboard');
+    }
+  }
 
   email: string = '';
   password: string = '';
 
   login()  {
-    this.fireAuth.signInWithEmailAndPassword(this.email, this.password).then(() => {
-      this.authService.loggedIn = true;
-      this.router.navigateByUrl('dashboard');
-    }, err => {
-      window.alert("The email or password is incorrect");
-      this.authService.loggedIn = false;
-      this.router.navigateByUrl('/login');
-    }
-    )
+    this.authService.login(this.email, this.password);
   }
 }

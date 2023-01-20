@@ -14,9 +14,8 @@ import { ReportLogsComponent } from './components/report-logs/report-logs.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
-import { ManongGuard } from './router-guard/manong.guard';
+import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
-import { ManongService } from './services/manong.service';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { environment } from '../environments/environment';
@@ -38,6 +37,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ManageAccountComponent,
     ForgetPasswordComponent,
     ScanQrComponent,
+    NavbarComponent
    
   ],
   imports: [
@@ -45,7 +45,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AppRoutingModule,
     ZXingScannerModule,
     NgbModule,
-    NavbarComponent,
     FormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -55,9 +54,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AngularFireDatabaseModule
   ],
 
-
- 
-  providers: [ManongGuard, ManongService],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

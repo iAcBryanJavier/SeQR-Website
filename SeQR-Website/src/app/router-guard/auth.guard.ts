@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ManongService } from '../services/manong.service';
 
 @Injectable()
 
-export class ManongGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
 
-constructor(private router: Router, private manongService: ManongService) { }
+constructor(private router: Router) { }
   
   canActivate() {
 
-    if (this.manongService.isAuthenticated()) {
+    if (localStorage.getItem('token')) {
       return true;
     }
     else {

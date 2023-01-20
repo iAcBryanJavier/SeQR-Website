@@ -7,7 +7,7 @@ import { EditStudentComponent } from './components/edit-student/edit-student.com
 import { ReportLogsComponent } from './components/report-logs/report-logs.component';
 import { ScanQrComponent } from './components/scan-qr/scan-qr.component';
 import { LoginComponent } from './components/login/login.component';
-import { ManongGuard } from './router-guard/manong.guard';
+import { AuthGuard } from './router-guard/auth.guard';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 
@@ -15,14 +15,14 @@ import { ForgetPasswordComponent } from './components/forget-password/forget-pas
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [ManongGuard]},
-  { path: 'add-student', component: AddStudentComponent, canActivate: [ManongGuard] },
-  { path: 'change-logs', component: ChangeLogsComponent, canActivate: [ManongGuard] },
-  { path: 'edit-student', component: EditStudentComponent, canActivate: [ManongGuard] },
-  { path: 'report-logs', component: ReportLogsComponent, canActivate: [ManongGuard] },
-  { path: 'scan-qr', component: ScanQrComponent, canActivate: [ManongGuard] },
-  { path: 'manage-account', component: ManageAccountComponent, canActivate: [ManongGuard] },
-  { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [ManongGuard] }
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
+  { path: 'change-logs', component: ChangeLogsComponent, canActivate: [AuthGuard] },
+  { path: 'edit-student', component: EditStudentComponent, canActivate: [AuthGuard] },
+  { path: 'report-logs', component: ReportLogsComponent, canActivate: [AuthGuard] },
+  { path: 'scan-qr', component: ScanQrComponent, canActivate: [AuthGuard] },
+  { path: 'manage-account', component: ManageAccountComponent, canActivate: [AuthGuard] },
+  { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
