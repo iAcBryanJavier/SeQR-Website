@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 // QR CODE SCANNING
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 // QR CODE READER
+
 //
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ScanQrComponent } from './components/scan-qr/scan-qr.component';
@@ -28,6 +30,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ForgetPasswordComponent,
     ScanQrComponent,
     NavbarComponent,
-    ReadQrComponentComponent
+    ReadQrComponentComponent,
+    ImportCsvButtonComponent
   ],
   imports: [
     BrowserModule,
