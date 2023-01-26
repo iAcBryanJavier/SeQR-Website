@@ -1,8 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
 
-
-
 @Component({
   selector: 'app-scan-qr',
   templateUrl: './scan-qr.component.html',
