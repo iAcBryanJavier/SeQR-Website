@@ -28,6 +28,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { LandingComponent } from './components/landing/landing.component';
+import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ForgetPasswordComponent,
     ScanQrComponent,
     NavbarComponent,
-    ReadQrComponentComponent
+    ReadQrComponentComponent,
+    LandingComponent,
+    ScanLandingComponent
   ],
   imports: [
     BrowserModule,
