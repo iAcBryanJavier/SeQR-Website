@@ -13,7 +13,7 @@ import { ChangeLogsComponent } from './components/change-logs/change-logs.compon
 import { ReportLogsComponent } from './components/report-logs/report-logs.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
@@ -51,7 +51,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFirestoreModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    ReactiveFormsModule
   ],
 
   providers: [AuthGuard],

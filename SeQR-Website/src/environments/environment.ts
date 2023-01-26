@@ -4,13 +4,14 @@
 
 export const environment = {
   firebase: {
-    projectId: 'seqr-e7c21',
-    appId: '1:189848402742:web:9d37c1df949acacf875197',
-    storageBucket: 'seqr-e7c21.appspot.com',
-    apiKey: 'AIzaSyAMt571lgisQ-b5oYhyb7567XVojIBAIrc',
-    authDomain: 'seqr-e7c21.firebaseapp.com',
-    messagingSenderId: '189848402742',
-    measurementId: 'G-HKP4VM7RV5',
+    apiKey: "AIzaSyAMt571lgisQ-b5oYhyb7567XVojIBAIrc",
+    authDomain: "seqr-e7c21.firebaseapp.com",
+    databaseURL: "https://seqr-e7c21-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "seqr-e7c21",
+    storageBucket: "seqr-e7c21.appspot.com",
+    messagingSenderId: "189848402742",
+    appId: "1:189848402742:web:9d37c1df949acacf875197",
+    measurementId: "G-HKP4VM7RV5"
   },
   production: false
 };

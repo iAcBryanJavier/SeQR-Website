@@ -14,7 +14,7 @@ constructor(private router: Router) { }
     }
     else {
       window.alert('Permission denied for this page. Please login first')
-      this.router.navigate(['']);
+      this.router.navigate(['login']);
       return false;
     }
   }
