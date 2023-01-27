@@ -24,6 +24,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { DatabaseService } from './services/database.service';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ManageAccountComponent,
     ForgetPasswordComponent,
     ScanQrComponent,
-    NavbarComponent
+    NavbarComponent,
+    FilterPipe
    
   ],
   imports: [
@@ -55,7 +58,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ReactiveFormsModule
   ],
 
-  providers: [AuthGuard],
+  providers: [AuthGuard, FilterPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

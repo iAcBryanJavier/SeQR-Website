@@ -4,6 +4,7 @@ import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class DatabaseService {
     ref.push(form);
   }
 
-  getStudent(){
-    this.student = this.afs.object('student');
-    return this.student;
+  getStudent(): Observable<any[]>{
+    return this.afs.list('students').valueChanges();
   }
+
 }

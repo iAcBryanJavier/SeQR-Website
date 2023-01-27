@@ -15,50 +15,51 @@
     <hr>
     <div class="row">
         <div class="col">
-            <div ngbDropdown class="d-inline-block">
-                <button type="button" class="btn btn-outline-primary" id="reportsDropdown" ngbDropdownToggle>
-                    Filter Results
-                    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z">
-                        </path>
-                    </svg>
-                </button>
-                <div ngbDropdownMenu aria-labelledby="reportsDropdown">
-                    <button ngbDropdownItem (click)="filterResult('Country')">Country</button>
-                    <button ngbDropdownItem (click)="filterResult('Area')">Area</button>
-                    <button ngbDropdownItem (click)="filterResult('Population')">Population</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-5"></div>
-    </div>
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col">
-            <table class="table table-striped" [style.display]="showTable">
+            <input class="search-input" [(ngModel)]="searchText" type="text" placeholder="Search">
+            <p>( Search accepts: Student ID, Last Name, Course, Batch, Sex, SO Number )</p>
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">{{filterResultName}}</th>
+                        <th scope="col">Student Id</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Middle Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">SO Number</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let country of countries; index as i">
-                        <th scope="row">{{ i + 1 }}</th>
-                        <td *ngIf="filterResultName == 'Country'">
-                            {{ country.name }}
+                    <tr *ngFor="let item of items | filter:searchText">
+                        <td>
+                            {{ item.studentId }}
                         </td>
-                        <td *ngIf="filterResultName == 'Area'">
-                            {{ country.area }}
+                        <td>
+                            {{ item.firstname }}
                         </td>
-                        <td *ngIf="filterResultName == 'Population'">
-                            {{ country.population }}
+                        <td>
+                            {{ item.middlename }}
+                        </td>
+                        <td>
+                            {{ item.lastname }}
+                        </td>
+                        <td>
+                            {{ item.course }}
+                        </td>
+                        <td>
+                            {{ item.batch }}
+                        </td>
+                        <td>
+                            {{ item.sex }}
+                        </td>
+                        <td>
+                            {{ item.soNumber }}
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+    </div>      
 </div>
