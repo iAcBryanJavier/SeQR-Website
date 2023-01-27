@@ -1,0 +1,55 @@
+form {
+    width: 50%; /* default width */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* make the form take up 100% width on screens smaller than 600px */
+@media (max-width: 600px) {
+    form {
+        width: 100%;
+    }
+}
+
+input {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+button[type="submit"] {
+    width: 100%; /* make the button cover the full width of the form */
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+  
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #ccc;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #ccc;
+}
+
+:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #ccc;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: #ccc;
+}

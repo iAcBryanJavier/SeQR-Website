@@ -26,6 +26,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { DatabaseService } from './services/database.service';
 import { FilterPipe } from './filter.pipe';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FilterPipe } from './filter.pipe';
     ForgetPasswordComponent,
     ScanQrComponent,
     NavbarComponent,
-    FilterPipe
+    FilterPipe,
+    RegisterComponent
    
   ],
   imports: [
