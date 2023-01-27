@@ -1,13 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .navbar{
-    padding: 10px;
+    padding: 15px;
 }
 
 .nav-custom-col-blue{
-    background-color: #5773d7  !important;
+    background: linear-gradient(to right, #2C3E50      , #000000);
+    
 }
-.nav-custom-col-drk-blue{
-    background-color: #4056a5  !important;
-  
+
+.nav-link {
+    color: white;
+    font-family: "Roboto", sans-serif;
+}
+
+
+img {
+    height: 45px;
+    width: 90px;
 }
 
 body{
@@ -25,9 +35,7 @@ body{
     height:30px;
     
 }
-.nav-custom-col-drk-blue{
-    background-color: #4056a5  !important;
-}
+
 
 body{
     width:100%;

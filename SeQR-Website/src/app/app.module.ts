@@ -3,7 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// QR CODE SCANNING
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+// QR CODE READER
+
+//
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ScanQrComponent } from './components/scan-qr/scan-qr.component';
@@ -18,6 +23,7 @@ import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ReadQrComponentComponent } from "./read-qr-component/read-qr-component.component";
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -27,6 +33,9 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { DatabaseService } from './services/database.service';
 import { FilterPipe } from './filter.pipe';
 import { RegisterComponent } from './components/register/register.component';
+import { LandingComponent } from './components/landing/landing.component';
+import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
+import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 
 @NgModule({
   declarations: [
@@ -42,8 +51,11 @@ import { RegisterComponent } from './components/register/register.component';
     ScanQrComponent,
     NavbarComponent,
     FilterPipe,
-    RegisterComponent
-   
+    RegisterComponent,
+    ReadQrComponentComponent,
+    LandingComponent,
+    ScanLandingComponent,
+    ImportCsvButtonComponent
   ],
   imports: [
     BrowserModule,
