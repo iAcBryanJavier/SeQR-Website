@@ -3,11 +3,11 @@ import { BarcodeFormat } from '@zxing/library';
 
 @Component({
   selector: 'app-scan-qr',
-  templateUrl: './scan-qr.component.html',
-  styleUrls: ['./scan-qr.component.css'],
+  templateUrl: './scan-landing.component.html',
+  styleUrls: ['./scan-landing.component.css'],
 
 })
-export class ScanQrComponent  {
+export class ScanLandingComponent  {
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo | undefined;
   @ViewChild("selectedValue") selectedValue!: ElementRef;

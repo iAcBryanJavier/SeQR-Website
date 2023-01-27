@@ -10,11 +10,15 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './router-guard/auth.guard';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
-
+import { LandingComponent } from './components/landing/landing.component';
+import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
+import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: '', redirectTo: '/landing', pathMatch: 'full'},
+  { path: 'landing', component: LandingComponent}, 
   { path: 'login', component: LoginComponent},
+  { path: 'landing-scan', component: ScanLandingComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
   { path: 'change-logs', component: ChangeLogsComponent, canActivate: [AuthGuard] },
@@ -22,7 +26,8 @@ const routes: Routes = [
   { path: 'report-logs', component: ReportLogsComponent, canActivate: [AuthGuard] },
   { path: 'scan-qr', component: ScanQrComponent, canActivate: [AuthGuard] },
   { path: 'manage-account', component: ManageAccountComponent, canActivate: [AuthGuard] },
-  { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] }
+  { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
+  { path: 'read-qr', component: ReadQrComponentComponent}
 ];
 
 @NgModule({

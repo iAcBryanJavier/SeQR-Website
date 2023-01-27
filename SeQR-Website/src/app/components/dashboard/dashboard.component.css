@@ -14,8 +14,14 @@ body{
 }
 
 h1 {
-    color: #fff;
-    font-size: 100px;
+    background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+    background-size: cover;
+    color: transparent;
+    -moz-background-clip: text;
+    -webkit-background-clip: text;
+    text-transform: uppercase;
+    font-size: 160px;
+     margin: 10px 0;
 }
 
 p {
@@ -31,13 +37,16 @@ p {
     padding: 15px 25px;
     box-sizing: border-box;
     cursor: pointer;
-    margin: 20px 35px;
+    margin: 18px 70px;
     /* background-image: url(images); */
     background-position: center;
     background-size: cover;
     transition: 0.5s;
+    box-shadow: 5px 20px 50px #000;
 
 }
+
+
 
 .card1 {
     background-image: url(../../../assets/img/card.jpg);
@@ -64,7 +73,10 @@ p {
 }
 
 .card:hover {
-    transform: translateY(-10px);
+    /* transform: translateY(-10px); */
+    /* background: #753BBD; */
+    transform: scale(1.08); 
+
 }
 
 h5 {
@@ -98,3 +110,30 @@ button {
 .align-center-custom {
     justify-content: center;
 }
+
+.col {
+    padding-top: 10px;
+    padding-left:50px;
+
+}
+.main{
+	width: 90%;
+	height: auto;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #fff;
+    background: linear-gradient(to right, #141e30        , #243b55);
+
+}
+
+button {
+transition: .2s ease-in;
+	cursor: pointer;
+}
+button:hover{
+	background: #6d44b8;
+    transform: scale(1.08); 
+}
+
