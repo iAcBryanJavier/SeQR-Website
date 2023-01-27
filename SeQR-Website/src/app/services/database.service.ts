@@ -18,7 +18,11 @@ export class DatabaseService {
   //add student
   addStudent(form: any){
     const ref = this.afs.list('students');
-    ref.push(form);
+    ref.push(form).then(()=>{
+      window.alert('Student added to database!');
+    }).catch(() =>{
+      window.alert('An error occured, please try again.');
+    });
   }
 
   getStudent(): Observable<any[]>{
