@@ -18,7 +18,7 @@ import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
   { path: 'landing', component: LandingComponent}, 
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent },
   { path: 'landing-scan', component: ScanLandingComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'manage-account', component: ManageAccountComponent, canActivate: [AuthGuard] },
   { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
-  { path: 'read-qr', component: ReadQrComponentComponent}
+  { path: 'read-qr', component: ReadQrComponentComponent }
 ];
 
 @NgModule({
