@@ -8,6 +8,7 @@ import * as firebase from 'firebase/compat';
   providedIn: 'root'
 })
 export class AuthService {
+  schoolName!: any;
 
   constructor(private fireAuth: AngularFireAuth, private router: Router,
     private db: AngularFireDatabase) { }
@@ -49,6 +50,26 @@ export class AuthService {
         });
       });
     });
+  }
+
+  getSchoolName(){
+    this.fireAuth.user.subscribe(user => {
+      if (user) {
+        // User is signed in
+        // Get the user's UID
+        const uid = user.uid;
+        // Reference the user's name in the Realtime Database
+        const nameRef = this.db.object(`users/${uid}/name`);
+
+        // Read the user's name from the Realtime Database
+        nameRef.valueChanges().subscribe(name => {
+          this.schoolName = name;
+        });
+      } else {
+        // User is signed out
+        console.log('user is not signed in');
+      }
+    })
   }
   
 }
