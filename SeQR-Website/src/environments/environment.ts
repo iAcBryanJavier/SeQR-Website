@@ -12,7 +12,9 @@ export const environment = {
     messagingSenderId: '189848402742',
     measurementId: 'G-HKP4VM7RV5',
     databaseURL: 'https://seqr-e7c21-default-rtdb.asia-southeast1.firebasedatabase.app',
+  
   },
+
   production: false
 };
 
