@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 // QR CODE SCANNING
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 // QR CODE READER
+
 //
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ScanQrComponent } from './components/scan-qr/scan-qr.component';
@@ -16,7 +18,7 @@ import { ChangeLogsComponent } from './components/change-logs/change-logs.compon
 import { ReportLogsComponent } from './components/report-logs/report-logs.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
@@ -28,6 +30,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { DatabaseService } from './services/database.service';
+import { FilterPipe } from './filter.pipe';
+import { RegisterComponent } from './components/register/register.component';
+import { LandingComponent } from './components/landing/landing.component';
+import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
+import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +50,12 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     ForgetPasswordComponent,
     ScanQrComponent,
     NavbarComponent,
-    ReadQrComponentComponent
+    FilterPipe,
+    RegisterComponent,
+    ReadQrComponentComponent,
+    LandingComponent,
+    ScanLandingComponent,
+    ImportCsvButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -55,10 +68,11 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFirestoreModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    ReactiveFormsModule
   ],
 
-  providers: [AuthGuard],
+  providers: [AuthGuard, FilterPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

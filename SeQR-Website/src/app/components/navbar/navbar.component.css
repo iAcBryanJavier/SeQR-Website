@@ -5,7 +5,7 @@
 }
 
 .nav-custom-col-blue{
-    background: linear-gradient(to bottom, #2b5876 , #4e4376);
+    background: linear-gradient(to right, #2C3E50      , #000000);
     
 }
 
@@ -16,7 +16,7 @@
 
 
 img {
-    height: 50px;
+    height: 45px;
     width: 90px;
 }
 

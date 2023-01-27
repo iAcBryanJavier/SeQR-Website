@@ -2,21 +2,29 @@
 <div class="container d-flex flex-column">
   <div class="row">
     <div class="col">
-      <h2>ADD STUDENT RECORD 
+      <h2>ADD STUDENT RECORD
         <svg class="add-student-plus" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z">
+          </path>
         </svg>
       </h2>
     </div>
     <div class="col d-flex align-items-end ">
       <div class="csv-file btn btn-wo-ib btn-lg btn-primary">
-        Upload CSV
-        <input class="csv-btn" type="file" name="file" />
+        Upload JSON
+        <import-csv-button></import-csv-button>
       </div>
     </div>
   </div>
   <hr>
+  <div class="row">
+    <div class="col">
+      <div *ngIf="studentForm.invalid" class="alert alert-danger">
+        Please check input fields.
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-3 col-side-qry">
       <label for="formFile" class="form-label">
@@ -30,43 +38,80 @@
       </label>
       <input class="form-control" type="file" id="formFile">
     </div>
-    <div class="col">
-      <h4>FULL NAME:</h4>
-      <div class="row ">
-        <input class="form-control" type="text" placeholder="First Name" aria-label="default input example">
-        <input class="form-control" type="text" placeholder="Middle Name" aria-label="default input example">
-        <input class="form-control" type="text" placeholder="Last Name" aria-label="default input example">
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+      <div class="col">
+        <div class="row ">
+          <input class="form-control" formControlName="firstname" type="text" placeholder="First Name"
+            aria-label="default input example" required>
+          <div *ngIf="studentForm.controls['firstname'].invalid && studentForm.controls['firstname'].touched"
+            class="alert alert-danger">
+            Firstname is required.
+          </div>
+          <input class="form-control" formControlName="middlename" type="text" placeholder="Middle Name (Optional)"
+            aria-label="default input example">
+          <input class="form-control" formControlName="lastname" type="text" placeholder="Last Name"
+            aria-label="default input example" required>
+          <div *ngIf="studentForm.controls['lastname'].invalid && studentForm.controls['lastname'].touched"
+            class="alert alert-danger">
+            Lastname is required.
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h4>COURSE: <input class="form-control" type="text" placeholder="Ex. BSCSSE" aria-label="default input example">
-      </h4>
-      <h4>BATCH: <input class="form-control" type="text" placeholder="Ex. 2022-2022" aria-label="default input example">
-      </h4>
-      <h4>STUDENT ID: <input class="form-control" type="text" placeholder="Ex. 2019-01165"
-          aria-label="default input example"></h4>
-      <h4>SEX:</h4>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-        <label class="form-check-label" for="flexRadioDefault1">
-          Male
-        </label>
+      <div class="row">
+        <div class="col">
+          <h4>COURSE: <input class="form-control" formControlName="course" type="text" placeholder="Ex. BSCSSE"
+              aria-label="default input example">
+          </h4>
+          <div *ngIf="studentForm.controls['course'].invalid && studentForm.controls['course'].touched"
+            class="alert alert-danger">
+            Course code is required.
+          </div>
+          <h4>BATCH: <input class="form-control" formControlName="batch" type="text" placeholder="Ex. 2022-2022"
+              aria-label="default input example">
+          </h4>
+          <div *ngIf="studentForm.controls['batch'].invalid && studentForm.controls['batch'].touched"
+            class="alert alert-danger">
+            School year batch is required.
+          </div>
+          <h4>STUDENT ID: <input class="form-control" formControlName="studentId" type="text"
+              placeholder="Ex. 2019-01165" aria-label="default input example"></h4>
+          <div *ngIf="studentForm.controls['studentId'].invalid && studentForm.controls['studentId'].touched"
+            class="alert alert-danger">
+            Student ID is required.
+          </div>
+          <h4>SEX:</h4>
+          <div class="form-check">
+            <input class="form-check-input" formControlName="sex" value="male" type="radio" name="sex" id="male"
+              checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+              Male
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" formControlName="sex" value="female" type="radio" name="sex" id="female">
+            <label class="form-check-label" for="flexRadioDefault2">
+              Female
+            </label>
+          </div>
+          <br>
+          <div *ngIf="studentForm.controls['sex'].value == ''" class="alert alert-danger">
+            Please select your sex.
+          </div>
+          <h4>SO NUMBER: <input class="form-control" formControlName="soNumber" type="text" placeholder="Ex. 10XXXXXXX"
+              aria-label="default input example"></h4>
+          <div *ngIf="studentForm.controls['soNumber'].invalid && studentForm.controls['soNumber'].touched"
+            class="alert alert-danger">
+            SO Number is required.
+          </div>
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-        <label class="form-check-label" for="flexRadioDefault2">
-          Female
-        </label>
+      <div class="row">
+        <div class="col submit-btn">
+          <button type="submit" class="btn btn-primary mb-3">SUBMIT AND MINT</button>
+        </div>
       </div>
-      <h4>SO NUMBER: <input class="form-control" type="text" placeholder="Ex. 10XXXXXXX"
-          aria-label="default input example"></h4>
-    </div>
+    </form>
   </div>
-  <div class="row">
-    <div class="col submit-btn">
-      <button type="submit" class="btn btn-primary mb-3">SUBMIT AND MINT</button>
-    </div>
-  </div>
+
+
 </div>

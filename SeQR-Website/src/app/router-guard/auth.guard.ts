@@ -9,12 +9,12 @@ constructor(private router: Router) { }
   
   canActivate() {
 
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('idToken')) {
       return true;
     }
     else {
       window.alert('Permission denied for this page. Please login first')
-      this.router.navigate(['']);
+      this.router.navigate(['login']);
       return false;
     }
   }

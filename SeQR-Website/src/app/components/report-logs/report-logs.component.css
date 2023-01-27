@@ -23,5 +23,62 @@ svg{
 }
 
 .container .table td{
-    width: 100%;
+    /* width: 100%; */
 }
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Add hover effect to table rows */
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Add zebra-striping to table */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Add border to table */
+table {
+    border: 1px solid #ccc;
+}
+
+/* Add some padding and horizontal alignment to table cells */
+td, th {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Add font styles to table headers */
+th {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.search-input {
+    width: 300px;
+    height: 35px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
