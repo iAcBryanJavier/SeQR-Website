@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Student } from 'src/app/interfaces/Student';
+import { Encryption } from 'src/app/models/encryption';
 import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
@@ -23,15 +24,25 @@ export class AddStudentComponent implements OnInit {
     soNumber: new FormControl('', Validators.required)
   })
 
-  constructor(private afs: AngularFireDatabase, private db: DatabaseService) { }
+  constructor(private db: DatabaseService) { }
 
-  student!: Student;
+  encryptFunction = new Encryption();
 
   ngOnInit(): void {
   }
 
   onSubmit(){
     if(this.studentForm.valid){
+      this.studentForm.setValue({
+        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+        batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
+        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
+      })
       this.db.addStudent(this.studentForm.value);
     }
   }

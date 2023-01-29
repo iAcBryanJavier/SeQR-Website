@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { Student } from '../models/student';
+import { Student } from '../interfaces/Student';
 @Injectable({
     providedIn: 'root'
   })
@@ -9,7 +9,6 @@ import { Student } from '../models/student';
     private dbPath = '/student-test';
     tutorialsRef: AngularFireList<Student>;
 
-   
     constructor(private db:AngularFireDatabase ) {
         this.tutorialsRef = db.list(this.dbPath);
       }
@@ -17,6 +16,7 @@ import { Student } from '../models/student';
       getDbPath(): string{
         return this.dbPath;
       }
+      
       getAll(): AngularFireList<Student> {
         return this.tutorialsRef;
       }

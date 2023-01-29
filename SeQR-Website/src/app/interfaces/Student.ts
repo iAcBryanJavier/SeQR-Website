@@ -1,5 +1,5 @@
 export interface Student {
-    firstname: string | null ,
+    firstname?: string,
     middlename: string | null,
     lastname: string | null,
     course: string | null,

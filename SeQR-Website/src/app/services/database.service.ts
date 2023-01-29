@@ -16,9 +16,9 @@ export class DatabaseService {
   student!: AngularFireObject<Student>;
 
   //add student
-  addStudent(form: any){
+  addStudent(student: any){
     const ref = this.afs.list('students');
-    ref.push(form).then(()=>{
+    ref.push(student).then(()=>{
       window.alert('Student added to database!');
     }).catch(() =>{
       window.alert('An error occured, please try again.');

@@ -1,34 +1,33 @@
 export class Student {
     key?: string ;
-    firstName?: string ;
-    middleName?: string;
-    lastName?: string;
+    firstname?: string ;
+    middlename?: string;
+    lastname?: string;
     course?: string;
     batch?: string;
     studentId?:string;
-    gender?: string;
-    diplomaNumber?: string;
+    sex?: string;
+    soNumber?: string;
 
-    public setName(firstName:string, middleName:string, lastName:string) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+    public setName(firstname: string, middlename: string, lastname: string) {
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.lastname = lastname;
     }
 
-    public setCourse(studentCourse: string){
-        this.course = studentCourse;
+    public setCourse(course: string){
+        this.course = course;
     }
-    public setBatch(studentBatch: string){
-        this.batch = studentBatch;
+    public setBatch(batch: string){
+        this.batch = batch;
     }
     public setId(studentId: string){
         this.studentId = studentId;
     }
-    public setGender(studentGender: string){
-        this.gender = studentGender;
+    public setGender(sex: string){
+        this.sex = sex;
     }
-
-    public setDiplomaNumber(diplomaNumber: string){
-        this.diplomaNumber = diplomaNumber;
+    public setDiplomaNumber(soNumber: string){
+        this.soNumber = soNumber;
     }
 }
