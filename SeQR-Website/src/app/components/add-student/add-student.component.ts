@@ -6,6 +6,7 @@ import { Student } from 'src/app/interfaces/Student';
 import { Encryption } from 'src/app/models/encryption';
 import { DatabaseService } from 'src/app/services/database.service';
 
+
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -41,9 +42,12 @@ export class AddStudentComponent implements OnInit {
         course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
         batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
         sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
+        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+      
+
       })
       this.db.addStudent(this.studentForm.value);
+    
     }
   }
 
