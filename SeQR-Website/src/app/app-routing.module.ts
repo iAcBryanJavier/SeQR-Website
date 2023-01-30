@@ -14,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
+import { MetamaskComponent } from './components/metamask/metamask.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: 'manage-account', component: ManageAccountComponent, canActivate: [AuthGuard] },
   { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
-  { path: 'read-qr', component: ReadQrComponentComponent }
+  { path: 'read-qr', component: ReadQrComponentComponent },
+  { path: 'metamask', component: MetamaskComponent}
 ];
 
 @NgModule({
