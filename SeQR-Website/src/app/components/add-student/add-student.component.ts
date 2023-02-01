@@ -4,6 +4,7 @@ import { Encryption } from 'src/app/models/encryption';
 import { DatabaseService } from 'src/app/services/database.service';
 import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
+import { getBootstrapBaseClassPlacement } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 
 
 @Component({
@@ -15,6 +16,8 @@ export class AddStudentComponent implements OnInit {
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
   public sanitizedUrl!: string | null;
+  public blobDataUrl: any;
+  public hasSubmit: boolean = false;
   // form group for add stduent form to db 
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
@@ -36,58 +39,66 @@ export class AddStudentComponent implements OnInit {
   onChangeURL(url: SafeUrl) {
     this.qrCodeDownloadLink = url; // Changes whenever this.myAngularxQrCode changes
     //produces BLOB URI/URL, browser locally stored data
+    
+ 
+    if(this.hasSubmit){
+      this.getBase64Img();
+    }else{
+
+    }
 
     
 
   }
+
+
   encryptFunction = new Encryption();
 
   ngOnInit(): void {
   }
 
-  // getBase64Img(imgUrl : SafeUrl): void{
-  //   const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
-  //     if(validUrl){
-  //        this.sanitizedUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(validUrl));
-  //       console.log(this.sanitizedUrl);
-  //       // reader.readAsDataURL(this.sanitizedUrl){}
-  //       var canvas = document.createElement("canvas");
-  //       var context = canvas.getContext("2d");
-  //       context.drawImage(this.sanitizedUrl, 0, 0) // i assume that img.src is your blob url
-  //       var dataurl = canvas.toDataURL("your prefer type", your prefer quality)
-  //     }else{
-     
-  //     }
+   getBase64Img(){
 
-  // }   
+    var xhr = new XMLHttpRequest;
+    xhr.responseType = 'blob';
 
-  
-      /*    
+
+    xhr.onload = function() {
+      var recoveredBlob = xhr.response;
+   
+      var reader = new FileReader;
+
+      reader.onload = function() {
+         var blobAsDataUrl = reader.result;
+        console.log(blobAsDataUrl)
         
-          // const validUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(url));
+      };
+   
+      reader.readAsDataURL(recoveredBlob);
+   };
+  const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
+ //  console.log(validUrl, "\nThis is the current QR CODE VALUE: ", this.myAngularxQrCode);
+if(validUrl){
+  xhr.open('GET', validUrl);
+  xhr.send();
 
-      const validUrl = this.sanitizer.sanitize(SecurityContext.URL, url);
-      if(validUrl){
-        const sanitizedUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(validUrl));
-        this.qrCodeDownloadLink != sanitizedUrl;
-        console.log(this.qrCodeDownloadLink);
-        console.log("Safe Route");
-      }else{
-     
-      }
-        
-        
-        */
+}
+
+this.hasSubmit = false;
+  }   
 
 
-  onSubmit(){
+
+
+   onSubmit(){
     if(this.studentForm.valid){
       if(this.studentForm.controls['studentId'].value){
+        this.hasSubmit = true;
         this.myAngularxQrCode = this.studentForm.controls['studentId'].value;
-        // this.getBase64Img(this.qrCodeDownloadLink);
-      
-        
+       
       }
+
+    
 
   
       this.studentForm.setValue({
@@ -103,6 +114,9 @@ export class AddStudentComponent implements OnInit {
       this.db.addStudent(this.studentForm.value);
    
     }
+
+
+
   }
 
 
