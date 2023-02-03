@@ -37,6 +37,9 @@ import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { MetamaskComponent } from './components/metamask/metamask.component';
+import { ShowNftsComponent } from './components/show-nfts/show-nfts.component';
+import { KeyboardComponent } from './components/keyboard/keyboard.component';
+import { CreateNftComponent } from './components/create-nft/create-nft.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,10 @@ import { MetamaskComponent } from './components/metamask/metamask.component';
     LandingComponent,
     ScanLandingComponent,
     ImportCsvButtonComponent,
-    MetamaskComponent
+    MetamaskComponent,
+    ShowNftsComponent,
+    KeyboardComponent,
+    CreateNftComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,13 @@
+<section class="nfts">
+    <div class="nft" *ngFor="let nft of nfts; let i = index">
+        <app-keyboard
+            [index]="i"
+            [kind]="nft[0]"
+            [type]="nft[1] ? ('pbt' | uppercase) : ('abs' | uppercase)"
+            [filter]="nft[2]"
+            [owner]="nft[3]"
+            [currentOwner]="currentOwner"
+            [ethereum]="ethereum"
+        ></app-keyboard>
+    </div>
+</section>
