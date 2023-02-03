@@ -32,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of items | filter:searchText">
+                    <tr *ngFor="let item of itemsToShow() | filter:searchText">
                         <td>
                             {{ item.studentId }}
                         </td>
@@ -60,6 +60,16 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                  <button (click)="previousPage()" class="btn btn-primary" [disabled]="currentPage === 0">Previous Page</button>
+                </div>
+                {{ currentPage + 1}} of {{ numberOfPages }}
+                <div class="col-md-6 text-right">
+                  <button (click)="nextPage()" class="btn btn-primary" [disabled]="currentPage === totalPages">Next Page</button>
+                </div>
+              </div>
         </div>
-    </div>      
-</div>
+    </div>
+    <div class="row">
+      

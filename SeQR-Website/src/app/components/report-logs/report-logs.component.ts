@@ -14,6 +14,10 @@ export class ReportLogsComponent implements OnInit {
   items!: Student[];
   encryptFunction = new Encryption;
   searchText: string = '';
+  currentPage = 0;
+  pageSize = 5; // changeit to 10
+  totalPages!: number;
+  numberOfPages !: number;
 
   constructor(private dataService: DatabaseService) { 
     this.dataService.getStudent().subscribe(items =>{
@@ -31,6 +35,26 @@ export class ReportLogsComponent implements OnInit {
     });
   }
 
+  
+
   ngOnInit(): void {
+    this.totalPages = Math.ceil(this.items.length / this.pageSize);
+  }
+
+  itemsToShow() {
+    this.numberOfPages = Math.ceil(this.items.length / this.pageSize);
+    return this.items.slice(this.currentPage * this.pageSize, (this.currentPage + 1) * this.pageSize);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.numberOfPages - 1) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
   }
 }
