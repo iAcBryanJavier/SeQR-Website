@@ -84,7 +84,7 @@ if(validUrl){
 
 }
 
-this.hasSubmit = false;
+    this.hasSubmit = false;
   }   
 
 
