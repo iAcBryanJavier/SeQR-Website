@@ -21,6 +21,10 @@ body{
     margin-top: 10px;
 }
 
+.no-display{
+    display:none;
+}
+
 .f-d-mobile {
     flex-direction: row !important;
 }

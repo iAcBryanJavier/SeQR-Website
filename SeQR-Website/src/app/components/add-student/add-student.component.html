@@ -120,7 +120,9 @@
           </div>
         </form>
       </div>
-    </div>
-  </div>  
-</body>
-</html>     
+  </div>
+  <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="myAngularxQrCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+  <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download</a>
+ 
+
+</div>

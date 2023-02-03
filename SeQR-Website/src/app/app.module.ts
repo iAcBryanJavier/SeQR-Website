@@ -6,8 +6,9 @@ import { AppComponent } from './app.component';
 // QR CODE SCANNING
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 // QR CODE READER
-
-//
+import { ReadQrComponentComponent } from "./read-qr-component/read-qr-component.component";
+//QR CODE GENERATION
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -23,7 +24,6 @@ import { AuthGuard } from './router-guard/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
-import { ReadQrComponentComponent } from "./read-qr-component/read-qr-component.component";
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -64,6 +64,7 @@ import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.
     NgbModule,
     FormsModule,
     HttpClientModule,
+    QRCodeModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireStorageModule,
