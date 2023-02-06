@@ -12,9 +12,9 @@ body{
 .col {
     flex-basis: 50%;
 }
-
+/* https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif og background */ 
 h1 {
-    background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+    background-image: url(https://media.giphy.com/media/l4KihuqeuJEi9qLSM/giphy.gif);
     background-size: cover;
     color: transparent;
     -moz-background-clip: text;
@@ -22,6 +22,7 @@ h1 {
     text-transform: uppercase;
     font-size: 160px;
      margin: 10px 0;
+    background-position: bottom;
 }
 
 p {
@@ -81,18 +82,16 @@ p {
 
 h5 {
     text-align: center;
+    font-size: 30px;
     color: #fff;
-    text-shadow: 0 0 5px #999;
-    font-size: 20px;
+    text-shadow: 10px 10px 10px black;
+    font-family: sans-serif;
+    padding-top: 70px;
+    font-weight: 400;
 }
 
 h2,h3{
     color: white;
-}
-
-.card p {
-    text-shadow: 0 0 15px #000;
-    font-size: 15px;
 }
 
 button {
