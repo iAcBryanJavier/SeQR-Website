@@ -33,20 +33,21 @@ export class ImportCsvButtonComponent implements OnInit {
       reader.readAsText(file);
       reader.onload = () => { // GETS CALLED WHEN THE FILE IS READ
         const jsonData = JSON.parse(reader.result as string);
-
+        console.log(jsonData);
+        console.log(jsonData.length);
         this.studentData = new Student();
         this.encryptionFunc = new Encryption();
         for (let i = 0; i < jsonData.length; ++i) {
-
+          for (let j = 0; j < jsonData[i].length; ++j) {
           // INSERT ENCRYPTED DATA TO MODEL HERE
-          this.studentData.firstname = this.encryptionFunc.encryptData(jsonData[i].firstname);
-          this.studentData.middlename = this.encryptionFunc.encryptData(jsonData[i].middlename);
-          this.studentData.lastname = this.encryptionFunc.encryptData(jsonData[i].lastname);
-          this.studentData.course = this.encryptionFunc.encryptData(jsonData[i].course);
-          this.studentData.batch = this.encryptionFunc.encryptData(jsonData[i].batch);
-          this.studentData.studentId = this.encryptionFunc.encryptData(jsonData[i].studentId.toString());
-          this.studentData.sex = this.encryptionFunc.encryptData(jsonData[i].sex);
-          this.studentData.soNumber = this.encryptionFunc.encryptData(jsonData[i].soNumber.toString());
+          this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i][j].firstName),
+          this.encryptionFunc.encryptData(jsonData[i][j].middleName), 
+          this.encryptionFunc.encryptData(jsonData[i][j].lastName));
+          this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i][j].studentCourse));
+          this.studentData.setBatch(this.encryptionFunc.encryptData(jsonData[i][j].studentBatch));
+          this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i][j].studentId));
+          this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i][j].studentGender));
+          this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i][j].studentDiplomaNumber));
 
           // TEST CODES
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].firstName));
@@ -56,7 +57,7 @@ export class ImportCsvButtonComponent implements OnInit {
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentBatch));
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentId.toString()));
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber.toString()));
-
+        }
           // PUSHES MODEL TO DB
           this.saveStudent(this.studentData);
         }
