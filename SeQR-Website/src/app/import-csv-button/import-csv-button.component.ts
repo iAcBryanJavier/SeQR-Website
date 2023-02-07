@@ -4,7 +4,6 @@ import { Encryption } from '../models/encryption';
 import { StudentCsvService } from '../services/student-csv.service';
 import { Student } from '../models/student';
 import { DatabaseService } from '../services/database.service';
-import { parse } from 'json2csv';
 
 
 @Component({
