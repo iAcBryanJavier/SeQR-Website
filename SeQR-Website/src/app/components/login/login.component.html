@@ -30,8 +30,8 @@
 		<div class="contactSupport">
             <form>
                 <label class="labelClass" for="chk" aria-hidden="true">Contact Support</label>
-                <input type="password" name="pswd" [(ngModel)]= "password"placeholder="Email" required="">
-                <button (click)="login()">Contact Support</button>
+              <input type="email" id="reset-email" [(ngModel)]= "email" placeholder="email" [ngModelOptions]="{standalone:  true}" required>
+                <button (click)="reset()" type="submit">Contact Support</button>
             </form>
         </div>
 	</div>

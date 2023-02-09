@@ -72,4 +72,17 @@ export class AuthService {
     })
   }
   
+  
+   resetPassword(email: any){
+    console.log(email);
+    return this.fireAuth.sendPasswordResetEmail(email).then(() => {
+      alert("Email has been sent! Check your email.")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode);
+      alert(errorMessage);
+    });
+  }
 }
