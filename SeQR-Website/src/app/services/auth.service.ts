@@ -85,4 +85,16 @@ export class AuthService {
       alert(errorMessage);
     });
   }
+
+  verifyUserPassword(email: any, password: any): Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.fireAuth.signInWithEmailAndPassword(email, password)
+        .then(user => {
+          resolve(true);
+        }, err => {
+          resolve(false);
+        });
+    });
+  }
+
 }

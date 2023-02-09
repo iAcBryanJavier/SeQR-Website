@@ -43,7 +43,7 @@ export class ManageAccountComponent implements OnInit {
       if (user) {
         // User is signed in
         // Get the user's email
-        this.email = user.email
+        this.email = user.email;
       } else {
         // User is signed out
         console.log('user is not signed in');
