@@ -6,7 +6,7 @@ import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { getBootstrapBaseClassPlacement } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { ethers } from 'ethers';
-import contract from '../../../../../backend/smart-contract/artifacts/contracts/Student.sol/Student.json';
+import contract from '../../contracts/Student.json';
 
 @Component({
   selector: 'app-add-student',
@@ -22,7 +22,7 @@ export class AddStudentComponent implements OnInit {
   public hasSubmit: boolean = false;
   public isMinting: boolean = false;
 
-  readonly CONTRACT_ADDRESS: string = '0xCe09A89F5fc9f24a96f22431E9C36292CfD614BE';
+  readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
 
@@ -58,6 +58,7 @@ export class AddStudentComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();
+    // this.fetchNFTs();
   }
 
   getBase64Img() {
@@ -102,27 +103,18 @@ export class AddStudentComponent implements OnInit {
 
       }
       //encryption of data
-      // this.studentForm.setValue({
-      //   studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-      //   firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-      //   middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-      //   lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-      //   course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-      //   batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
-      //   sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-      //   soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
-      // })
+      this.studentForm.setValue({
+        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+        batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
+        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
+      })
       //add to firebase realtime database
-      // this.db.addStudent(this.studentForm.value);
-
-      const studentId: string | null = this.studentForm.controls['studentId'].value
-      const firstname: any = this.studentForm.controls['firstname'].value
-      const middlename: any = this.studentForm.controls['middlename'].value
-      const lastname: any = this.studentForm.controls['lastname'].value
-      const course: string | null = this.studentForm.controls['course'].value
-      const batch: string | null  = this.studentForm.controls['batch'].value
-      const sex: any = this.studentForm.controls['sex'].value
-      const soNumber: any = this.studentForm.controls['soNumber'].value
+      this.db.addStudent(this.studentForm.value);
 
       if (!this.ethereum) {
         console.error('Ethereum object is required to create a keyboard');
@@ -135,16 +127,12 @@ export class AddStudentComponent implements OnInit {
       const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
       try{
-        const createTxn = await contract['createStudentNFT'](
-          this.studentForm.controls['course'].value,
-          this.studentForm.controls['studentId'].value,
-          this.studentForm.controls['batch'].value
-        );
+        const createTxn = await contract['create'](this.studentForm.controls['studentId'].value);
 
         console.log('Create transaction started...', createTxn.hash);
         await createTxn.wait();
-        console.log('Created keyboard!', createTxn.hash);
-        window.alert('Created keyboard! ' + createTxn.hash)
+        console.log('Created student record!', createTxn.hash);
+        window.alert('Created student record! ' + createTxn.hash);
         this.isMinting = false;
       }catch(err: any){
         console.error(err.message);
@@ -153,4 +141,18 @@ export class AddStudentComponent implements OnInit {
       }
     }
   }
+
+  // private async fetchNFTs(): Promise<any> {
+  //   const provider = new ethers.providers.Web3Provider(this.ethereum);
+  //   const signer = provider.getSigner();
+  //   const studentContract = new ethers.Contract(
+  //     this.CONTRACT_ADDRESS,
+  //     this.contractABI,
+  //     signer
+  //   );
+
+  //   const students = await studentContract['getStudents']();
+  //   console.log('Retrieved student...', students);
+  //   this.nfts = students;
+  // }
 }
