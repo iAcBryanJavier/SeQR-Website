@@ -30,9 +30,13 @@ input{
 
 @media screen and (max-width: 992px) {
     .col-side-qry {
-        width:100% !important;
-        display: flex;
-        flex-direction: column;
-      
+        width: 100% !important;
+
     }
-  }
+}
+
+@media screen and (max-width: 768px) {
+    .f-d-mobile {
+        flex-direction: column !important;
+    }
+}

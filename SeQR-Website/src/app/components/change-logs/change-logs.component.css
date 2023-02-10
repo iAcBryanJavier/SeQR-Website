@@ -11,6 +11,27 @@ svg{
     display: none;
 }
 
+.row>* {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-top: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: var(--bs-gutter-y);
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border-color: black;
+    border-style: solid;
+    border-width: 0;
+}
+
+.table>tbody {
+    vertical-align: inherit;
+    font-size: 25px !important;
+}
+
 @media only screen and (max-width: 770px) {
     .search-dsktp{
         display: none;
@@ -25,3 +46,5 @@ svg{
         width: 100%;
     }
 }
+
+

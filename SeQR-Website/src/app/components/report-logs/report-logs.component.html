@@ -71,6 +71,105 @@
                 </div>
               </div>
         </div>
+        <hr>
+
+        <!-- FOR DESKTOP -->
+        <div class="row search-dsktp">
+            <div class="col">
+                <div class="input-group">
+                    <input id="search-input" [(ngModel)]="searchText" type="text" class="form-control" placeholder="Search anything...">
+                    <h3 class="search-text">( Search accepts: Student ID, Last Name, Course, Batch, Sex, SO Number )</h3>
+                </div>
+            </div>
+            <div class="col">
+                <button id="search-button" type="button" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <!-- FOR MOBILE -->
+        <div class="row search-mbl">
+            <div class="col">
+                <div class="input-group">
+                    <input id="search-input" type="search" class="form-control" placeholder="Search anything...">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="search">
+                    <button id="search-button" type="button" class="btn btn-primary search-mbl-btn">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Student Id</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Middle Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Batch</th>
+                            <th scope="col">Sex</th>
+                            <th scope="col">SO Number</th>
+                            <th scope="col">QR Code</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let item of itemsToShow() | filter:searchText">
+                            <td>
+                                {{ item.studentId }}
+                            </td>
+                            <td>
+                                {{ item.firstname }}
+                            </td>
+                            <td>
+                                {{ item.middlename }}
+                            </td>
+                            <td>
+                                {{ item.lastname }}
+                            </td>
+                            <td>
+                                {{ item.course }}
+                            </td>
+                            <td>
+                                {{ item.batch }}
+                            </td>
+                            <td>
+                                {{ item.sex }}
+                            </td>
+                            <td>
+                                {{ item.soNumber }}
+                            </td>
+                            <td>
+                                <a id="QR" href="www.facebook.com">Download QR</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 text-left">
+                <button (click)="previousPage()" class="btn btn-primary" [disabled]="currentPage === 0">Previous Page</button>
+            </div>
+        </div>
+        <p> {{ currentPage + 1}} of {{ numberOfPages }} </p>
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <button (click)="nextPage()" class="btn btn-primary" [disabled]="currentPage === totalPages">Next Page</button>
+            </div>
+        </div>
+
     </div>
-    <div class="row">
-      
+
+

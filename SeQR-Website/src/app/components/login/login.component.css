@@ -6,7 +6,7 @@ body{
 	align-items: center;
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #2b5876   , #4e4376);
+	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
 }
 .main{
 	width: 350px;
@@ -80,7 +80,7 @@ button{
 	cursor: pointer;
 }
 button:hover{
-	background: #6d44b8;
+	background: #00416A;
 }
 .contactSupport{
 	height: 460px;
@@ -90,7 +90,7 @@ button:hover{
 	transition: .8s ease-in-out;
 }
 .contactSupport label{
-	color: #573b8a;
+	color: #00416A;
 	transform: scale(.6);
 }
 

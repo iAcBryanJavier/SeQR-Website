@@ -3,28 +3,29 @@ svg{
     height: 30px;
 }
 
-.btn{
-    background-color: grey;
-    color: white;
-    border-color: white;
-}
-
-.btn:focus{
-    background-color: grey;
-}
-
-.btn:hover{
-    border-width: 1px;
+tbody, td, tfoot, th, thead, tr {
     border-color: black;
+    border-style: solid;
+    border-width: 0;
+
 }
 
 .container{
     margin-top: 10px;
 }
 
-.container .table td{
-    /* width: 100%; */
+h3 {
+    font-size: 16.5px;
+    padding-top: 13px;
+    padding-left: 13px;
+    font-weight: 500;
 }
+
+p .search-text {
+	font-size: 20px;
+}
+
+
 
 table {
     width: 100%;
@@ -32,53 +33,64 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
+.table>tbody {
+    vertical-align: inherit;
+    font-size: 19px;
 }
 
-th {
-    background-color: #f2f2f2;
+p {
+    margin-left: 50px;
+    margin-top: 20px;
+    font-size: 20px;
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+.row>* {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-top: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: var(--bs-gutter-y);
 }
 
-/* Add hover effect to table rows */
-tr:hover {
-    background-color: #f5f5f5;
-}
-
-/* Add zebra-striping to table */
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Add border to table */
-table {
-    border: 1px solid #ccc;
-}
-
-/* Add some padding and horizontal alignment to table cells */
-td, th {
-    padding: 10px;
+.search-dsktp .input-group p {
+    margin-top: 10px;
     text-align: center;
-}
-
-/* Add font styles to table headers */
-th {
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-.search-input {
-    width: 300px;
-    height: 35px;
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 4px;
   }
+
+.search-dsktp .col {
+    height: auto;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-form-control-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+@media only screen and (max-width: 770px) {
+    .search-dsktp{
+        display: none;
+    }
+
+    .search-mbl, .search-mbl-btn{
+        display: block;
+    }
+
+    .container .search-mbl-btn{
+        margin: 10px 0 10px 0;
+        width: 100%;
+    }
+}

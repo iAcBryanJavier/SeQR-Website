@@ -18,6 +18,7 @@ export class ReportLogsComponent implements OnInit {
   pageSize = 5; // changeit to 10
   totalPages!: number;
   numberOfPages !: number;
+  downloadQR !:  ""
 
   constructor(private dataService: DatabaseService) { 
     this.dataService.getStudent().subscribe(items =>{

@@ -2,19 +2,21 @@
     margin-top: 10px;
 }
 
-.container .row .align-right{
-    text-align: right;
+.container .row .align-right {
+	text-align: right;
+	width: 40%;
 }
 
-.container .row .align-left{
-    text-align: left;
+.container .row .align-left {
+	text-align: left;
+	width: 60%;
 }
 
-.info{
-    font-size: 24px;
+.info {
+	font-size: 24px;
 }
 
-.manage-svg{
-    width: 30px;
-    height: 30px;
+.manage-svg {
+	width: 30px;
+	height: 30px;
 }
