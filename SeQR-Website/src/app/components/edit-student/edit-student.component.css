@@ -5,16 +5,88 @@ body{
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #2b5876   , #4e4376);
-    color: white;
+	font-family: 'Roboto', sans-serif;
+	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+    color: black;
 }
-.main{
-	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-	border-radius: 10px;
-	box-shadow: 5px 20px 50px #fff;
-	background: linear-gradient(to right, #141e30        , #243b55);
+
+.container {
+    margin-top: 10px;
+}
+
+.no-display{
+    display:none;
+}
+
+.f-d-mobile {
+    flex-direction: row !important;
+}
+
+.btn-wo-ib {
+    display: flex !important;
+    width: auto !important;
+}
+
+.container .row .col {
+    /* border-style: solid; */
+    padding: 20px;
+}
+
+
+.container .row .submit-btn {
+    text-align: center;
+}
+
+input {
+    margin: 16px 0 16px 0;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-form-control-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+	
+}
+
+.qr-middle {
+	text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+	margin-bottom: 30px;
+}
+
+
+
+.add-student-plus {
+    width: 30px;
+    height: 30px;
+}
+
+.csv-file {
+    position: relative;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.csv-btn {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
 }
 
 button{
@@ -36,38 +108,22 @@ button{
 }
 
 button:hover{
-	background: #6d44b8;
+	background: #00416A;
+    color: white;
+    transform: scale(1.08);
+    cursor: pointer; 
+
 }
-
-.container{
-    margin-top: 10px;
-}
-
-.container .row .col{
-    padding: 20px;
-}
-
-.container .row .submit-btn{
-    text-align: center;
-}
-
-input{
-    margin: 8px 0 8px 0;
-}
-
-.add-student-plus{
-    width: 30px;
-    height: 30px;
-}
-
-
-/**** MEDIA QUIRIES *****/
 
 @media screen and (max-width: 992px) {
     .col-side-qry {
-        width:100% !important;
-        display: flex;
-        flex-direction: column;
-      
+        width: 100% !important;
+
     }
-  }
+}
+
+@media screen and (max-width: 768px) {
+    .f-d-mobile {
+        flex-direction: column !important;
+    }
+}
