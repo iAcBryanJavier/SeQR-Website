@@ -1,119 +1,32 @@
-body{
-	margin: 0;
-	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	font-family: 'Roboto', sans-serif;
-	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
-    color: black;
-}
-
-.container {
+.container{
     margin-top: 10px;
 }
 
-.no-display{
-    display:none;
-}
-
-.f-d-mobile {
-    flex-direction: row !important;
-}
-
-.btn-wo-ib {
-    display: flex !important;
-    width: auto !important;
-}
-
-.container .row .col {
-    /* border-style: solid; */
+.container .row .col{
     padding: 20px;
 }
 
-
-.container .row .submit-btn {
+.container .row .submit-btn{
     text-align: center;
 }
 
-input {
-    margin: 16px 0 16px 0;
+input{
+    margin: 8px 0 8px 0;
 }
 
-.form-control {
-    display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1.2rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-    background-color: var(--bs-form-control-bg);
-    background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 0.375rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-
-	
+.btn{
+    font-size: 120%;
+    padding: 20px;
+    width: 50%;
 }
 
-.qr-middle {
-	text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-	margin-bottom: 30px;
-}
-
-
-
-.add-student-plus {
+.add-student-plus{
     width: 30px;
     height: 30px;
 }
 
-.csv-file {
-    position: relative;
-    overflow: hidden;
-    margin-left: auto;
-    margin-right: 0;
-}
 
-.csv-btn {
-    position: absolute;
-    font-size: 50px;
-    opacity: 0;
-    right: 0;
-    top: 0;
-}
-
-button{
-	width: 60%;
-	height: 40px;
-	margin: 10px auto;
-	justify-content: center;
-	display: block;
-	color: #fff;
-	background: #2b5876;
-	font-size: 1em;
-	font-weight: bold;
-	margin-top: 20px;
-	outline: none;
-	border: none;
-	border-radius: 5px;
-	transition: .2s ease-in;
-	cursor: pointer;
-}
-
-button:hover{
-	background: #00416A;
-    color: white;
-    transform: scale(1.08);
-    cursor: pointer; 
-
-}
+/**** MEDIA QUIRIES *****/
 
 @media screen and (max-width: 992px) {
     .col-side-qry {

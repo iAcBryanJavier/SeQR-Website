@@ -32,21 +32,23 @@ export class ImportCsvButtonComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => { // GETS CALLED WHEN THE FILE IS READ
-        const jsonData = JSON.parse(reader.result as string);
-
+        // console.log(parseCSV(reader.result as string));
+        const jsonData = JSON.parse(parseCSV(reader.result as string));
+        // console.log(jsonData);
+        // console.log(jsonData.length);
         this.studentData = new Student();
         this.encryptionFunc = new Encryption();
-        for (let i = 0; i < jsonData.length; ++i) {
-
+        for (let i = 0; i < jsonData.length - 1; ++i) {
+     
           // INSERT ENCRYPTED DATA TO MODEL HERE
-          this.studentData.firstname = this.encryptionFunc.encryptData(jsonData[i].firstname);
-          this.studentData.middlename = this.encryptionFunc.encryptData(jsonData[i].middlename);
-          this.studentData.lastname = this.encryptionFunc.encryptData(jsonData[i].lastname);
-          this.studentData.course = this.encryptionFunc.encryptData(jsonData[i].course);
-          this.studentData.batch = this.encryptionFunc.encryptData(jsonData[i].batch);
-          this.studentData.studentId = this.encryptionFunc.encryptData(jsonData[i].studentId.toString());
-          this.studentData.sex = this.encryptionFunc.encryptData(jsonData[i].sex);
-          this.studentData.soNumber = this.encryptionFunc.encryptData(jsonData[i].soNumber.toString());
+          this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i].firstName),
+          this.encryptionFunc.encryptData(jsonData[i].middleName), 
+          this.encryptionFunc.encryptData(jsonData[i].lastName));
+          this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
+          this.studentData.setBatch(this.encryptionFunc.encryptData(jsonData[i].studentBatch));
+          this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i].studentId));
+          this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
+          this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
 
           // TEST CODES
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].firstName));
@@ -56,18 +58,37 @@ export class ImportCsvButtonComponent implements OnInit {
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentBatch));
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentId.toString()));
           // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber.toString()));
-
-          // PUSHES MODEL TO DB
+          console.log(this.studentData.firstname)
           this.saveStudent(this.studentData);
+        
+          // PUSHES MODEL TO DB
+       
         }
       };
     } else {
       console.error("No file selected");
     }
   }
+
+
+
   saveStudent(studentInformation: Student): void {
     this.db.addStudent(studentInformation);
   }
 }
 
+function parseCSV(csv: string): string {
+  const lines = csv.split("\n");
+  const headers = lines[0].split(",") as string[];
+  const result: {}[] = [];
+  for (let i = 1; i < lines.length; i++) {
+    const obj: { [key: string]: string } = {};
+    const currentLine = lines[i].split(",");
+    for (let j = 0; j < headers.length; j++) {
+      obj[headers[j]] = currentLine[j];
+    }
+    result.push(obj);
+  }
+  return JSON.stringify(result);
+}
 
