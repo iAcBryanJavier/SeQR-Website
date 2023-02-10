@@ -4,7 +4,7 @@ import { Encryption } from 'src/app/models/encryption';
 import { DatabaseService } from 'src/app/services/database.service';
 import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
-import { getBootstrapBaseClassPlacement } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+
 
 
 @Component({

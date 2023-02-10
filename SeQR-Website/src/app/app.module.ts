@@ -36,6 +36,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
+import { ExportButtonComponent } from './components/export-button/export-button.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.
     ReadQrComponentComponent,
     LandingComponent,
     ScanLandingComponent,
-    ImportCsvButtonComponent
+    ImportCsvButtonComponent,
+    ExportButtonComponent
   ],
   imports: [
     BrowserModule,
