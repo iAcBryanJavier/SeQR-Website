@@ -29,4 +29,8 @@ export class LoginComponent implements OnInit  {
   login()  {
     this.authService.login(this.email, this.password);
   }
+
+  reset(){
+    this.authService.resetPassword(this.email);
+  }
 }
