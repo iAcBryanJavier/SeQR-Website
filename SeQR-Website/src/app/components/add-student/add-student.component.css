@@ -5,17 +5,11 @@ body{
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #2b5876   , #4e4376);
-    color: white;
+	font-family: 'Roboto', sans-serif;
+	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+    color: black;
 }
-.main{
-	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-	border-radius: 10px;
-	box-shadow: 5px 20px 50px #fff;
-	background: linear-gradient(to right, #141e30        , #243b55);
-}
+
 
 .container {
     margin-top: 10px;
@@ -68,8 +62,12 @@ input {
     top: 0;
 }
 
+.qr-middle {
+	text-align: center;
+}
+
 button{
-	width: 60%;
+	width: 30%;
 	height: 40px;
 	margin: 10px auto;
 	justify-content: center;
@@ -87,7 +85,11 @@ button{
 }
 
 button:hover{
-	background: #6d44b8;
+	background: #00416A;
+    color: white;
+    transform: scale(1.08);
+    cursor: pointer; 
+
 }
 
 @media screen and (max-width: 992px) {
