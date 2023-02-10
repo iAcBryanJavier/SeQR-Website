@@ -107,7 +107,8 @@
       </div>
       <div class="row">
         <div class="col submit-btn">
-          <button type="submit" class="btn btn-primary mb-3">SUBMIT AND MINT</button>
+          <button type="submit" class="btn btn-primary mb-3" *ngIf="!isMinting">SUBMIT AND MINT</button>
+          <button type="submit" class="btn btn-primary mb-3" *ngIf="isMinting">MINTING NFT</button>
         </div>
       </div>
     </form>

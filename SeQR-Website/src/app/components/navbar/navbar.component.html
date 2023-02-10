@@ -66,13 +66,20 @@
       <ul class="navbar-nav">
         <li class="nav-item active">
           <!-- Step 4: Close the menu when a link is clicked. -->
-          <a class="nav-link" routerLink="/dashboard" (click)="isMenuCollapsed = true">HOME</a>
+          <a class="nav-link btn" routerLink="/dashboard" (click)="isMenuCollapsed = true">HOME</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="isMenuCollapsed = true">DISCONNECT</a>
+          <a class="nav-link btn" *ngIf="!isIdentified" href="https://metamask.io" (click)="isMenuCollapsed = true"
+            target="_blank">Install Metamask</a>
+
+          <a *ngIf="isIdentified && !isConnected" class="nav-link btn" (click)="connectMetamask()">
+            Connect using Metamask
+          </a>
+
+          <a class="nav-link btn" *ngIf="isIdentified && isConnected">CONNECTED</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="isMenuCollapsed = true; logout()" routerLink="/">LOGOUT</a>
+          <a class="nav-link btn" (click)="isMenuCollapsed = true; logout()" routerLink="/">LOGOUT</a>
         </li>
       </ul>
     </div>
