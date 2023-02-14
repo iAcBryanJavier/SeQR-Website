@@ -50,14 +50,6 @@ export class ImportCsvButtonComponent implements OnInit {
           this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
           this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
 
-          // TEST CODES
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].firstName));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].middleName));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].lastName));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentBatch));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentId.toString()));
-          // this.encryptionFunc.decryptData(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber.toString()));
           console.log(this.studentData.firstname)
           this.saveStudent(this.studentData);
         
