@@ -14,6 +14,11 @@ export const environment = {
     databaseURL: 'https://seqr-e7c21-default-rtdb.asia-southeast1.firebasedatabase.app',
   
   },
+  pinatacloud: {
+    apiKey: '69d53fc98f91ee0e671c',
+    apiJwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI4ZTg1NzRmYi03NTRjLTRlNWItYWE2NC0yMzQ0YTgxNTc3ODUiLCJlbWFpbCI6ImNhcmxtZXJjYWRvYXpAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjY5ZDUzZmM5OGY5MWVlMGU2NzFjIiwic2NvcGVkS2V5U2VjcmV0IjoiOTAwNjFhZWY1ZmRiNTQxZDI2NjUyMTBmZGQ1NzRhNTlmY2RmOGMyMWI3NjU3ZmY0ZDVkZmIzODgwMDA1OTZlZCIsImlhdCI6MTY3NjI2NTU3MX0.Gwye_siTItfmkSkxRT0wv08dxoldvd79TTMczzRdMBs', 
+    apiSecret: '90061aef5fdb541d2665210fdd574a59fcdf8c21b7657ff4d5dfb388000596ed',
+  },
 
   production: false
 };
