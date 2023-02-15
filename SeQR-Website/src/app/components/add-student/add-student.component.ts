@@ -61,7 +61,7 @@ export class AddStudentComponent implements OnInit {
   onChangeURL(url: SafeUrl) {
     this.qrCodeDownloadLink = url; // Changes whenever this.myAngularxQrCode changes
     //produces BLOB URI/URL, browser locally stored data
-
+    console.log(this.qrCodeDownloadLink);
     if (this.hasSubmit) {
       this.getBase64Img();
     } else {
@@ -88,7 +88,8 @@ export class AddStudentComponent implements OnInit {
 
       reader.onload = function () {
         var blobAsDataUrl = reader.result;
-        console.log(blobAsDataUrl)
+        console.log(reader.result)
+        console.log(blobAsDataUrl) // this is the final image
       };
       reader.readAsDataURL(recoveredBlob);
     };
@@ -148,22 +149,25 @@ export class AddStudentComponent implements OnInit {
       
      
       //encryption of data
-      // this.studentForm.setValue({
-      //   studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-      //   firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-      //   middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-      //   lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-      //   course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-      //   batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
-      //   sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-      //   soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
-      // })
+      this.studentForm.setValue({
+        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+        batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
+        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
+      })
       //add to firebase realtime database
-     // this.db.addStudent(this.studentForm.value);
+     this.db.addStudent(this.studentForm.value);
       // this.createTransaction();
       this.pinFileToPinata(this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value), this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-         
-   
+  //    const ipfshash = await UploadtoIPFS(); ASYNC
+  //    const txnhash = await minting(ipfshash); ASYNc
+  //    const qrcodedata = txnhash();
+  //    const dataimg = getbase64image(); ASYNC
+  //   addstudent(student()) // Student object must also contain the dataimg url and txnhash
     }
   }
 
