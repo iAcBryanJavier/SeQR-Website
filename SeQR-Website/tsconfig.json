@@ -2,7 +2,17 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+
     "baseUrl": "./",
+    "paths": {
+      "assert": ["node_modules/assert"],
+     "http": ["node_modules/stream-http"],
+     "https": ["node_modules/https-browserify"],
+     "stream": ["node_modules/stream-browserify"],
+     "tty": ["node_modules/tty-browserify"],
+     "url": ["node_modules/url"],
+     "zlib": ["node_modules/browserify-zlib"],
+   },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
