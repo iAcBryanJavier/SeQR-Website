@@ -55,6 +55,7 @@ import * as Buffer from '../node_modules/buffer/index'
 (window as any).process.version = '';
 (window as any).process.versions = { node: false };
 (window as any).global.Buffer = Buffer.Buffer;
+(window as any).process = { env: { DEBUG: undefined } };
 
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
