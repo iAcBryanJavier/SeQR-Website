@@ -48,6 +48,7 @@
             <input class="form-control" type="file" id="formFile">
           </div>
         </div>
+        
         <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
           <div class="col">
             <div class="row ">
@@ -67,28 +68,43 @@
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col">
-              <h4>COURSE: <input class="form-control" formControlName="course" type="text" placeholder="Ex. BSCSSE"
-                  aria-label="default input example">
+              <h4>STUDENT ID: <input class="form-control" formControlName="studentId" type="text"
+                placeholder="Ex. 201901165" aria-label="default input example"></h4>
+              <div *ngIf="studentForm.controls['studentId'].invalid && studentForm.controls['studentId'].touched"
+                 class="alert alert-danger">
+                 Student ID is required.
+              </div>
+            </div>
+          </div>
+         
+
+          <div class="row">
+            <div class="col">
+              <h4>SO NUMBER: <input class="form-control" formControlName="soNumber" type="text" placeholder="Ex. 10XXXXXXX"
+                aria-label="default input example"></h4>
+            <div *ngIf="studentForm.controls['soNumber'].invalid && studentForm.controls['soNumber'].touched"
+              class="alert alert-danger">
+              SO Number is required.
+            </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h4>COURSE:
+                <select class="form-select" formControlName="course" aria-label="Default select example">
+                  <option selected disabled value="">Select a course</option>
+
+                  <option *ngFor="let item of courses" [value]="item">{{ item }}</option>
+                </select>
               </h4>
               <div *ngIf="studentForm.controls['course'].invalid && studentForm.controls['course'].touched"
-                class="alert alert-danger">
+                   class="alert alert-danger">
                 Course code is required.
               </div>
-              <h4>BATCH: <input class="form-control" formControlName="batch" type="text" placeholder="Ex. 2022-2022"
-                  aria-label="default input example">
-              </h4>
-              <div *ngIf="studentForm.controls['batch'].invalid && studentForm.controls['batch'].touched"
-                class="alert alert-danger">
-                School year batch is required.
-              </div>
-              <h4>STUDENT ID: <input class="form-control" formControlName="studentId" type="text"
-                  placeholder="Ex. 2019-01165" aria-label="default input example"></h4>
-              <div *ngIf="studentForm.controls['studentId'].invalid && studentForm.controls['studentId'].touched"
-                class="alert alert-danger">
-                Student ID is required.
-              </div>
+              
               <h4>SEX:</h4>
               <div class="form-check">
                 <input class="form-check-input" formControlName="sex" value="male" type="radio" name="sex" id="male"
@@ -106,12 +122,6 @@
               <br>
               <div *ngIf="studentForm.controls['sex'].value == ''" class="alert alert-danger">
                 Please select your sex.
-              </div>
-              <h4>SO NUMBER: <input class="form-control" formControlName="soNumber" type="text" placeholder="Ex. 10XXXXXXX"
-                  aria-label="default input example"></h4>
-              <div *ngIf="studentForm.controls['soNumber'].invalid && studentForm.controls['soNumber'].touched"
-                class="alert alert-danger">
-                SO Number is required.
               </div>
             </div>
           </div>
