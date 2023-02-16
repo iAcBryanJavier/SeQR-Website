@@ -61,6 +61,10 @@ export class ForgetPasswordComponent implements OnInit {
 
   }
 
+  logout(){
+    this.authService.logout();
+  }
+
 
 
   getEmail(): any{
@@ -83,6 +87,7 @@ export class ForgetPasswordComponent implements OnInit {
       const user = await this.fireAuth.signInWithEmailAndPassword(this.email, this.verify_password);
       await user.user?.updatePassword(this.updated_password);
       alert("Password has been updated!");
+      this.logout();
     } catch (error) {
       console.error(error);
       alert("Wrong password");

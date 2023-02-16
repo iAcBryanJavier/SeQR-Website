@@ -26,13 +26,14 @@ export class AddStudentComponent implements OnInit {
   public contractABI = contract.abi;
   public nfts: any = [];
 
+  public courses: any = [];
+
   // form group for add stduent form to db 
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
     lastname: new FormControl('', Validators.required),
     course: new FormControl('', Validators.required),
-    batch: new FormControl('', Validators.required),
     studentId: new FormControl('', Validators.required),
     sex: new FormControl('', Validators.required),
     soNumber: new FormControl('', Validators.required)
@@ -59,6 +60,11 @@ export class AddStudentComponent implements OnInit {
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();
     // this.fetchNFTs();
+
+    this.db.getCourses().subscribe(i => {
+      this.courses = i;
+      console.log(this.courses);
+    });
   }
 
   getBase64Img() {
@@ -96,8 +102,10 @@ export class AddStudentComponent implements OnInit {
   }
 
   async onSubmit() {
+ 
     if (this.studentForm.valid) {
       if (this.studentForm.controls['studentId'].value) {
+        this.studentForm.reset();
         this.hasSubmit = true;
         this.myAngularxQrCode = this.studentForm.controls['studentId'].value;
 
@@ -109,7 +117,6 @@ export class AddStudentComponent implements OnInit {
         middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
         lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
         course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-        batch: this.encryptFunction.encryptData(this.studentForm.controls['batch'].value),
         sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
         soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
       })
