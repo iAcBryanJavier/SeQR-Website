@@ -28,7 +28,6 @@ export class ReportLogsComponent implements OnInit {
         item.middlename = this.encryptFunction.decryptData(item.middlename);
         item.lastname = this.encryptFunction.decryptData(item.lastname);
         item.course = this.encryptFunction.decryptData(item.course);
-        item.batch = this.encryptFunction.decryptData(item.batch);
         item.sex = this.encryptFunction.decryptData(item.sex);
         item.soNumber = this.encryptFunction.decryptData(item.soNumber);
       }

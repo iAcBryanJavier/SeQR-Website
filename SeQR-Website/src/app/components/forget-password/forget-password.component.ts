@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -18,9 +17,9 @@ export class ForgetPasswordComponent implements OnInit {
   showNewPassword: boolean = false;
   showOldPassword: boolean = false;
   showConfirmPassword: boolean = false;
-  icon:string | undefined;
+  icon: string | undefined;
 
-  constructor( private authService: AuthService, private fireAuth: AngularFireAuth, private db: AngularFireDatabase) { }
+  constructor(private authService: AuthService, private fireAuth: AngularFireAuth, private db: AngularFireDatabase) { }
 
   forgetPasswordForm = new FormGroup({
     currentPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -61,13 +60,13 @@ export class ForgetPasswordComponent implements OnInit {
 
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
   }
 
 
 
-  getEmail(): any{
+  getEmail(): any {
     this.fireAuth.user.subscribe(user => {
       if (user) {
         // User is signed in
@@ -80,26 +79,18 @@ export class ForgetPasswordComponent implements OnInit {
     })
   }
 
-  async updatePassword(){
-     
-  if (this.email != "false") {
-    try {
-      const user = await this.fireAuth.signInWithEmailAndPassword(this.email, this.verify_password);
-      await user.user?.updatePassword(this.updated_password);
-      alert("Password has been updated!");
-      this.logout();
-    } catch (error) {
-      console.error(error);
-      alert("Wrong password");
+  async updatePassword() {
+
+    if (this.email != "false") {
+      try {
+        const user = await this.fireAuth.signInWithEmailAndPassword(this.email, this.verify_password);
+        await user.user?.updatePassword(this.updated_password);
+        alert("Password has been updated!");
+        this.logout();
+      } catch (error) {
+        console.error(error);
+        alert("Wrong password");
+      }
     }
   }
-
-
-  
- 
 }
-
-
-
-}
-

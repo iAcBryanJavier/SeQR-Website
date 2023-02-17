@@ -60,13 +60,6 @@ input {
 	
 }
 
-.form-check {
-    display: block;
-    min-height: 1.5rem;
-    padding-left: 1.5em;
-    margin-bottom: 1rem;
-}
-
 .qr-middle {
 	text-align: center;
     margin-left: auto;

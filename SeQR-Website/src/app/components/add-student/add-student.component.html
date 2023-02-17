@@ -50,6 +50,16 @@
         </div>
         
         <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col">
+              <h4>STUDENT ID: <input class="form-control" formControlName="studentId" type="text"
+                placeholder="Ex. 201901165" aria-label="default input example"></h4>
+              <div *ngIf="studentForm.controls['studentId'].invalid && studentForm.controls['studentId'].touched"
+                 class="alert alert-danger">
+                 Student ID is required.
+              </div>
+            </div>
+          </div>
           <div class="col">
             <div class="row ">
               <input class="form-control" formControlName="firstname" type="text" placeholder="First Name"
@@ -68,19 +78,6 @@
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col">
-              <h4>STUDENT ID: <input class="form-control" formControlName="studentId" type="text"
-                placeholder="Ex. 201901165" aria-label="default input example"></h4>
-              <div *ngIf="studentForm.controls['studentId'].invalid && studentForm.controls['studentId'].touched"
-                 class="alert alert-danger">
-                 Student ID is required.
-              </div>
-            </div>
-          </div>
-         
-
           <div class="row">
             <div class="col">
               <h4>SO NUMBER: <input class="form-control" formControlName="soNumber" type="text" placeholder="Ex. 10XXXXXXX"
@@ -138,5 +135,3 @@
         </form>
       </div>
   </div>
-  
- 

@@ -32,5 +32,4 @@ export class DatabaseService {
   getCourses(): Observable<any[]> {
     return this.afs.list('courses').valueChanges();
   }
-
 }

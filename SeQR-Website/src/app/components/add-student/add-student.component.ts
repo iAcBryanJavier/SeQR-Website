@@ -30,7 +30,6 @@ export class AddStudentComponent implements OnInit {
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
-
   public courses: any = [];
 
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
@@ -145,16 +144,12 @@ export class AddStudentComponent implements OnInit {
   }
 
   async onSubmit() {
- 
     if (this.studentForm.valid) {
       if (this.studentForm.controls['studentId'].value) {
-        this.studentForm.reset();
         this.hasSubmit = true;
         this.myAngularxQrCode = this.studentForm.controls['studentId'].value;
-        
       }
-      
-     
+    
       //encryption of data
       this.studentForm.setValue({
         studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
@@ -166,7 +161,7 @@ export class AddStudentComponent implements OnInit {
         soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value)
       })
       //add to firebase realtime database
-     this.db.addStudent(this.studentForm.value);
+      this.db.addStudent(this.studentForm.value);
       // this.createTransaction();
       this.pinFileToPinata(this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value), this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
   //    const ipfshash = await UploadtoIPFS(); ASYNC
@@ -175,6 +170,7 @@ export class AddStudentComponent implements OnInit {
   //    const dataimg = getbase64image(); ASYNC
   //   addstudent(student()) // Student object must also contain the dataimg url and txnhash
     }
+      this.studentForm.reset();
   }
 
  async createTransaction(ipfsHash: any){
