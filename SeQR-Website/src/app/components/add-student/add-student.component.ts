@@ -170,6 +170,7 @@ export class AddStudentComponent implements OnInit {
   //    const dataimg = getbase64image(); ASYNC
   //   addstudent(student()) // Student object must also contain the dataimg url and txnhash
     }
+    
       this.studentForm.reset();
   }
 

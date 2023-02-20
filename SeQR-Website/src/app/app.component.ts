@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { LoggingService, LogLevel } from './services/logging.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'SeQR-Website';
+
+//   constructor(private logger: LoggingService){}
+
+// ngOnInit(){
+//   this.logger.level = LogLevel[environment.logging.loglevel];
+// }
 }

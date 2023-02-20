@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Router } from '@angular/router';
+import { LoggingService } from './logging.service';
 import * as firebase from 'firebase/compat';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class AuthService {
   schoolName!: any;
 
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-    private db: AngularFireDatabase) { }
+    private db: AngularFireDatabase, private logging: LoggingService) { }
 
   login(email: string, password: string){
     this.fireAuth.signInWithEmailAndPassword(email, password)
@@ -19,6 +20,8 @@ export class AuthService {
         user.user?.getIdToken().then(idToken => {
             // Store the token in local storage
             localStorage.setItem('idToken', idToken);
+            this.logging.log(("User has logged-in "+ idToken))
+            localStorage.getItem('idToken');
             this.router.navigateByUrl('dashboard');
         });
     }, err => {
@@ -30,9 +33,12 @@ export class AuthService {
 
   logout(){
     this.fireAuth.signOut().then(()=>{
+      this.logging.log("User has logged out" + localStorage.getItem('idToken'));
       localStorage.removeItem('idToken');
+
       this.router.navigateByUrl('login');
     }, err =>{
+
       alert(err.message);
     }
     )

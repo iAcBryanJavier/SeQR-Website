@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+//CUSTOM ERROR HANDLING
+import { LoggingService } from './services/logging.service';
+import {CustomErrorHandlerService} from './services/custom-error-handler.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 // QR CODE SCANNING
@@ -75,7 +78,9 @@ import { ExportButtonComponent } from './components/export-button/export-button.
     ReactiveFormsModule
   ],
 
-  providers: [AuthGuard, FilterPipe],
+  providers: [AuthGuard, FilterPipe, 
+    CustomErrorHandlerService, LoggingService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

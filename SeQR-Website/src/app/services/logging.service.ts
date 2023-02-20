@@ -24,7 +24,7 @@ export class LoggingService {
     this.writeToLog(msg, rawdata, LogLevel.Warn, optionalParams);
   }
 
-  error(msg: string, rawdata: any, ...optionalParams: any[]) {
+  error(msg: string, rawdata?: any, ...optionalParams: any[]) {
     this.writeToLog(msg, rawdata, LogLevel.Error, optionalParams);
   }
 
