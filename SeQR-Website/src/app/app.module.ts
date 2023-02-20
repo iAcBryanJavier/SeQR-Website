@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 //CUSTOM ERROR HANDLING
-import { LoggingService } from './services/logging.service';
 import {CustomErrorHandlerService} from './services/custom-error-handler.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,13 +32,13 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { DatabaseService } from './services/database.service';
 import { FilterPipe } from './filter.pipe';
 import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
+import { LoggingService } from './services/logging.service';
 
 @NgModule({
   declarations: [
@@ -78,8 +77,8 @@ import { ExportButtonComponent } from './components/export-button/export-button.
     ReactiveFormsModule
   ],
 
-  providers: [AuthGuard, FilterPipe, 
-    CustomErrorHandlerService, LoggingService,
+  providers: [AuthGuard, FilterPipe, LoggingService,
+    {provide:ErrorHandler, useClass:CustomErrorHandlerService},
   ],
   bootstrap: [AppComponent]
 })

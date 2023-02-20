@@ -1,21 +1,21 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { LoggingService } from './logging.service';
+import { environment } from 'src/environments/environment';
 
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CustomErrorHandlerService extends ErrorHandler {
+@Injectable()
+export class CustomErrorHandlerService implements ErrorHandler {
 
-    constructor(private logger: LoggingService) {
-        console.log("it works!");
-        super();
+    constructor(private logger: LoggingService) {  
     }
 
-    override handleError(error: any): void {
+     handleError(error: any): void {
         // Here you can provide whatever logging you want
-        console.log("custom handler was called.");
-        this.logger.error(error);
-        super.handleError(error);
+      if(environment.logging.dblogging){
+        this.logger.error(error.message);
+      }else{
+        throw error;
+      }
+      
     }
 }

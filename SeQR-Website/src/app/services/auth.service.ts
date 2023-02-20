@@ -25,15 +25,17 @@ export class AuthService {
             this.router.navigateByUrl('dashboard');
         });
     }, err => {
+        
         window.alert("The email or password is incorrect");
         this.router.navigateByUrl('/login');
+        throw "Login Failed, reason: might be forms related.";
     });
 
   }
 
   logout(){
     this.fireAuth.signOut().then(()=>{
-      this.logging.log("User has logged out" + localStorage.getItem('idToken'));
+      this.logging.log("User has logged out " + localStorage.getItem('idToken'));
       localStorage.removeItem('idToken');
 
       this.router.navigateByUrl('login');
@@ -85,9 +87,8 @@ export class AuthService {
       alert("Email has been sent! Check your email.")
     })
     .catch((error) => {
-      const errorCode = error.code;
+   
       const errorMessage = error.message;
-      console.log(errorCode);
       alert(errorMessage);
     });
   }

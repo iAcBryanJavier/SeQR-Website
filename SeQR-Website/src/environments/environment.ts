@@ -5,8 +5,8 @@
 export const environment = {
   logging:{
     isfirebase: true,
-    loglevel: "Warn"
-
+    loglevel: "Warn",
+    dblogging: true
   },
   firebase: {
     projectId: 'seqr-e7c21',

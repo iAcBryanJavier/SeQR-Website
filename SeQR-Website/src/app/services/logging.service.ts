@@ -3,9 +3,7 @@ import { environment } from 'src/environments/environment';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LoggingService {
   level: LogLevel = LogLevel.All;
 
@@ -64,7 +62,7 @@ export class LoggingService {
       }
 
       // Log the value
-      console.log(value);
+
     }
   }
 

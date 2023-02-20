@@ -48,13 +48,6 @@ export class AddStudentComponent implements OnInit {
   // NEED TO IMPORT DOM SANITZER 
   constructor(private db: DatabaseService, private sanitizer: DomSanitizer) {
     this.myAngularxQrCode = 'Sample QR Code';// Initial QR Code Value
-    this.pinata.testAuthentication().then((result) => {
-      //handle successful authentication here
-      console.log("This is the pinata result: ",result);
-  }).catch((err) => {
-      //handle error here
-      console.log(err);
-  });
 
   }
   onChangeURL(url: SafeUrl) {
@@ -135,9 +128,9 @@ export class AddStudentComponent implements OnInit {
      this.createTransaction(result.IpfsHash);
       
   }).catch((err) => {
-      //handle error here
+      throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-      console.log(err);
+   
   }); 
  
    

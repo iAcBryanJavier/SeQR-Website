@@ -22,6 +22,7 @@ export class DatabaseService {
       window.alert('Student added to database!');
     }).catch(() =>{
       window.alert('An error occured, please try again.');
+      throw "Add Student Failed";
     });
   }
 
