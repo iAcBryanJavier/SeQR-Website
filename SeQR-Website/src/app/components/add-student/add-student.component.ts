@@ -10,7 +10,6 @@ import contract from '../../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 
-
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -31,7 +30,6 @@ export class AddStudentComponent implements OnInit {
   public contractABI = contract.abi;
   public nfts: any = [];
   public courses: any = [];
-
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
 
   // form group for add stduent form to db 
@@ -46,7 +44,7 @@ export class AddStudentComponent implements OnInit {
   })
 
   // NEED TO IMPORT DOM SANITZER 
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer) {
+  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {
     this.myAngularxQrCode = 'Sample QR Code';// Initial QR Code Value
 
   }
@@ -163,7 +161,6 @@ export class AddStudentComponent implements OnInit {
   //    const dataimg = getbase64image(); ASYNC
   //   addstudent(student()) // Student object must also contain the dataimg url and txnhash
     }
-    
       this.studentForm.reset();
   }
 

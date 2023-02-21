@@ -10,19 +10,12 @@ body{
 	padding-top: 25px;
 }
 
-.table>:not(caption)>*>* {
-    padding: 2rem 1rem;
-    background-color: var(--bs-table-bg);
-    border-bottom-width: var(--bs-border-width);
-    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+
+.td-word-wrap{ 
+   /* overflow-wrap: break-word !important; */
+    word-break: break-all !important; 
 }
 
-.table>thead {
-    vertical-align: bottom;
-	background-color: #00416A ;
-	color: white;
-	font-size: 20px;
-}
 
 button{
 	margin: 1px auto;
@@ -36,6 +29,12 @@ button{
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
+}
+.table>thead {
+    vertical-align: bottom;
+	background-color: #00416A ;
+	color: white;
+	font-size: 20px;
 }
 
 .search  {
@@ -54,47 +53,18 @@ button:hover{
 }
 
 svg{
-    width: 30px;
-    height: 30px;
+    width: 1em;
+    height: 1em;
 }
 
 .search-mbl, .search-mbl-btn{
     display: none;
 }
 
-.row>* {
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 100%;
-    padding-right: calc(var(--bs-gutter-x) * .5);
-    padding-left: calc(var(--bs-gutter-x) * .5);
-    padding-top: calc(var(--bs-gutter-x) * 0.5);
-    margin-top: var(--bs-gutter-y);
-}
 
-tbody, td, tfoot, th, thead, tr {
-    border-color: black;
-    border-style: solid;
-    border-width: 0;
-}
 
 .table>tbody {
     vertical-align: inherit;
-    font-size: 25px !important;
-}
-
-@media only screen and (max-width: 770px) {
-    .search-dsktp{
-        display: none;
-    }
-
-    .search-mbl, .search-mbl-btn{
-        display: block;
-    }
-
-    .container .search-mbl-btn{
-        margin: 10px 0 10px 0;
-        width: 100%;
-    }
+    font-size: 1.25em !important;
 }
 

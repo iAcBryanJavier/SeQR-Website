@@ -39,6 +39,18 @@ export class LoggingService {
     this.level = level;
   }
 
+
+  formatAMPM(date: Date): string {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var month = (date.getMonth() + 1);
+    var day = date.getDate();
+    var year = date.getUTCFullYear();
+    var minute = minutes < 10 ? '0'+minutes : minutes;
+    var strTime =  day + '/' + month + '/' + year + ' - ' + hours + ':' + minute  ;
+    return strTime;
+  }
+
   private writeToLog(
     msg: string,
     rawdata: Error,
@@ -48,7 +60,7 @@ export class LoggingService {
     if (this.shouldLog(level)) {
       let value: Ilogger = {} as Ilogger;
 
-      value.LogDate = JSON.stringify(new Date());
+      value.LogDate = this.formatAMPM(new Date);
       value.LogLevel = LogLevel[level];
       value.Message = msg;
       if (rawdata) {

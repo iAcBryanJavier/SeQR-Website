@@ -11,8 +11,8 @@ export class CustomErrorHandlerService implements ErrorHandler {
 
      handleError(error: any): void {
         // Here you can provide whatever logging you want
-      if(environment.logging.dblogging == true){
-        this.logger.error(error.message);
+      if(environment.logging.dblogging == true && localStorage.getItem('idTokenUser') !== null ){
+        this.logger.error("User: " + localStorage.getItem('idTokenUser')+ error);
       }else{
         throw error;
       }

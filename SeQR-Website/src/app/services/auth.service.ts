@@ -19,8 +19,17 @@ export class AuthService {
     .then(user => {
         user.user?.getIdToken().then(idToken => {
             // Store the token in local storage
+            const userEmail = user.user?.email
             localStorage.setItem('idToken', idToken);
-            this.logging.info(("User login: "+ idToken))
+            if(userEmail){
+              localStorage.setItem('idUserEmail', userEmail);
+              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+            }else{
+              localStorage.setItem('idUserEmail', "Guest Account");
+              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+            }
+          
+          
             localStorage.getItem('idToken');
             this.router.navigateByUrl('dashboard');
         });
@@ -35,7 +44,7 @@ export class AuthService {
 
   logout(){
     this.fireAuth.signOut().then(()=>{
-      this.logging.info("User logout: " + localStorage.getItem('idToken'));
+      this.logging.info("User logout: " + localStorage.getItem('idUserEmail'));
       localStorage.removeItem('idToken');
 
       this.router.navigateByUrl('login');

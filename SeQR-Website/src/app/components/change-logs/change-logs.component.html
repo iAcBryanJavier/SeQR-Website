@@ -7,6 +7,36 @@
 <app-navbar></app-navbar>
 <body>
     <div class="container">
+              <div class="row search-dsktp">
+            <div class="col">
+                <div class="input-group">
+                    <input id="search-input" type="search" class="form-control" placeholder="Search anything...">
+                </div>
+            </div>
+            <div class="col">
+                <button id="search-button" type="button" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <div class="row search-mbl">
+            <div class="col">
+                <div class="input-group">
+                    <input id="search-input" type="search" class="form-control" placeholder="Search anything...">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="search">
+                    <button id="search-button" type="button" class="btn btn-primary search-mbl-btn">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <h2>
@@ -19,8 +49,48 @@
                 </h2>
             </div>
         </div>
-        <hr>
-        <div class="row search-dsktp">
+        <div class="table-responsive-sm ">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                       
+                        <th scope="col">Time & Date</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of listItem; index as i">
+           
+                        <td>
+                            {{ item.LogDate }}
+                        </td>
+                        <td>{{ item.LogLevel}}</td>
+                        <td class ="td-word-wrap"><p>{{ item.Message }}</p></td>
+                    </tr>
+                  </tbody>
+            </table>
+
+            <!-- PAGINATION -->
+            <div class="pagination">
+                <div class="page-number">{{currentPage}}</div>
+                <button class="btn btn-link" [hidden]="currentPage == 1" [disabled]="currentPage == 1" (click)="setPage(currentPage - 1)">Previous</button>
+                <button class="btn btn-link" [hidden]="currentPage == getPages().length" [disabled]="currentPage == getPages().length" (click)="setPage(currentPage + 1)">Next</button>
+              </div>
+          </div>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary">Export to CSV</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>     
+
+
+
+        <!-- <div class="row search-dsktp">
             <div class="col">
                 <div class="input-group">
                     <input id="search-input" type="search" class="form-control" placeholder="Search anything...">
@@ -74,12 +144,4 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary">Export to CSV</button>
-            </div>
-        </div>
-    </div>
-</body>
-</html>     
+        </div> -->
