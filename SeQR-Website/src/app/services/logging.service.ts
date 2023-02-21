@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingService {
@@ -81,8 +82,18 @@ export class LoggingService {
     this.afs.list("logging").push({ ...val });
   }
 
-  getAllLogs() {
-    return this.afs.list("logging").snapshotChanges();
+  getAllLogs(): Observable<any[]> {
+    return this.afs.list("logging").valueChanges();
+  }
+  getInfoLogs(): Observable<any[]> {
+    return this.afs.list("logging").snapshotChanges().pipe(
+      map((logs: any[]) =>
+        logs
+          .filter(log => log.payload.exists())
+          .map(log => ({ id: log.payload.key, ...log.payload.val() }))
+          .filter(log => log.LogLevel !== "Error")
+      )
+    );
   }
 }
 

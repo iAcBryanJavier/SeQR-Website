@@ -20,27 +20,27 @@ export class AuthService {
         user.user?.getIdToken().then(idToken => {
             // Store the token in local storage
             localStorage.setItem('idToken', idToken);
-            this.logging.log(("User has logged-in "+ idToken))
+            this.logging.info(("User login: "+ idToken))
             localStorage.getItem('idToken');
             this.router.navigateByUrl('dashboard');
         });
-    }, err => {
-        
+    }, (err): void => {
+        this.logging.error("Login Failed, reason: might be forms related.", err);
         window.alert("The email or password is incorrect");
         this.router.navigateByUrl('/login');
-        throw "Login Failed, reason: might be forms related.";
+        
     });
 
   }
 
   logout(){
     this.fireAuth.signOut().then(()=>{
-      this.logging.log("User has logged out " + localStorage.getItem('idToken'));
+      this.logging.info("User logout: " + localStorage.getItem('idToken'));
       localStorage.removeItem('idToken');
 
       this.router.navigateByUrl('login');
     }, err =>{
-
+      this.logging.error("Error, no existing session ID.", err);
       alert(err.message);
     }
     )

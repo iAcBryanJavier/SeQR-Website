@@ -11,7 +11,7 @@ export class CustomErrorHandlerService implements ErrorHandler {
 
      handleError(error: any): void {
         // Here you can provide whatever logging you want
-      if(environment.logging.dblogging){
+      if(environment.logging.dblogging == true){
         this.logger.error(error.message);
       }else{
         throw error;
