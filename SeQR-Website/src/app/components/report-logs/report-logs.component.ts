@@ -32,7 +32,6 @@ export class ReportLogsComponent implements OnInit {
         item.soNumber = this.encryptFunction.decryptData(item.soNumber);
       }
       this.items = items;
-     
     });
   }
 

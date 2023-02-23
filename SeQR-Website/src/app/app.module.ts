@@ -39,6 +39,7 @@ import { ScanLandingComponent } from './components/scan-landing/scan-landing.com
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
 import { LoggingService } from './services/logging.service';
+import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { LoggingService } from './services/logging.service';
     LandingComponent,
     ScanLandingComponent,
     ImportCsvButtonComponent,
-    ExportButtonComponent
+    ExportButtonComponent,
+    ExportButtonChangeLogsComponent
   ],
   imports: [
     BrowserModule,

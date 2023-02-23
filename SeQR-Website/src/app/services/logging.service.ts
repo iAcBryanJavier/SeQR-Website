@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingService {
   level: LogLevel = LogLevel.All;
+  historyLogs!: Observable<SnapshotAction<unknown>[]>;
 
   constructor(private afs: AngularFireDatabase){}
 
@@ -90,6 +91,7 @@ export class LoggingService {
     return ret;
   }
 
+
   private LogToFireBase(val: Ilogger) {
     this.afs.list("logging").push({ ...val });
   }
@@ -97,13 +99,31 @@ export class LoggingService {
   getAllLogs(): Observable<any[]> {
     return this.afs.list("logging").valueChanges();
   }
+
+  setLogHistory(){
+    this.historyLogs = this.afs.list("logging").snapshotChanges();
+  }
   getInfoLogs(): Observable<any[]> {
-    return this.afs.list("logging").snapshotChanges().pipe(
+    return this.historyLogs.pipe(
       map((logs: any[]) =>
         logs
           .filter(log => log.payload.exists())
           .map(log => ({ id: log.payload.key, ...log.payload.val() }))
           .filter(log => log.LogLevel !== "Error")
+      )
+    );
+  }
+
+  getSearchLogs(query: string): Observable<any[]> {
+    return this.historyLogs.pipe(
+      map((logs: any[]) =>
+        logs
+          .filter(log => log.payload.exists())
+          .map(log => ({ id: log.payload.key, ...log.payload.val() }))
+          .filter(log => {
+            const values = Object.values(log);
+            return values.some(value => typeof value === 'string' && value.includes(query));
+          })
       )
     );
   }

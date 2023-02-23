@@ -55,7 +55,7 @@ export class AddStudentComponent implements OnInit {
     if (this.hasSubmit) {
       this.getBase64Img();
     } else {
-
+     
     }
   }
 
