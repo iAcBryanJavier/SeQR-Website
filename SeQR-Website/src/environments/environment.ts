@@ -3,6 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  encryption:{
+    key:'WWr6uNAfSUTRLO1qoHnfjAPnzfzSJ5Z1',
+    iv: 'SHVXoDiMdH4PHQQ3yt0952Jglb39AmhH'
+  },
+  logging:{
+    isfirebase: true,
+    loglevel: "Warn",
+    dblogging: false
+  },
   firebase: {
     projectId: 'seqr-e7c21',
     appId: '1:189848402742:web:9d37c1df949acacf875197',

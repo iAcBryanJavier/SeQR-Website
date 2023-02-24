@@ -15,7 +15,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
-
+import { CustomErrorHandlerService } from './services/custom-error-handler.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
@@ -37,6 +37,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    {provide:CustomErrorHandlerService, useClass:CustomErrorHandlerService},
+  ]
 })
 export class AppRoutingModule { }

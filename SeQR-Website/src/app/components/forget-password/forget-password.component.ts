@@ -88,7 +88,7 @@ export class ForgetPasswordComponent implements OnInit {
         alert("Password has been updated!");
         this.logout();
       } catch (error) {
-        console.error(error);
+       
         alert("Wrong password");
       }
     }

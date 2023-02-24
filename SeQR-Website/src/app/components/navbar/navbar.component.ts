@@ -45,13 +45,19 @@ export class NavbarComponent implements OnInit{
   }
 
   public async connectMetamask() {
-    const accounts = await (window as any).ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-    const account = accounts[0];
-    this.ownerAddress = account;
-    this.storeMetamask();
-    this.connected();
+    try {
+      const accounts = await (window as any).ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      const account = accounts[0];
+      this.ownerAddress = account;
+      this.storeMetamask();
+      this.connected();
+    } catch (error) {
+      // Handle the error here, for example:
+      throw "Metamask Error: Might be a Metamask Authentication error. More Info " + error;
+      // ...or you can re-throw the error to let the calling function handle it
+    }
   }
 
   logout(){
