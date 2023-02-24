@@ -62,7 +62,7 @@ import { ExportButtonChangeLogsComponent } from './export-button-change-logs/exp
     ScanLandingComponent,
     ImportCsvButtonComponent,
     ExportButtonComponent,
-    DataAnalysisComponent
+    DataAnalysisComponent,
     ExportButtonChangeLogsComponent
   ],
   imports: [
