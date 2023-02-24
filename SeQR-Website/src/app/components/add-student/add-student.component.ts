@@ -11,7 +11,6 @@ import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
-
 @Component({
   selector: 'app-add-student',
   templateUrl: './add-student.component.html',
@@ -35,7 +34,6 @@ export class AddStudentComponent implements OnInit {
   public contractABI = contract.abi;
   public nfts: any = [];
   public courses: any = [];
-
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
 
   // form group for add stduent form to db 
@@ -52,15 +50,8 @@ export class AddStudentComponent implements OnInit {
   })
 
   // NEED TO IMPORT DOM SANITZER 
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer) {
+  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {
     this.myAngularxQrCode = 'Sample QR Code';// Initial QR Code Value
-    this.pinata.testAuthentication().then((result) => {
-      //handle successful authentication here
-      console.log("This is the pinata result: ",result);
-  }).catch((err) => {
-      //handle error here
-      console.log(err);
-  });
 
   }
   
@@ -140,13 +131,15 @@ export class AddStudentComponent implements OnInit {
 
     this.pinata.pinJSONToIPFS(body, options).then((result) => {
       //handle results here
-      this.createTransaction(result.IpfsHash);
-
-    }).catch((err) => {
-      //handle error here
+     this.createTransaction(result.IpfsHash);
+      
+  }).catch((err) => {
+      throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-      console.log(err);
-    });
+   
+  }); 
+ 
+   
   }
 
   async onSubmit() {

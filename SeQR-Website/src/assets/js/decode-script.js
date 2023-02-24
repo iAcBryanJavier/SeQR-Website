@@ -10,10 +10,10 @@ var resultOfQR;
                 alert(resultOfQR = result.text)
            
             }).catch((err) => {
-                console.error(err)
+              throw "Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code. More Info: " + err;
             })
-            console.log(`Started decode for image from ${img.src}`)
-        console.log("JS FILE IS WAVING");
+          
+     
             
     }
  export {GetQrData, resultOfQR}

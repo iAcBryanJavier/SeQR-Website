@@ -18,68 +18,78 @@
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="row">
-            <div class="col col-sm-4">
-              <label for="formFile" class="form-label">
-                <h4>ID PICTURE:</h4>
-                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z">
-                  </path>
-                </svg>
-              </label>
-              <input class="form-control" type="file" id="formFile">
-            </div>
-          </div>    
-        </div>
-        <div class="col">
-          <div class="row">
-            <h4>FULL NAME:</h4>
+        <div class="container">
+          <div class="row search-dsktp">
             <div class="col">
-              <input class="form-control" type="text" placeholder="First Name" aria-label="default input example">
-              <input class="form-control" type="text" placeholder="Middle Name" aria-label="default input example">
-              <input class="form-control" type="text" placeholder="Last Name" aria-label="default input example">
-            </div>
-           </div> 
-        </div>
-        <div class="row">
-          <div class="col">
-            <h4>COURSE: <input class="form-control" type="text" placeholder="Ex. BSCSSE" aria-label="default input example">
-            </h4>
-            <h4>BATCH: <input class="form-control" type="text" placeholder="Ex. 2022-2022" aria-label="default input example">
-            </h4>
-            <h4>STUDENT ID: <input class="form-control" type="text" placeholder="Ex. 2019-01165"
-                aria-label="default input example"></h4>
-            <h4>SEX:</h4>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-              <label class="form-check-label" for="flexRadioDefault1">
-                Male
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-              <label class="form-check-label" for="flexRadioDefault2">
-                Female
-              </label>
-            </div>
-            <div class="col-3">
-              <div class="row">
-                <h4>SO NUMBER: <input class="form-control" type="text" placeholder="Ex. 10XXXXXXX"
-                  aria-label="default input example"></h4>
+              <div class="input-group">
+                <input id="search-input" type="search" class="form-control" placeholder="Search anything..." 
+                       [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)" >
               </div>
             </div>
-           
-          </div>
-        </div>
-        <div class="row">
-          <div class="col submit-btn">
-            <button type="submit" class="btn btn-primary mb-3">SUBMIT AND APPEND TOKEN</button>
-          </div>
+      
+
+      <!-- HTML BODY STARTS HERE -->
+      <div class="table-responsive-sm">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Student ID</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Middle Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Course</th>
+              <th scope="col">Sex</th>
+              <th scope="col">SO Number</th>
+              <th scope="col">Edit Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of listItem; index as i">
+              <td>
+                {{ student.studentId }}
+              </td>
+              <td>
+                {{ student.firstname }}
+              </td>
+              <td>
+                {{ student.middlename }}
+              </td>
+              <td>
+                {{ student.lastname }}
+              </td>
+              <td>
+                {{ student.course }}
+              </td>
+              <td>
+                {{ student.sex }}
+              </td>
+                <td>
+                {{ student.soNumber }}
+              </td>
+              <td>
+                <button type="button" class="btn btn-primary" [routerLink]="['/edit-form', student.studentId, student.course]">EDIT</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- PAGINATION -->
+        <div class="pagination">
+       
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPage(currentPage - 1)">
+            Previous
+          </button>
+          <select #selectedValue [hidden]="pageCount == 0" (change)="setPageEvent()" [value]="currentPage">
+            <option *ngFor="let i of range(pageCount)" [value]="i">{{i}}</option>
+          </select>
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == pageCount" (click)="setPage(currentPage + 1)">
+            {{next_button}}
+          </button>
         </div>
       </div>
 
+
+      </div>
+</div></div>
   </body>
   </html>
