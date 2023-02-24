@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
+
+import PinataClient, { PinataPinOptions } from '@pinata/sdk';
+import { environment } from 'src/environments/environment';
+import { ethers } from 'ethers';
+import contract from '../../../src/app/contracts/Student.json';
 import { LoggingService } from './logging.service';
 import { map, Observable } from 'rxjs';
 import { Encryption } from '../models/encryption';
@@ -11,11 +16,12 @@ import { Encryption } from '../models/encryption';
   providedIn: 'root'
 })
 export class DatabaseService {
+  student!: AngularFireObject<Student>;
+  studentList!: Observable <any[]>;
   decryptedList!: Observable <any[]>;
   encryptFunction = new Encryption;
+  
   constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService) { }
-
-  studentList!: Observable <any[]>;
 
   //add student
   addStudent(student: any){
@@ -58,9 +64,6 @@ export class DatabaseService {
     );
   }
   
-  
-  
-
   getCourses(): Observable<any[]> {
     return this.afs.list('courses').valueChanges();
   }

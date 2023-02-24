@@ -24,6 +24,7 @@
     "@nguniversal/express-engine": "14.0.0",
     "@pinata/sdk": "2.1.0",
     "@popperjs/core": "2.10.2",
+    "@techiediaries/ngx-qrcode": "^9.1.0",
     "@zxing/browser": "0.1.1",
     "@zxing/library": "0.19.1",
     "@zxing/ngx-scanner": "3.6.2",
