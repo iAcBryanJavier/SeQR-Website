@@ -1,7 +1,8 @@
 import * as CryptoJS from 'crypto-js'; 
+import { environment } from 'src/environments/environment';
 export class Encryption{
-    key: string = 'WWr6uNAfSUTRLO1qoHnfjAPnzfzSJ5Z1';
-    iv: string = 'SHVXoDiMdH4PHQQ3yt0952Jglb39AmhH';
+    key: string = environment.encryption.key;
+    iv: string = environment.encryption.iv;
 
     getKey(): string {
         return this.key;

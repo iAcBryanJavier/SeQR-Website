@@ -4,9 +4,8 @@ export class Student {
     middlename?: string;
     lastname?: string;
     course?: string;
-    batch?: string;
     studentId?:string;
-    sex?: string;
+    gender?: string;
     soNumber?: string;
 
     public setName(firstname: string, middlename: string, lastname: string) {
@@ -18,14 +17,11 @@ export class Student {
     public setCourse(course: string){
         this.course = course;
     }
-    public setBatch(batch: string){
-        this.batch = batch;
-    }
     public setId(studentId: string){
         this.studentId = studentId;
     }
-    public setGender(sex: string){
-        this.sex = sex;
+    public setGender(gender: string){
+        this.gender = gender;
     }
     public setDiplomaNumber(soNumber: string){
         this.soNumber = soNumber;
