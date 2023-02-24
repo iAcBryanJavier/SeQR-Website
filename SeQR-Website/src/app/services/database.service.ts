@@ -31,27 +31,34 @@ export class DatabaseService {
   }
 
   setStudentList(){
+    console.log(this.getStudent());
     this.studentList = this.getStudent();
   }
 
-  getStudent(): Observable<any[]>{
+  getStudent(): Observable<any[]> {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         return items.map(item => {
           const data = item.payload.val();
-          return {
-            studentId: this.encryptFunction.decryptData(data.studentId),
-            firstname: this.encryptFunction.decryptData(data.firstname),
-            middlename: this.encryptFunction.decryptData(data.middlename),
-            lastname: this.encryptFunction.decryptData(data.lastname),
-            course: this.encryptFunction.decryptData(data.course),
-            sex: this.encryptFunction.decryptData(data.sex),
-            soNumber: this.encryptFunction.decryptData(data.soNumber)
-          };
-        });
+          if (data) { // check if data is not null
+            return {
+              studentId: this.encryptFunction.decryptData(data.studentId),
+              firstname: this.encryptFunction.decryptData(data.firstname),
+              middlename: this.encryptFunction.decryptData(data.middlename),
+              lastname: this.encryptFunction.decryptData(data.lastname),
+              course: this.encryptFunction.decryptData(data.course),
+              sex: this.encryptFunction.decryptData(data.sex),
+              soNumber: this.encryptFunction.decryptData(data.soNumber)
+            };
+          } else {
+            return null;
+          }
+        }).filter(item => item !== null); // remove null items from the array
       })
     );
   }
+  
+  
   
 
   getCourses(): Observable<any[]> {
