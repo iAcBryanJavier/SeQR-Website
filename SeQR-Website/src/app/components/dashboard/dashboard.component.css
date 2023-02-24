@@ -15,7 +15,6 @@ body{
 /* https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif og background */ 
 h1 {
   background-image: url(https://media.tenor.com/9vRAkntogEMAAAAd/background.gif);
-
   color: transparent;
   -moz-background-clip: text;
   -webkit-background-clip: text;
@@ -28,6 +27,39 @@ h1 {
 p {
   color: #fff;
   font-size:18px;
+}
+
+#tooltipText {
+ position: absolute;
+ left: 50%;
+ top: 0;
+ transform: translateX(-50%);
+ background-color: white;
+ color: black;
+ white-space: nowrap;
+ padding: 10px 15px;
+ border-radius: 7px;
+ visibility: hidden;
+ opacity: 0;
+ transition: opacity 0.5s ease;
+}
+
+#tooltipText::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 15px solid;
+  border-color: #fff #0000 #0000 #0000;
+}
+
+.card:hover #tooltipText {
+  top: 72%;
+  left: 25%;
+  visibility: visible;
+  opacity: 1;
+  background-color: white;
 }
 
 .card {

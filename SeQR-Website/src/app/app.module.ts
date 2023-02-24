@@ -37,6 +37,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
+import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ExportButtonComponent } from './components/export-button/export-button.
     LandingComponent,
     ScanLandingComponent,
     ImportCsvButtonComponent,
-    ExportButtonComponent
+    ExportButtonComponent,
+    DataAnalysisComponent
   ],
   imports: [
     BrowserModule,
