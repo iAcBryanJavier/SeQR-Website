@@ -38,25 +38,32 @@ export class ImportCsvButtonComponent implements OnInit {
         // console.log(jsonData.length);
         this.studentData = new Student();
         this.encryptionFunc = new Encryption();
-        for (let i = 0; i < jsonData.length - 1; ++i) {
-     
-          // INSERT ENCRYPTED DATA TO MODEL HERE
-          this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i].firstName),
-          this.encryptionFunc.encryptData(jsonData[i].middleName), 
-          this.encryptionFunc.encryptData(jsonData[i].lastName));
-          this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
-          this.studentData.setBatch(this.encryptionFunc.encryptData(jsonData[i].studentBatch));
-          this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i].studentId));
-          this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
-          this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
-
-          console.log(this.studentData.firstname)
-          this.saveStudent(this.studentData);
         
-          // PUSHES MODEL TO DB
+        console.log(parseCSV(reader.result as string));
+
+        // for (let index = 0; index < jsonData.length - 1; index++) {
+          
+        // }
+
+        // for (let i = 0; i < jsonData.length - 1; ++i) {
+     
+        //    INSERT ENCRYPTED DATA TO MODEL HERE
+        //   this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i].firstName),
+        //   this.encryptionFunc.encryptData(jsonData[i].middleName), 
+        //   this.encryptionFunc.encryptData(jsonData[i].lastName));
+        //   this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
+        //   this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i].studentId));
+        //   this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
+        //   this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
+
+        //   console.log(this.studentData.firstname)
+        //   this.saveStudent(this.studentData);
+    
+        //    PUSHES MODEL TO DB
        
-        }
+        // }
       };
+
     } else {
       console.error("No file selected");
     }
