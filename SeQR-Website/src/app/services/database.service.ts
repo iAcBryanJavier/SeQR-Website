@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import { LoggingService } from './logging.service';
