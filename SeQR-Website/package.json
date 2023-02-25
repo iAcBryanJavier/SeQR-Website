@@ -23,7 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": " 13.0.0",
     "@nguniversal/express-engine": "14.0.0",
     "@pinata/sdk": "2.1.0",
-    "@popperjs/core": "2.10.2",
+    "@popperjs/core": "^2.10.2",
     "@techiediaries/ngx-qrcode": "^9.1.0",
     "@zxing/browser": "0.1.1",
     "@zxing/library": "0.19.1",
