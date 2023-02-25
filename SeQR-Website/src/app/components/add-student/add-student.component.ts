@@ -10,6 +10,8 @@ import contract from '../../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import FileSaver, { saveAs } from 'file-saver';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 @Component({
   selector: 'app-add-student',
@@ -29,6 +31,8 @@ export class AddStudentComponent implements OnInit {
   public txnHash: any;
   public qrCodeURL: any;
   public dataImg: any;
+  public filename: string = "";
+  public blobUrl!: Blob;
 
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
@@ -50,23 +54,38 @@ export class AddStudentComponent implements OnInit {
   })
 
   // NEED TO IMPORT DOM SANITZER 
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {
-    this.myAngularxQrCode = 'Sample QR Code';// Initial QR Code Value
-
-  }
+  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {}
   
   onChangeURL(url?: SafeUrl) {
-    console.log(url);
-    if(url){
-      this.qrCodeDownloadLink = url; // Changes whenever this.myAngularxQrCode changes
-    }
-    //produces BLOB URI/URL, browser locally stored data
-    console.log(this.qrCodeDownloadLink);
+    if (this.myAngularxQrCode != "") {
+      console.log(url);
+      if (url) {
+        // Changes whenever this.myAngularxQrCode changes
+        this.qrCodeDownloadLink = url;
+        // Converts SafeURL to URL of type string
+        const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
 
-    this.getBase64Img().then(dataUrl => {
-      this.dataImg = dataUrl;
-    });
-  
+        if (validUrl) {
+          // fetch converts the URL of type string to a Blob URL
+          fetch(validUrl)
+            .then(response => response.blob())
+            .then(blobData => {
+              // FileSaver automatically downloads the QR Code on submit
+              FileSaver.saveAs(validUrl, `${this.filename}.png`);
+              // Upload files to Firebase Storage
+              const storage = getStorage();
+              const storageRef = ref(storage, `qr-codes/${this.filename}.png`);
+              uploadBytes(storageRef, blobData).then((snapshot) => {
+                console.log(snapshot);
+              })
+            });
+        }
+      }
+      //produces BLOB URI/URL, browser locally stored data
+      console.log(this.qrCodeDownloadLink);
+    }
+    // TODO: remove this method
+    this.getBase64Img();
   }
 
   encryptFunction = new Encryption();
@@ -81,29 +100,32 @@ export class AddStudentComponent implements OnInit {
     });
   }
 
-  getBase64Img(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-  
-      xhr.onload = function() {
-        const recoveredBlob = xhr.response;
-        const reader = new FileReader();
-  
-        reader.onload = function() {
-          const blobAsDataUrl = reader.result as string;
-          resolve(blobAsDataUrl);
-        };
-  
-        reader.readAsDataURL(recoveredBlob);
+  getBase64Img() {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    var dataImg;
+
+    const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
+    if (validUrl) {
+      xhr.open('GET', validUrl);
+      xhr.send();
+    }
+
+    xhr.onload = function () {
+      const recoveredBlob = xhr.response;
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        var blobAsDataUrl = reader.result;
+        console.log(reader.result)
+        console.log(blobAsDataUrl) // this is the final image
       };
-  
-      const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
-      if (validUrl) {
-        xhr.open('GET', validUrl);
-        xhr.send();
-      }
-    });
+
+      reader.readAsDataURL(recoveredBlob);
+    };
+
+    this.dataImg = dataImg;
+    console.log(this.dataImg);
   }
   
 
@@ -114,7 +136,6 @@ export class AddStudentComponent implements OnInit {
     }
     return false;
   }
-
 
   async pinFileToPinata(studentIdData: any, soNumberData: any) {
     var responseValue;
@@ -136,16 +157,13 @@ export class AddStudentComponent implements OnInit {
   }).catch((err) => {
       throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-   
   }); 
- 
-   
   }
 
   async onSubmit() {
     if (this.studentForm.valid) {
       //encryption of data
-      
+
       //add to firebase realtime database
       // this.db.addStudent(this.studentForm.value);
       // this.createTransaction();
@@ -162,30 +180,29 @@ export class AddStudentComponent implements OnInit {
           return res;
         })
 
-      if (txnHash) {
-        this.hasSubmit = true;
+      this.hasSubmit = true;
+
+      if(this.studentForm.controls['studentId'].value && txnHash){
+        this.filename = this.studentForm.controls['studentId'].value;
         this.myAngularxQrCode = txnHash;
-        this.getBase64Img().then(dataUrl => {
-          // this.dataImg = dataUrl;
-          this.studentForm.setValue({
-            studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-            firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-            middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-            lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-            course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-            sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-            soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-            dataImg: dataUrl,
-            txnHash: txnHash
-          })
-          this.db.addStudent(this.studentForm.value);
-          this.studentForm.reset();
-        });
-        
-        this.hasSubmit = false;
       }
-    }
       
+      this.studentForm.setValue({
+        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+        dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+        txnHash: txnHash
+      })
+
+      this.db.addStudent(this.studentForm.value);
+      this.studentForm.reset();
+      this.hasSubmit = false;
+    }
   }
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
@@ -235,6 +252,7 @@ export class AddStudentComponent implements OnInit {
     }catch(err: any){
       console.error(err.message);
       window.alert('Minting Failed' + err.message);
+      this.myAngularxQrCode = "";
       this.isMinting = false;
     }
   }

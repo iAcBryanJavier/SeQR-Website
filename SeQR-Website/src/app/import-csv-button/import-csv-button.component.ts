@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { Encryption } from '../models/encryption';
 import { StudentCsvService } from '../services/student-csv.service';
-import { Student } from '../models/student';
+import { Student } from '../interfaces/Student';
 import { DatabaseService } from '../services/database.service';
+import PinataClient, { PinataPinOptions } from '@pinata/sdk';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -18,7 +20,9 @@ export class ImportCsvButtonComponent implements OnInit {
 
   studentData!: Student;
   encryptionFunc!: Encryption;
-  studentList!: any[];
+  studentList: Student[] = [];
+
+  public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
 
   ngOnInit(): void {
   }
@@ -36,32 +40,45 @@ export class ImportCsvButtonComponent implements OnInit {
         const jsonData = JSON.parse(parseCSV(reader.result as string));
         // console.log(jsonData);
         // console.log(jsonData.length);
-        this.studentData = new Student();
+        
+        let studentDataList: Student[];
         this.encryptionFunc = new Encryption();
         
         console.log(parseCSV(reader.result as string));
 
-        // for (let index = 0; index < jsonData.length - 1; index++) {
-          
-        // }
+        for (let i = 0; i < jsonData.length - 1; ++i) {
+          //  INSERT ENCRYPTED DATA TO MODEL HERE
+          this.studentData = {
+            firstname: this.encryptionFunc.encryptData(jsonData[i].firstName),
+            middlename: this.encryptionFunc.encryptData(jsonData[i].middleName),
+            lastname: this.encryptionFunc.encryptData(jsonData[i].lastName),
+            course: this.encryptionFunc.encryptData(jsonData[i].studentCourse),
+            studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
+            sex: this.encryptionFunc.encryptData(jsonData[i].studentGender),
+            soNumber: this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber),
+            txnHash: 'txnHash test',
+            dataImg: 'dataImg test'
+          }
 
-        // for (let i = 0; i < jsonData.length - 1; ++i) {
-     
-        //    INSERT ENCRYPTED DATA TO MODEL HERE
-        //   this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i].firstName),
-        //   this.encryptionFunc.encryptData(jsonData[i].middleName), 
-        //   this.encryptionFunc.encryptData(jsonData[i].lastName));
-        //   this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
-        //   this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i].studentId));
-        //   this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
-        //   this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
+          // this.studentData.setName(this.encryptionFunc.encryptData(jsonData[i].firstName),
+          // this.encryptionFunc.encryptData(jsonData[i].middleName), 
+          // this.encryptionFunc.encryptData(jsonData[i].lastName));
+          // this.studentData.setCourse(this.encryptionFunc.encryptData(jsonData[i].studentCourse));
+          // this.studentData.setId(this.encryptionFunc.encryptData(jsonData[i].studentId));
+          // this.studentData.setGender(this.encryptionFunc.encryptData(jsonData[i].studentGender));
+          // this.studentData.setDiplomaNumber(this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber));
+          // this.studentData.setTxnHash('txnHash test');
+          // this.studentData.setDataImg('dataImg test');
 
-        //   console.log(this.studentData.firstname)
-        //   this.saveStudent(this.studentData);
-    
-        //    PUSHES MODEL TO DB
-       
-        // }
+          // studentDataList.push(this.studentData);
+          console.log(this.studentData.firstname);
+          this.studentList.push(this.studentData);
+          this.saveStudent(this.studentData);
+          //  PUSHES MODEL TO DB
+        }
+        
+        console.log(JSON.stringify(this.studentList));
+
       };
 
     } else {
@@ -69,10 +86,26 @@ export class ImportCsvButtonComponent implements OnInit {
     }
   }
 
-
-
   saveStudent(studentInformation: Student): void {
     this.db.addStudent(studentInformation);
+  }
+
+  async uploadToIPFS(studentData: string): Promise<string>{
+    let responseValue: string = '';
+    const options: PinataPinOptions = {
+      pinataMetadata: {
+        name: 'Student Data',
+      },
+    };
+    await this.pinata.pinJSONToIPFS(studentData, options).then((result) => {
+      //handle results here
+      responseValue = result.IpfsHash;
+    }).catch((err) => {
+      //handle error here
+      responseValue = 'failed';
+      console.log(err);
+    });
+    return responseValue;
   }
 }
 
@@ -90,4 +123,3 @@ function parseCSV(csv: string): string {
   }
   return JSON.stringify(result);
 }
-

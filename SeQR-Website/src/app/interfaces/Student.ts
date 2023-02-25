@@ -5,5 +5,7 @@ export interface Student {
     course: string | null,
     studentId: string | null,
     sex: string | null,
-    soNumber: string | null
+    soNumber: string | null,
+    dataImg: string | null,
+    txnHash: string | null
 }
