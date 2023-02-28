@@ -19,8 +19,8 @@ import { getStorage, ref, uploadBytes } from 'firebase/storage';
   styleUrls: ['./add-student.component.css']
 })
 export class AddStudentComponent implements OnInit {
-  public ipfsUrlPrefix: string  = "https://ipfs.io/ipfs/";
-  public ipfsHash: any; 
+  public ipfsUrlPrefix: string  = "https://gateway.pinata.cloud/ipfs/";
+  public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
   public sanitizedUrl!: string | null;
@@ -40,7 +40,7 @@ export class AddStudentComponent implements OnInit {
   public courses: any = [];
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
 
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -53,9 +53,9 @@ export class AddStudentComponent implements OnInit {
     txnHash: new FormControl('')
   })
 
-  // NEED TO IMPORT DOM SANITZER 
+  // NEED TO IMPORT DOM SANITZER
   constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {}
-  
+
   onChangeURL(url?: SafeUrl) {
     if (this.myAngularxQrCode != "") {
       console.log(url);
@@ -127,7 +127,7 @@ export class AddStudentComponent implements OnInit {
     this.dataImg = dataImg;
     console.log(this.dataImg);
   }
-  
+
 
   private checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
@@ -153,11 +153,11 @@ export class AddStudentComponent implements OnInit {
     this.pinata.pinJSONToIPFS(body, options).then((result) => {
       //handle results here
      this.createTransaction(result.IpfsHash);
-      
+
   }).catch((err) => {
       throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-  }); 
+  });
   }
 
   async onSubmit() {
@@ -186,7 +186,7 @@ export class AddStudentComponent implements OnInit {
         this.filename = this.studentForm.controls['studentId'].value;
         this.myAngularxQrCode = txnHash;
       }
-      
+
       this.studentForm.setValue({
         studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
         firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
@@ -238,7 +238,7 @@ export class AddStudentComponent implements OnInit {
     const provider = new ethers.providers.Web3Provider(this.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
-    
+
     try{
       const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
 
