@@ -29,7 +29,7 @@ export class AddStudentComponent implements OnInit {
   public txnHash: any;
   public qrCodeURL: any;
   public dataImg: any;
-
+  public students:  any = [];
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
@@ -79,6 +79,7 @@ export class AddStudentComponent implements OnInit {
       this.courses = i;
       console.log(this.courses);
     });
+
   }
 
   getBase64Img(): Promise<string> {
@@ -238,6 +239,8 @@ export class AddStudentComponent implements OnInit {
       this.isMinting = false;
     }
   }
+
+  
 
   // private async fetchNFTs(): Promise<any> {
   //   const provider = new ethers.providers.Web3Provider(this.ethereum);
