@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Student } from 'src/app/interfaces/Student';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Encryption } from 'src/app/models/encryption';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { EditFormService } from 'src/app/services/edit-form.service';
 
 @Component({
   selector: 'app-edit-student',
@@ -12,6 +14,7 @@ import { map, Observable } from 'rxjs';
 export class EditStudentComponent implements OnInit {
 
   @ViewChild("selectedValue") selectedValue!: ElementRef;
+  courses!: any;
   searchQuery: string = '';
   items!: Student[];
 	listItem!: Student[];
@@ -21,29 +24,21 @@ export class EditStudentComponent implements OnInit {
   next_button = "Next";
   decryptedStudentList!: Observable <any[]>;
   encryptFunction = new Encryption();
-  constructor(private students: DatabaseService ) { 
+  constructor(private students: DatabaseService, private router: Router, private route: ActivatedRoute, private formService: EditFormService) { 
         this.students.setStudentList();
         this.setTableItems(this.students.getStudent());
-		// this.students.getStudent().subscribe(items =>{
-    //   for (let item of items) {
-    //     item.studentId = this.encryptFunction.decryptData(item.studentId);
-    //     item.firstname = this.encryptFunction.decryptData(item.firstname);
-    //     item.middlename = this.encryptFunction.decryptData(item.middlename);
-    //     item.lastname = this.encryptFunction.decryptData(item.lastname);
-    //     item.course = this.encryptFunction.decryptData(item.course);
-    //     item.sex = this.encryptFunction.decryptData(item.sex);
-    //     item.soNumber = this.encryptFunction.decryptData(item.soNumber);
-    //   }
-    //   this.items = items.reverse();
-    //   this.listItem = this.getPageItems(this.currentPage);
-    //  this.pageCount = this.getPages();
-    // });
+
+        this.students.getCourses().subscribe(i => {
+          this.courses = i;
+         // console.log("THIS", this.passedCourse);
+        });
 	}
 
   ngOnInit(): void {
 
   }
 
+  
 
 
   onSearchInputChange(event: any) {
@@ -68,15 +63,39 @@ export class EditStudentComponent implements OnInit {
   }
   setPageEvent(): void {
     const selected = this.selectedValue.nativeElement.value;
-    this.setPage(selected);
+    var pageNumber: number = +selected;
+    this.setPage(pageNumber);
+    this.currentPage = pageNumber;
     
   }
 
+ setPageAdd(page: number): void {
+    page = page + 1;
+    this.setPage(page);
+}
+setPageMinus(page: number): void {
+  page = page - 1;
+  this.setPage(page);
+}
 
-  setPage(page: number): void {
-    this.currentPage = page;
-    this.listItem = this.getPageItems(this.currentPage);
+
+setPage(page: number): void {
+  this.currentPage = page;
+  this.listItem = this.getPageItems(this.currentPage);
+
+}
+
+
+
+
+  onEditClick(student: Student) {
+    this.formService.setStudentData(student);
+    this.formService.setCoursesData(this.courses);
+    this.router.navigate(['/edit-form']);
   }
+
+ 
+
 
   getSearch(searchQuery: string): Observable <any[]>{
  
@@ -87,7 +106,7 @@ export class EditStudentComponent implements OnInit {
   getPages(): number {
     const pageCount = Math.ceil(this.items.length / 5);
   
-    console.log(pageCount);
+
     return pageCount;
   }
   public range(count: number): number[] {

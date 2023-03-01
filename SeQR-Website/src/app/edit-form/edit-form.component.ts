@@ -1,3 +1,5 @@
+
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, Inject, OnInit, SecurityContext } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Encryption } from 'src/app/models/encryption';
@@ -6,19 +8,25 @@ import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { getBootstrapBaseClassPlacement } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { ethers } from 'ethers';
-import contract from '../../contracts/Student.json';
+import contract from '../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-
+import { Student } from '../interfaces/Student';
+import { EditFormService } from '../services/edit-form.service';
 @Component({
-  selector: 'app-add-student',
-  templateUrl: './add-student.component.html',
-  styleUrls: ['./add-student.component.css']
+  selector: 'app-edit-form',
+  templateUrl: './edit-form.component.html',
+  styleUrls: ['./edit-form.component.css']
 })
-export class AddStudentComponent implements OnInit {
+export class EditFormComponent implements OnInit {
+  femaleRadioButton!: HTMLInputElement;
+  maleRadioButton!: HTMLInputElement;
+
+  passedCourse!: any;
+  passedStudent!: Student;
   public ipfsUrlPrefix: string  = "https://ipfs.io/ipfs/";
   public ipfsHash: any; 
   public myAngularxQrCode: string = "";
@@ -33,13 +41,15 @@ export class AddStudentComponent implements OnInit {
   public dataImg: any;
   public filename: string = "";
   public blobUrl!: Blob;
+  public setSex!: any;
 
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
-  public courses: any = [];
+  public courses!: string[];
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
   encryptFunction = new Encryption();
+
   // form group for add stduent form to db 
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
@@ -53,9 +63,58 @@ export class AddStudentComponent implements OnInit {
     txnHash: new FormControl('')
   })
 
-  // NEED TO IMPORT DOM SANITZER 
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {}
+  constructor(private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
+
   
+    this.passedStudent = this.formService.getStudentData();
+
+  
+ 
+    
+   
+  
+    if(this.passedStudent){
+      this.passedCourse =  this.formService.getCourseData();
+    this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
+    //  this.setCheckedState();
+      console.log(this.passedStudent.sex === 'male');
+      
+    }else{
+      this.router.navigate(['/dashboard']);
+    }
+   }
+ 
+
+  // NEED TO IMPORT DOM SANITZER 
+
+  isButtonTrue(gender: string): boolean {
+    // Check if the passedStudent object exists and has a valid sex property
+    if (this.passedStudent && this.passedStudent.sex) {
+      // Convert the gender parameter to lowercase
+      gender = gender.toLowerCase();
+      // Check if the gender parameter matches the sex property of the passedStudent object
+      if (this.passedStudent.sex === gender) {
+        // If the gender matches, return true to check the radio button
+        return true;
+      }
+    }
+    // If the gender does not match or the passedStudent object does not exist or does not have a valid sex property, return false to uncheck the radio button
+    return false;
+  }
+  backClick() {
+    this.router.navigate(['/edit-student']);
+  }
+  setCheckedState() {
+    // Check the male radio button if the passedStudent object has a sex property of 'male'
+    if (this.isButtonTrue('male')) {
+      this.maleRadioButton.checked = true;
+    }
+    // Check the female radio button if the passedStudent object has a sex property of 'female'
+    if (this.isButtonTrue('female')) {
+      this.femaleRadioButton.checked = true;
+    }
+  }
+
   onChangeURL(url?: SafeUrl) {
     if (this.myAngularxQrCode != "") {
       console.log(url);
@@ -88,19 +147,16 @@ export class AddStudentComponent implements OnInit {
  
   }
 
-  
-
   ngOnInit(): void {
+
     this.checkIfMetamaskInstalled();
     // this.fetchNFTs();
-
-    this.db.getCourses().subscribe(i => {
-      this.courses = i;
-      console.log(this.courses);
-    });
-  }
-
  
+    
+    
+
+
+  }
 
   private checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
@@ -225,17 +281,4 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  // private async fetchNFTs(): Promise<any> {
-  //   const provider = new ethers.providers.Web3Provider(this.ethereum);
-  //   const signer = provider.getSigner();
-  //   const studentContract = new ethers.Contract(
-  //     this.CONTRACT_ADDRESS,
-  //     this.contractABI,
-  //     signer
-  //   );
-
-  //   const students = await studentContract['getStudents']();
-  //   console.log('Retrieved student...', students);
-  //   this.nfts = students;
-  // }
 }

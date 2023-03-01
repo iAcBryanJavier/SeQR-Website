@@ -67,7 +67,7 @@
                 {{ student.soNumber }}
               </td>
               <td>
-                <button type="button" class="btn btn-primary" [routerLink]="['/edit-form', student.studentId, student.course]">EDIT</button>
+                <button type="button" class="btn btn-primary" (click)="onEditClick(student)">EDIT</button>
               </td>
             </tr>
           </tbody>
@@ -76,13 +76,13 @@
         <!-- PAGINATION -->
         <div class="pagination">
        
-          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPage(currentPage - 1)">
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPageMinus(currentPage)">
             Previous
           </button>
           <select #selectedValue [hidden]="pageCount == 0" (change)="setPageEvent()" [value]="currentPage">
             <option *ngFor="let i of range(pageCount)" [value]="i">{{i}}</option>
           </select>
-          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == pageCount" (click)="setPage(currentPage + 1)">
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == pageCount" (click)="setPageAdd(currentPage)">
             {{next_button}}
           </button>
         </div>
