@@ -10,16 +10,16 @@ import { ethers } from 'ethers';
 import contract from '../contracts/Student.json';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import FileSaver from 'file-saver';
-
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { TxnObject } from '../models/txn-object';
 
 @Component({
   selector: 'import-csv-button',
   templateUrl: './import-csv-button.component.html',
   styleUrls: ['./import-csv-button.component.css']
 })
+
 export class ImportCsvButtonComponent implements OnInit {
-
-
   fileInput!: object;
 
   studentData!: Student;
@@ -31,10 +31,14 @@ export class ImportCsvButtonComponent implements OnInit {
   public isMinting: boolean = false;
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
-  public ipfsUrlPrefix: any;
+  public ipfsUrlPrefix: string = 'https://gateway.pinata.cloud/ipfs/';
   public myAngularxQrCode: string = "";
   qrCodeDownloadLink: SafeUrl = "";
   filename: string = "";
+  dataUrl!: string;
+  txnObjList: string[] = [];
+  jsonData!: any[];
+  changeUrlCtr: number = 0;
 
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();
@@ -42,53 +46,52 @@ export class ImportCsvButtonComponent implements OnInit {
 
   constructor(private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
 
-  // onChangeURL(url?: SafeUrl) {
-  //   if (this.myAngularxQrCode != "") {
-  //     console.log(url);
-  //     if (url) {
-  //       // Changes whenever this.myAngularxQrCode changes
-  //       this.qrCodeDownloadLink = url;
-  //       // Converts SafeURL to URL of type string
-  //       const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
+  onChangeURL(url?: SafeUrl, index?: number) {
+    if (this.txnObjList.length != 0 && this.changeUrlCtr < this.txnObjList.length) {
+      console.log(url);
+      if (url) {
+        // Changes whenever this.myAngularxQrCode changes
+        this.qrCodeDownloadLink = url;
+        // Converts SafeURL to URL of type string
+        const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
+        if (validUrl) {
+          // fetch converts the URL of type string to a Blob URL
+          fetch(validUrl)
+            .then(response => response.blob())
+            .then(blobData => {
+              // FileSaver automatically downloads the QR Code on submit
+              FileSaver.saveAs(validUrl, `${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
+              // Upload files to Firebase Storage
+              const storage = getStorage();
 
-  //       if (validUrl) {
-  //         // fetch converts the URL of type string to a Blob URL
-  //         fetch(validUrl)
-  //           .then(response => response.blob())
-  //           .then(blobData => {
-  //             // FileSaver automatically downloads the QR Code on submit
-  //             FileSaver.saveAs(validUrl, `${this.filename}.png`);
-  //             // Upload files to Firebase Storage
-  //             const storage = getStorage();
-  //             const storageRef = ref(storage, `qr-codes/${this.filename}.png`);
-  //             uploadBytes(storageRef, blobData).then((snapshot) => {
-  //               console.log(snapshot);
-  //             })
-  //           });
-  //       }
-  //     }
-  //     //produces BLOB URI/URL, browser locally stored data
-  //     console.log(this.qrCodeDownloadLink);
-  //   }
-  //   // TODO: remove this method
-  //   this.getBase64Img();
-  // }
+              const storageRef = ref(storage, `qr-codes/${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
+              uploadBytes(storageRef, blobData).then((snapshot) => {
+                console.log(snapshot);
+              })
+            });
+            this.changeUrlCtr++
+        }
+      }
+      //produces BLOB URI/URL, browser locally stored data
+      console.log(this.qrCodeDownloadLink);
+    }
+  }
 
   fileChangeListener(event: Event) {
+    this.txnObjList.forEach(() =>{
+      this.txnObjList.pop()
+    })
     const input = event.target as HTMLInputElement;
     if (input.files) { // CHECKS IF FILES IS NULL
-      const file = input.files[0];
+      this.changeUrlCtr = 0;
+      console.log(this.txnObjList.length)
+      console.log(this.changeUrlCtr);
+      const file = input.files[0]
       const reader = new FileReader();
       reader.readAsText(file);
-      reader.onload = () => { // GETS CALLED WHEN THE FILE IS READ
-        // console.log(parseCSV(reader.result as string));
+      reader.onload = async () => { // GETS CALLED WHEN THE FILE IS READ
         const jsonData = JSON.parse(parseCSV(reader.result as string));
-        // console.log(jsonData);
-        // console.log(jsonData.length);
-
-        let studentDataList: Student[];
         this.encryptionFunc = new Encryption();
-
         console.log(parseCSV(reader.result as string));
 
         for (let i = 0; i < jsonData.length - 1; ++i) {
@@ -101,28 +104,35 @@ export class ImportCsvButtonComponent implements OnInit {
             studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
             sex: this.encryptionFunc.encryptData(jsonData[i].studentGender),
             soNumber: this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber),
-            txnHash: 'txnHash test',
-            dataImg: 'dataImg test'
+            txnHash: '',
+            dataImg: ''
           }
           console.log(this.studentData.firstname);
           this.studentList.push(this.studentData);
         }
 
         console.log(JSON.stringify(this.studentList));
+        let ctr = 0;
 
-        const ipfsHash = this.uploadToIPFS(this.studentList);
 
-        ipfsHash.then(hash =>{
-          console.log(hash);
-        })
+        const ipfsHash = await this.uploadToIPFS(this.studentList);
 
-        //  PUSHES MODEL TO DB
-        this.studentList.forEach(item =>{
-          this.saveStudent(item);
-        })
+        const createTxn = await this.createTransaction(ipfsHash);
 
+        if(createTxn){
+          this.studentList.forEach(item =>{
+            const txnObj = new TxnObject();
+            txnObj.setTxnHash(createTxn);
+            txnObj.setIndex(ctr);
+            this.txnObjList.push(JSON.stringify(txnObj));
+
+            item.txnHash = ipfsHash;
+            item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
+            this.saveStudent(item);
+            ctr++;
+          })
+        }
       };
-
     } else {
       console.error("No file selected");
     }
@@ -142,12 +152,25 @@ export class ImportCsvButtonComponent implements OnInit {
 
   async uploadToIPFS(studentData: any): Promise<string>{
     let responseValue: string = '';
+    let bodyList: {}[] = [];
+
+    this.studentList.forEach(item =>{
+      const body = {
+        studentId: '',
+        soNumber: ''
+      };
+
+      body.studentId = item.studentId ?? 'no value';
+      body.soNumber = item.soNumber ?? 'no value';
+      bodyList.push(body)
+    })
+
     const options: PinataPinOptions = {
       pinataMetadata: {
         name: 'Student Data',
       },
     };
-    await this.pinata.pinJSONToIPFS(studentData, options).then((result) => {
+    await this.pinata.pinJSONToIPFS(bodyList, options).then((result) => {
       //handle results here
       responseValue = result.IpfsHash;
     }).catch((err) => {
