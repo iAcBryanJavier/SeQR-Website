@@ -44,7 +44,7 @@
             <div class="card-box">
               <span class="details">Course</span>
                 <select class="form-select" formControlName="course" aria-label="Default select example" required>
-                   <option selected [(ngModel)]="passedStudent.course"></option>
+                   <option disabled selected hidden></option>
                    <option *ngFor="let item of passedCourse" [value]="item">{{ item }}</option>
 
                 </select>

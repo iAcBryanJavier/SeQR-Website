@@ -7,5 +7,5 @@ export interface Student {
     sex?: string,
     soNumber: string | null,
     dataImg: string | null,
-    txnHash: string | null
+    txnHash: string | null,
 }

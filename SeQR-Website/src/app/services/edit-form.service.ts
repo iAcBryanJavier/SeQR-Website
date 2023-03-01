@@ -15,7 +15,7 @@ export class EditFormService {
     this.studentData = data;
   }
   getStudentData() {
-    console.log(this.studentData);
+    // console.log(this.studentData);
     return this.studentData;
   }
 

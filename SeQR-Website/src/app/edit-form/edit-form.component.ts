@@ -24,6 +24,11 @@ import { EditFormService } from '../services/edit-form.service';
 export class EditFormComponent implements OnInit {
   femaleRadioButton!: HTMLInputElement;
   maleRadioButton!: HTMLInputElement;
+  dupSoNumber!: any;
+  dupStudentId!: any;
+  dupStudentCourse!: any;
+
+
 
   passedCourse!: any;
   passedStudent!: Student;
@@ -42,6 +47,8 @@ export class EditFormComponent implements OnInit {
   public filename: string = "";
   public blobUrl!: Blob;
   public setSex!: any;
+
+
 
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
@@ -64,18 +71,25 @@ export class EditFormComponent implements OnInit {
   })
 
   constructor(private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
-
+   
   
     this.passedStudent = this.formService.getStudentData();
-
+    this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
+    this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
+    this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
   
  
     
    
   
     if(this.passedStudent){
+     
       this.passedCourse =  this.formService.getCourseData();
     this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
+    this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
+    this.studentForm.patchValue({
+      course: this.passedStudent.course
+    });
     //  this.setCheckedState();
       console.log(this.passedStudent.sex === 'male');
       
@@ -129,8 +143,7 @@ export class EditFormComponent implements OnInit {
           fetch(validUrl)
             .then(response => response.blob())
             .then(blobData => {
-              // FileSaver automatically downloads the QR Code on submit
-              FileSaver.saveAs(validUrl, `${this.filename}.png`);
+              // FileSaver automatically downloads the QR Code on submi  FileSaver.saveAs(validUrl, `${this.filename}.png`);
               // Upload files to Firebase Storage
               const storage = getStorage();
               const storageRef = ref(storage, `qr-codes/${this.filename}.png`);
@@ -152,7 +165,7 @@ export class EditFormComponent implements OnInit {
     this.checkIfMetamaskInstalled();
     // this.fetchNFTs();
  
-    
+  
     
 
 
@@ -205,7 +218,7 @@ export class EditFormComponent implements OnInit {
         })
 
       this.hasSubmit = true;
-
+      // if(this.studentForm.controls['studentId'].value && txnHash){
       if(this.studentForm.controls['studentId'].value && txnHash){
         this.filename = this.studentForm.controls['studentId'].value;
         this.myAngularxQrCode = txnHash;
@@ -222,10 +235,12 @@ export class EditFormComponent implements OnInit {
         dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
         txnHash: txnHash
       })
-
-      this.db.addStudent(this.studentForm.value);
-      this.studentForm.reset();
+        console.log(this.dupStudentId);
+      this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
       this.hasSubmit = false;
+      this.backClick();
+      
+
     }
   }
 
