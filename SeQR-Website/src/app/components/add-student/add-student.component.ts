@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-student',
@@ -33,6 +34,8 @@ export class AddStudentComponent implements OnInit {
   public dataImg: any;
   public filename: string = "";
   public blobUrl!: Blob;
+  active = 'student-id';
+  successModal: boolean = false;
 
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
@@ -53,8 +56,15 @@ export class AddStudentComponent implements OnInit {
     txnHash: new FormControl('')
   })
 
+
   // NEED TO IMPORT DOM SANITZER
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {}
+  constructor(private db: DatabaseService, private sanitizer: DomSanitizer
+    ,private modalService: NgbModal ) {}
+
+  openVerticallyCentered(content: any) {
+		this.modalService.open(content, { centered: true });
+	}
+
 
   onChangeURL(url?: SafeUrl) {
     if (this.myAngularxQrCode != "") {

@@ -41,6 +41,7 @@ import { ExportButtonComponent } from './components/export-button/export-button.
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { LoggingService } from './services/logging.service';
 import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,6 @@ import { ExportButtonChangeLogsComponent } from './export-button-change-logs/exp
   providers: [AuthGuard, FilterPipe, LoggingService,
     {provide:ErrorHandler, useClass:CustomErrorHandlerService},
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, NgbNavModule]
 })
 export class AppModule { }

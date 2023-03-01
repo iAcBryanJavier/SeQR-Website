@@ -1,106 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatiible" content="IE-edge">
-  <meta name="viewport" content="width=devicie-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="add-student.component.css">
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
-</head>
 <app-navbar></app-navbar>
-<body>
-  <div class="container">
-      <div class="heading">Add Student</div>
-      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" ngNativeValidate>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="form-container">
+        <h1>
+          Add Student
+        </h1>
+        <div class="d-flex">
+          <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills" orientation="vertical">
+            <li ngbNavItem="student-id">
+              <a ngbNavLink>Student ID</a>
+              <ng-template ngbNavContent>
+                <div class="form-group">
+                  <label for="studentId">Student ID</label>
+                  <input type="text" class="form-control" id="studentId" name="studentId" required>
+                </div>
+              </ng-template>
+            </li>
+            <li ngbNavItem="name">
+              <a ngbNavLink>Student Name</a>
+              <ng-template ngbNavContent>
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="middleName">Middle Name</label>
+                  <input type="text" class="form-control" id="middleName" name="middleName">
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+                <br>
+                <div class="form-group">
+                  <label>Gender</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+                    <label class="form-check-label" for="male">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+                    <label class="form-check-label" for="female">Female</label>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li ngbNavItem="id-pic">
+              <a ngbNavLink>ID Picture</a>
+              <ng-template ngbNavContent>
 
-          <div class="card-details">
-
-            <div class="card-box">
-              <span class="details">First Name</span>
-              <input type="text" formControlName="firstname" placeholder="Enter your first name" required>
-            </div>
-
-            <div class="card-box">
-                <span class="details">Student ID</span>
-                <input type="text" formControlName="studentId" placeholder="Enter your Student ID" required>
-            </div>
-
-            <div class="card-box">
-              <span class="details">Middle Name (Optional)</span> <!--Optional-->
-              <input type="text" formControlName="middlename" placeholder="Enter your middle name">
-            </div>
-
-            <div class="card-box">
-              <span class="details">SO Number</span>
-              <input type="text" formControlName="soNumber" placeholder="Enter your SO Number" required>
-            </div>
-
-            <div class="card-box">
-              <span class="details">Last Name</span>
-              <input type="text" formControlName="lastname" placeholder="Enter your last name" required>
-            </div>
-
-            <div class="card-box">
-              <span class="details">Course</span>
-                <select class="form-select" formControlName="course" aria-label="Default select example" required>
-                   <option disabled selected hidden>Choose Gender</option>
-
-                  <option *ngFor="let item of courses" [value]="item">{{ item }}</option>
-                </select>
-            </div>
-
-            <div class="card-input">
-              <span class="details">ID Picture</span>
-              <input class="form-control" type="file" id="formFile">
-            </div>
-            
-            
-            
-
-          </div>
-          <div class="circal-form">
-            <span class="circal-title">Gender</span>
-            <div class="category">
-              <input class="form-check-input" formControlName="sex" value="male" type="radio" name="sex" id="male" checked>  Male
-              <input class="form-check-input" formControlName="sex" value="female" type="radio" name="sex" id="female">  Female
-            </div>
-          </div>
-
-          <div class="csv-file btn btn-wo-ib btn-lg btn-primary">
-            Upload CSV
-            <import-csv-button></import-csv-button>
-          </div>
-          
-          <div class="button">
-            <button type="submit" class="btn btn-primary mb-3">SUBMIT AND MINT</button>
-          </div>
-
-          <div class="qr-middle">
-            <qrcode (qrCodeURL)="onChangeURL($event)" [allowEmptyString]="true" [qrdata]="myAngularxQrCode" [alt]="filename" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
-            <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download QR</a>
-          </div> 
-      </form>
+                <div class="form-group">
+                  <label for="idPicture">ID Picture</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="idPicture" name="idPicture">
+                    <label class="custom-file-label" for="idPicture">Choose file</label>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li ngbNavItem="school-info">
+              <a ngbNavLink>School Info</a>
+              <ng-template ngbNavContent>
+                <div class="form-group">
+                  <label for="soNumber">SO Number</label>
+                  <input type="text" class="form-control" id="soNumber" name="soNumber" required>
+                </div>
+                <div class="form-group">
+                  <label for="course">Course</label>
+                  <select class="form-control" id="course" name="course" required>
+                    <option value="">-- Select Course --</option>
+                    <option value="course1">Course 1</option>
+                    <option value="course2">Course 2</option>
+                    <option value="course3">Course 3</option>
+                    <option value="course4">Course 4</option>
+                    <option value="course5">Course 5</option>
+                  </select>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="nav" class="ms-4"></div>
+        </div>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-primary btn-block" (click)="openVerticallyCentered(content)">Submit</button>
+        </div>
+      </div>
+    </div>
   </div>
-</body>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</html>
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Modal title</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<p>One fine body&hellip;</p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+	</div>
+</ng-template>
