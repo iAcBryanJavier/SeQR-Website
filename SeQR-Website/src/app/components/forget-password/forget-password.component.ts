@@ -44,6 +44,9 @@ export class ForgetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmail();
+    this.forgetPasswordForm.controls['confirmPassword'].markAsTouched();
+    this.forgetPasswordForm.controls['password'].markAsTouched();
+
   }
 
 
@@ -80,17 +83,23 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   async updatePassword() {
+  
+    if(this.forgetPasswordForm.valid){
 
-    if (this.email != "false") {
-      try {
-        const user = await this.fireAuth.signInWithEmailAndPassword(this.email, this.verify_password);
-        await user.user?.updatePassword(this.updated_password);
-        alert("Password has been updated!");
-        this.logout();
-      } catch (error) {
-       
-        alert("Wrong password");
+      if (this.email != "false") {
+        try {
+          const user = await this.fireAuth.signInWithEmailAndPassword(this.email, this.verify_password);
+          await user.user?.updatePassword(this.updated_password);
+          alert("Password has been updated!");
+          this.logout();
+        } catch (error) {
+         
+          alert("Wrong password");
+        }
+      }else{
+        
       }
     }
-  }
+    }
+
 }
