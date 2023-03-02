@@ -1,5 +1,5 @@
 * {
-    margin: 0;
+  margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-family: 'Roboto', sans-serif;
@@ -108,14 +108,14 @@ form .card-details .card-input {
 
 
 /* .card-details .card-box input:focus, .card-details .card-box input:valid, {
-    
+
 } */
 
 form .circal-form .circal-title {
     font-size: 20px;
     font-weight: 500;
     border-bottom: 2px solid;
-   
+
 }
 
 form .circal-form  .category {
@@ -137,14 +137,14 @@ form .button  {
     padding-left: 15px !important;
     font-size: 16px !important;
     border-bottom-width: 2px !important;
-    
+
 }
 
 select option {
     color: black;
 }
 
-button{
+.btn-form{
 	width: 30%;
 	height: 40px;
 	margin: 10px auto;
@@ -162,11 +162,11 @@ button{
 	cursor: pointer;
 }
 
-button:hover{
+.btn-form:hover{
 	background: #00416A;
     color: white;
     transform: scale(1.08);
-    cursor: pointer; 
+    cursor: pointer;
 
 }
 
@@ -199,6 +199,7 @@ input:required {
 }
 
 .qr-middle {
+  visibility: hidden;
 	text-align: right;
 }
 
@@ -208,7 +209,7 @@ input:required {
 
 
 @media (max-width: 584px) {
-    
+
     .container {
         max-width: 100%;
     }

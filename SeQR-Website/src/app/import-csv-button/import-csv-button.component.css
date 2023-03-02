@@ -10,5 +10,5 @@ input {
 }
 
 .qrcode{
-  visibility: hidden;
+  display: none;
 }

@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-student',
@@ -54,10 +55,13 @@ export class AddStudentComponent implements OnInit {
   })
 
   // NEED TO IMPORT DOM SANITZER
-  constructor(private db: DatabaseService, private sanitizer: DomSanitizer ) {}
+  constructor(private db: DatabaseService, private sanitizer: DomSanitizer
+    , private modalService: NgbModal) {}
 
-  onChangeURL(url?: SafeUrl) {
+  onChangeURL(url?: SafeUrl, content?: any) {
     if (this.myAngularxQrCode != "") {
+      // Opens the modal and puts the qr code inside the content
+      this.modalService.open(content, { centered: true });
       console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
@@ -84,8 +88,6 @@ export class AddStudentComponent implements OnInit {
       //produces BLOB URI/URL, browser locally stored data
       console.log(this.qrCodeDownloadLink);
     }
-    // TODO: remove this method
-    this.getBase64Img();
   }
 
   encryptFunction = new Encryption();
@@ -99,35 +101,6 @@ export class AddStudentComponent implements OnInit {
       console.log(this.courses);
     });
   }
-
-  getBase64Img() {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    var dataImg;
-
-    const validUrl = this.sanitizer.sanitize(SecurityContext.URL, this.qrCodeDownloadLink);
-    if (validUrl) {
-      xhr.open('GET', validUrl);
-      xhr.send();
-    }
-
-    xhr.onload = function () {
-      const recoveredBlob = xhr.response;
-      const reader = new FileReader();
-
-      reader.onload = function () {
-        var blobAsDataUrl = reader.result;
-        console.log(reader.result)
-        console.log(blobAsDataUrl) // this is the final image
-      };
-
-      reader.readAsDataURL(recoveredBlob);
-    };
-
-    this.dataImg = dataImg;
-    console.log(this.dataImg);
-  }
-
 
   private checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
@@ -160,10 +133,10 @@ export class AddStudentComponent implements OnInit {
   });
   }
 
-  async onSubmit() {
+  async onSubmit(content: any) {
     if (this.studentForm.valid) {
       //encryption of data
-
+      this.isMinting = true;
       //add to firebase realtime database
       // this.db.addStudent(this.studentForm.value);
       // this.createTransaction();
@@ -234,7 +207,6 @@ export class AddStudentComponent implements OnInit {
       return;
     }
 
-    this.isMinting = true;
     const provider = new ethers.providers.Web3Provider(this.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
