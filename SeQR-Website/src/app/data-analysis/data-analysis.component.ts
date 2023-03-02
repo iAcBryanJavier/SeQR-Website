@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js/auto'
 import { DatabaseService } from 'src/app/services/database.service';
+import { map } from 'rxjs/operators';
+import * as Chart from 'chart.js'
 
 
 @Component({
@@ -10,11 +11,15 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 
 export class DataAnalysisComponent implements OnInit {
+  
   public courses: any = [];
   public students: any = [];
   public totalStudents: number = 0;
   public totalMales: number = 0;
   public totalFemales: number = 0;
+  
+
+  public courseCounts: any = {};
 
   public BSEMC: number = 0;
   public BSIT: number = 0;
@@ -24,6 +29,11 @@ export class DataAnalysisComponent implements OnInit {
   public BSFD: number = 0;
   public BSFILM: number = 0;
   public BAMUSIC: number = 0;
+  public BSPSYCH: number = 0;
+  public BSACCT: number = 0;
+  public selectDropdown = document.getElementById('select-dropdown');
+  public selectedCourse: string = '';
+  public courseStudentNum: number = 0;
 
   
   constructor(private db: DatabaseService) { }
@@ -31,96 +41,84 @@ export class DataAnalysisComponent implements OnInit {
   ngOnInit(): void {
     this.db.getCourses().subscribe(courses => {
       this.courses = courses;
-      console.log(this.courses);
     });
 
-    this.db.getStudent().subscribe(students => {
+      this.db.getStudent().subscribe(students => {
       this.students = students;
       this.totalStudents = this.students.length;
-      console.log(`Total Students: ${this.totalStudents}`);
 
       this.db.getStudentsByGender('Male').subscribe(count => {
         const genderCounts: {males: number, females: number} = count;
         this.totalMales = genderCounts.males;
-        console.log(`Total Males: ${this.totalMales}`);
       });
 
       this.db.getStudentsByGender('Female').subscribe(count => {
         const genderCounts: {males: number, females: number} = count;
         this.totalFemales = genderCounts.females;
-        console.log(`Total Females: ${this.totalFemales}`);
-      });
-
-      this.db.getStudentsByCourse('BSEMC').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSEMC = courseCounts.BSEMC;
-          console.log(`Total BSEMC students: ${this.BSEMC}`);
-      });
-
-      this.db.getStudentsByCourse('BSIT').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSIT = courseCounts.BSIT;
-          console.log(`Total BSIT students: ${this.BSIT}`);
-      });
-
-      this.db.getStudentsByCourse('BSCS').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSCS = courseCounts.BSCS;
-          console.log(`Total BSCS students: ${this.BSCS}`);
-      });
-
-      this.db.getStudentsByCourse('BSANIMATION').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSANIMATION = courseCounts.BSANIMATION;
-          console.log(`Total BSANIMATION students: ${this.BSANIMATION}`);
-      });
-
-      this.db.getStudentsByCourse('BSMAD').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSMAD = courseCounts.BSMAD;
-          console.log(`Total BSMAD students: ${this.BSMAD}`);
-      });
-
-      this.db.getStudentsByCourse('BSFD').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSFD = courseCounts.BSFD;
-          console.log(`Total BSFD students: ${this.BSFD}`);
-      });
-
-      this.db.getStudentsByCourse('BSFILM').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BSFILM = courseCounts.BSFILM;
-          console.log(`Total BSFILM students: ${this.BSFILM}`);
-      });
-
-      this.db.getStudentsByCourse('BAMUSIC').subscribe(count => {
-        const courseCounts: {
-          BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-          BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number} = count;
-          this.BAMUSIC = courseCounts.BAMUSIC;
-          console.log(`Total BAMUSIC students: ${this.BAMUSIC}`);
       });
 
     });
-
-
-
-
+    
   }
+
+ onCourseSelected(selectedCourse: string) {
+  
+  this.db.getStudentsByCourse(this.selectedCourse).subscribe((count: { [key: string]: number }) => {
+    const courseCounts: { [key: string]: number } = count;
+
+    if (this.selectedCourse === 'Bachelor of Science in Entertainment and Multimedia Computing') {
+      this.courseCounts = courseCounts['BSEMC'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Science in Information Technology') {
+      console.log(selectedCourse)
+      this.courseCounts = courseCounts['BSIT'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Science in Computer Science') {
+      console.log(selectedCourse)
+      this.courseCounts = courseCounts['BSCS'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Science in Animation') {
+      this.courseCounts = courseCounts['BSANIMATION'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Arts in Multimedia Arts and Design') {
+      this.courseCounts = courseCounts['BSMAD'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Arts in Fashion Design and Technology') {
+      this.courseCounts = courseCounts['BSFD'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Arts in Film and Visual Effects') {
+      this.courseCounts = courseCounts['BSFILM'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Arts in Music Production and Sound Design') {
+      this.courseCounts = courseCounts['BAMUSIC'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Arts in Psychology') {
+      this.courseCounts = courseCounts['BSPSYCH'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    } else if (this.selectedCourse === 'Bachelor of Science in Accountancy') {
+      this.courseCounts = courseCounts['BSACCT'];
+      console.log(this.courseCounts);
+      return courseCounts;
+    }
+    else {
+      return 0;
+    }
+    
+  });
+}
+  
+  
+
+  
 }
 
 

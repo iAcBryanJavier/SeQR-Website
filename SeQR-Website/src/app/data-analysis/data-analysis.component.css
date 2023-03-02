@@ -1,0 +1,136 @@
+
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: auto;
+}
+
+.table {
+  font-size: 15px;
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  text-align: left;
+  width: 50%;
+  font-weight: bold;
+}
+
+.table td:last-child {
+  text-align: right;
+}
+
+
+
+/* Style for the select element */
+.table select {
+	border: none;
+	padding: 10px 30px 10px 10px; /* add more padding to the right to accommodate the arrow */
+	background-color: #f5f5f5;
+	color: black;
+	-webkit-appearance: none;
+	appearance: none;
+	font-weight: bold;
+	text-align: left;
+	min-width: 150px; /* set a minimum width for the select element */
+	font-size: 14px; /* adjust font size for smaller screens */
+  }
+  
+  /* Style for the select element arrow */
+  
+  .table select option {
+  	  content: attr(value); /* display the value of the option as is */
+  }
+  .table select::-ms-expand {
+	  display: none;
+  }
+  
+  .table select::after {
+	  content: '\25BC';
+	  color: black;
+	  font-size: 12px;
+	  padding-right: 5px;
+	  pointer-events: none;
+	  position: absolute;
+	  right: 10px; /* adjust position of arrow to align with right padding */
+	  top: 50%;
+	  transform: translateY(-50%);
+  }
+  
+
+ @media (max-width: 767px) {
+	
+	.container {
+	  width: auto;
+	}
+  
+	.table {
+	  font-size: 14px;
+	  width: auto;
+	}
+  
+	.table select {
+	  
+	  min-width: 100px; /* adjust minimum width for smaller screens */
+	  font-size: 14px; /* adjust font size for smaller screens */
+	  padding: 8px 25px 8px 8px; /* adjust padding for smaller screens */
+	}
+
+	.table select [value="Bachelor of Science in Entertainment and Multimedia Computing"]::before {
+			content: "BSEMC  "; /* replace the text of the option with "BSST" */
+	}
+}
+  
+  
+  
+  @media (max-width: 576px) {
+  
+	  .container {
+		  width: auto;
+	  }
+	  
+	  .table th, 
+	  .table td {
+		font-size: 14px;
+		padding: 8px;
+	  }
+	  
+	  .table th {
+		width: auto;
+		padding-right: 20px;
+	  }
+	  
+	  .table td:last-child {
+		text-align: left;
+		padding-left: 20px;
+	  }
+	  
+	  .table select::after {
+		padding-right: 0;
+		padding-left: 5px;
+	  }
+  
+	  .table select {
+		  min-width: 80px; /* adjust minimum width for even smaller screens */
+		  font-size: 10px; /* adjust font size for even smaller screens */
+		  padding: 6px 20px 6px 6px; /* adjust padding for even smaller screens */
+	  }
+	}
+  
+	

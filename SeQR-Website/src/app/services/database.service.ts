@@ -107,8 +107,7 @@ export class DatabaseService {
     );
   }
 
-  getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
-  BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number  }> {
+  getStudentsByCourse(course: string): Observable<{ [key: string]: number }> {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         const students = items.map(item => {
@@ -137,33 +136,41 @@ export class DatabaseService {
           BSMAD: 0, 
           BSFD: 0,  
           BSFILM: 0, 
-          BAMUSIC: 0 
+          BAMUSIC: 0,
+          BSPSYCH: 0,
+          BSACCT: 0
         };
   
         students.forEach(student => {
           if (student) { // check if data is not null
-            if (student.course === 'BSEMC' ){
+            if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
               result.BSEMC++; 
-            } else if (student.course === 'BSIT' ) {
+            } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
               result.BSIT++;
             }
-            else if (student.course === 'BSCS' ) {
+            else if (student.course === 'BSCS'  || student.course === 'Bachelor of Science in Computer Science' ) {
               result.BSCS++;
             }
-            else if (student.course === 'BS-ANIMATION' ) {
+            else if (student.course === 'BS-ANIMATION' || student.course === 'Bachelor of Science in Animation'  ) {
               result.BSANIMATION++;
             }
-            else if (student.course === 'BS-MAD' ) {
+            else if (student.course === 'BS-MAD' || student.course === 'Bachelor of Arts in Multimedia Arts and Design'  ) {
               result.BSMAD++;
             }
-            else if (student.course === 'BSFD' ) {
+            else if (student.course === 'BSFD'  || student.course === 'Bachelor of Arts in Fashion Design and Technology' ) {
               result.BSFD++;
             }
-            else if (student.course === 'BS-FILM' ) {
+            else if (student.course === 'BS-FILM' || student.course === 'Bachelor of Arts in Film and Visual Effects' ) {
               result.BSFILM++;
             }
-            else if (student.course === 'BS-MUSIC' ) {
+            else if (student.course === 'BS-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
               result.BAMUSIC++;
+            }
+            else if (student.course === 'BSPSYCH' || student.course === 'Bachelor of Arts in Psychology' ) {
+              result.BSPSYCH++;
+            }
+            else if (student.course === 'BSACCT' || student.course === 'Bachelor of Science in Accountancy' ) {
+              result.BSACCT++;
             }
           }
         });
