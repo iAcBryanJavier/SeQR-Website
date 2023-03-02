@@ -61,15 +61,28 @@ export class ChangeLogsComponent implements OnInit {
   }
   setPageEvent(): void {
     const selected = this.selectedValue.nativeElement.value;
-    this.setPage(selected);
+    var pageNumber: number = +selected;
+    this.setPage(pageNumber);
+    this.currentPage = pageNumber;
     
   }
 
+ setPageAdd(page: number): void {
+    page = page + 1;
+    this.setPage(page);
+}
+setPageMinus(page: number): void {
+  page = page - 1;
+  this.setPage(page);
+}
 
-  setPage(page: number): void {
-    this.currentPage = page;
-    this.listItem = this.getPageItems(this.currentPage);
-  }
+
+setPage(page: number): void {
+  this.currentPage = page;
+  this.listItem = this.getPageItems(this.currentPage);
+  console.log(this.currentPage);
+}
+
 
   getSearch(searchQuery: string): Observable<any[]>{
     return this.logs.getSearchLogs(searchQuery);

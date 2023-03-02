@@ -10,7 +10,6 @@ body{
 	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
     color: black;
     display: flex;
-    height: 100vh;
     justify-content: center;
     align-items: center;
     padding: 10px;
@@ -233,8 +232,7 @@ input:required {
     }
 
     .container form .card-details{
-        max-height: 300px;
-        overflow: scroll;
+   
     }
 
     button {

@@ -4,8 +4,8 @@ export interface Student {
     lastname: string | null,
     course: string | null,
     studentId: string | null,
-    sex: string | null,
+    sex?: string,
     soNumber: string | null,
     dataImg: string | null,
-    txnHash: string | null
+    txnHash: string | null,
 }

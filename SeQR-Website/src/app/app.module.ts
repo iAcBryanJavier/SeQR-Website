@@ -41,6 +41,7 @@ import { ExportButtonComponent } from './components/export-button/export-button.
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { LoggingService } from './services/logging.service';
 import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ExportButtonChangeLogsComponent } from './export-button-change-logs/exp
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
-    ExportButtonChangeLogsComponent
+    ExportButtonChangeLogsComponent,
+    EditFormComponent
   ],
   imports: [
     BrowserModule,
