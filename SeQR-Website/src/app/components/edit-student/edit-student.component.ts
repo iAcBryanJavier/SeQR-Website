@@ -38,9 +38,6 @@ export class EditStudentComponent implements OnInit {
 
   }
 
-  
-
-
   onSearchInputChange(event: any) {
    this.setTableItems((this.getSearch(event)));
    this.setPage(1);
