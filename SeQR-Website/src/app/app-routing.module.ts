@@ -17,6 +17,7 @@ import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
 import { EditFormComponent } from './edit-form/edit-form.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
@@ -34,7 +35,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'read-qr', component: ReadQrComponentComponent },
   { path: 'edit-form', component: EditFormComponent },
-  { path: 'data-analysis', component:  DataAnalysisComponent }
+  { path: 'data-analysis', component:  DataAnalysisComponent },
+  { path: '**', pathMatch: 'full', 
+        component: PagenotfoundComponent },
 ];
 
 @NgModule({

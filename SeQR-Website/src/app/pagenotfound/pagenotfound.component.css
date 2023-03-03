@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+
+}
+
+h1 {
+  font-size: 4rem;
+  margin: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.countdown {
+  font-size: 3rem;
+  margin: 2rem 0 0;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .countdown {
+    font-size: 2rem;
+  }
+}

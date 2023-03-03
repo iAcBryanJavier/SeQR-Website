@@ -23,13 +23,7 @@ export class ExportButtonComponent implements OnInit {
  getStudentData(): void{
   this.db.getStudent().subscribe(items =>{
     for (let item of items) {
-      item.studentId = this.encryptFunction.decryptData(item.studentId);
-      item.firstname = this.encryptFunction.decryptData(item.firstname);
-      item.middlename = this.encryptFunction.decryptData(item.middlename);
-      item.lastname = this.encryptFunction.decryptData(item.lastname);
-      item.course = this.encryptFunction.decryptData(item.course);
-      item.sex = this.encryptFunction.decryptData(item.sex);
-      item.soNumber = this.encryptFunction.decryptData(item.soNumber);
+    
     }
     this.studentData = this.items = items;
     var jsonStudentData: JSON = JSON.parse(JSON.stringify(this.studentData));
@@ -46,7 +40,7 @@ export class ExportButtonComponent implements OnInit {
   this.downloadFile(data_to_export);
 }
 downloadFile(data: any, filename = 'data') {
-  let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId"];
+  let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
   let csvData = this.ConvertToCSV(data, arrHeader);
   console.log(csvData)
   let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
@@ -71,7 +65,7 @@ ConvertToCSV(objArray: any, headerList: any) {
   let str = '';
   let row = 'no,';
 
-  let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId"];
+  let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
 
   for (let index in newHeaders) {
     row += newHeaders[index] + ',';
