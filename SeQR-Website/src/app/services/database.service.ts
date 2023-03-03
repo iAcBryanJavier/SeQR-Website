@@ -81,6 +81,7 @@ export class DatabaseService {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         return items.map(item => {
+       
           const data = item.payload.val();
           if (data) { // check if data is not null
             return {

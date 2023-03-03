@@ -74,31 +74,38 @@ export class EditFormComponent implements OnInit {
    
   
     this.passedStudent = this.formService.getStudentData();
-    this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
-    this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
-    this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
-  
+   
  
     
    
   
     if(this.passedStudent){
-     
+      this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
+    this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
+    this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
+  
       this.passedCourse =  this.formService.getCourseData();
     this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
     this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
     this.studentForm.patchValue({
       course: this.passedStudent.course
     });
-    //  this.setCheckedState();
-      console.log(this.passedStudent.sex === 'male');
       
     }else{
       this.router.navigate(['/dashboard']);
     }
    }
  
+   ngOnInit(): void {
 
+    this.checkIfMetamaskInstalled();
+    // this.fetchNFTs();
+ 
+  
+    
+
+
+  }
   // NEED TO IMPORT DOM SANITZER 
 
   isButtonTrue(gender: string): boolean {
@@ -160,16 +167,7 @@ export class EditFormComponent implements OnInit {
  
   }
 
-  ngOnInit(): void {
-
-    this.checkIfMetamaskInstalled();
-    // this.fetchNFTs();
- 
   
-    
-
-
-  }
 
   private checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
