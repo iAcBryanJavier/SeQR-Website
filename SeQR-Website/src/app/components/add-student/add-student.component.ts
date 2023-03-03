@@ -32,6 +32,7 @@ export class AddStudentComponent implements OnInit {
   public txnHash: any;
   public qrCodeURL: any;
   public dataImg: any;
+  public students:  any = [];
   public filename: string = "";
   public blobUrl!: Blob;
 
@@ -104,6 +105,7 @@ export class AddStudentComponent implements OnInit {
       this.courses = i;
       console.log(this.courses);
     });
+
   }
 
   private checkIfMetamaskInstalled(): boolean {
@@ -234,6 +236,8 @@ export class AddStudentComponent implements OnInit {
       this.isMinting = false;
     }
   }
+
+  
 
   // private async fetchNFTs(): Promise<any> {
   //   const provider = new ethers.providers.Web3Provider(this.ethereum);
