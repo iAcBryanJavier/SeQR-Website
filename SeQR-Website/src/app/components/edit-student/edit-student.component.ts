@@ -54,8 +54,8 @@ export class EditStudentComponent implements OnInit {
   }
 
   getPageItems(page: number): Student[] {
-    const startIndex = (page - 1) * 5;
-    const endIndex = startIndex + 5;
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
     return this.items.slice(startIndex, endIndex);
   }
   setPageEvent(): void {
@@ -101,7 +101,7 @@ setPage(page: number): void {
   }
 
   getPages(): number {
-    const pageCount = Math.ceil(this.items.length / 5);
+    const pageCount = Math.ceil(this.items.length / 10);
   
 
     return pageCount;

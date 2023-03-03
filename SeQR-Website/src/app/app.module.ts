@@ -42,6 +42,7 @@ import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { LoggingService } from './services/logging.service';
 import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { EditFormComponent } from './edit-form/edit-form.component';
     ExportButtonComponent,
     DataAnalysisComponent,
     ExportButtonChangeLogsComponent,
-    EditFormComponent
+    EditFormComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,

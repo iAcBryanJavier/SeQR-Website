@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
-
-import PinataClient, { PinataPinOptions } from '@pinata/sdk';
-import { environment } from 'src/environments/environment';
-import { ethers } from 'ethers';
-import contract from '../../../src/app/contracts/Student.json';
 import { LoggingService } from './logging.service';
 import { map, Observable, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
@@ -81,6 +76,7 @@ export class DatabaseService {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         return items.map(item => {
+       
           const data = item.payload.val();
           if (data) { // check if data is not null
             return {
