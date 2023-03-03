@@ -9,9 +9,10 @@ import { environment } from 'src/environments/environment';
 import { ethers } from 'ethers';
 import contract from '../contracts/Student.json';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import FileSaver from 'file-saver';
+import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { TxnObject } from '../models/txn-object';
+import JSZip, { file } from 'jszip';
 
 @Component({
   selector: 'import-csv-button',
@@ -39,6 +40,9 @@ export class ImportCsvButtonComponent implements OnInit {
   txnObjList: string[] = [];
   jsonData!: any[];
   changeUrlCtr: number = 0;
+  txnHash: any;
+  
+  blobUrls: Blob[] = [];
 
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();
@@ -60,22 +64,47 @@ export class ImportCsvButtonComponent implements OnInit {
             .then(response => response.blob())
             .then(blobData => {
               // FileSaver automatically downloads the QR Code on submit
-              FileSaver.saveAs(validUrl, `${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
+              saveAs(blobData, `${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
               // Upload files to Firebase Storage
               const storage = getStorage();
-
               const storageRef = ref(storage, `qr-codes/${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
               uploadBytes(storageRef, blobData).then((snapshot) => {
                 console.log(snapshot);
               })
             });
             this.changeUrlCtr++
+
+            // if(this.changeUrlCtr == this.txnObjList.length){
+            //   this.blobUrls.forEach(item =>{
+            //     saveAs(item, `${this.txnHash}.png`);
+            //   })
+            //   return;
+            // }
         }
       }
       //produces BLOB URI/URL, browser locally stored data
       console.log(this.qrCodeDownloadLink);
     }
   }
+
+  // async downloadZip(){
+  //   let index = 0;
+  //   const zip = new JSZip();
+  //   console.log(this.blobUrls)
+  //   this.blobUrls.forEach(item =>{
+  //     fetch(item.toString())
+  //       .then(response => response.blob())
+  //       .then( blob => {
+  //         zip.file(`test${index}.png`, blob, {binary: true});
+  //       })
+  //     index++;
+  //   });
+  
+  //   zip.generateAsync({type: 'blob'})
+  //   .then(content =>{
+  //     saveAs(content, `${this.txnHash}.zip`);
+  //   })
+  // }
 
   fileChangeListener(event: Event) {
     this.txnObjList.forEach(() =>{
@@ -114,15 +143,14 @@ export class ImportCsvButtonComponent implements OnInit {
         console.log(JSON.stringify(this.studentList));
         let ctr = 0;
 
-
         const ipfsHash = await this.uploadToIPFS(this.studentList);
 
-        const createTxn = await this.createTransaction(ipfsHash);
+        this.txnHash = await this.createTransaction(ipfsHash);
 
-        if(createTxn){
+        if(this.txnHash){
           this.studentList.forEach(item =>{
             const txnObj = new TxnObject();
-            txnObj.setTxnHash(createTxn);
+            txnObj.setTxnHash(this.txnHash);
             txnObj.setIndex(ctr);
             this.txnObjList.push(JSON.stringify(txnObj));
 

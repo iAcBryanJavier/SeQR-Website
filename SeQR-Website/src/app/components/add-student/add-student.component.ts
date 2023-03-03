@@ -41,6 +41,8 @@ export class AddStudentComponent implements OnInit {
   public courses: any = [];
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
   encryptFunction = new Encryption();
+  public progressBarValue: number = 0;
+  public progressBarMsg: string = "";
   // form group for add stduent form to db 
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
@@ -60,6 +62,10 @@ export class AddStudentComponent implements OnInit {
 
   onChangeURL(url?: SafeUrl, content?: any) {
     if (this.myAngularxQrCode != "") {
+       // progress bar checkpoint
+       this.progressBarMsg = "Minting Complete! Creating QR Code.";
+       this.progressBarValue = 100;
+
       // Opens the modal and puts the qr code inside the content
       this.modalService.open(content, { centered: true });
       console.log(url);
@@ -85,8 +91,6 @@ export class AddStudentComponent implements OnInit {
             });
         }
       }
-      //produces BLOB URI/URL, browser locally stored data
-      console.log(this.qrCodeDownloadLink);
     }
   }
 
@@ -135,7 +139,12 @@ export class AddStudentComponent implements OnInit {
 
   async onSubmit(content: any) {
     if (this.studentForm.valid) {
-      this.isMinting = true;  
+      this.isMinting = true;
+
+      // progress bar checkpoint
+      this.progressBarMsg = "Uploading Files to IPFS";
+      this.progressBarValue = 50;
+
       const ipfsHash = await this.uploadToIPFS(
         this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
         this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
@@ -143,16 +152,20 @@ export class AddStudentComponent implements OnInit {
           return res;
         });
 
-      const txnHash = await this.createTransaction(ipfsHash)
+      // progress bar checkpoint
+      this.progressBarMsg = "Creating Blockchain Transaction";
+      this.progressBarValue = 75;
+
+       this.txnHash = await this.createTransaction(ipfsHash)
         .then((res) => {
           return res;
         })
 
       this.hasSubmit = true;
 
-      if(this.studentForm.controls['studentId'].value && txnHash){
+      if(this.studentForm.controls['studentId'].value && this.txnHash){
         this.filename = this.studentForm.controls['studentId'].value;
-        this.myAngularxQrCode = txnHash;
+        this.myAngularxQrCode = this.txnHash;
       }
 
       this.studentForm.setValue({
@@ -164,7 +177,7 @@ export class AddStudentComponent implements OnInit {
         sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
         soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
         dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-        txnHash: txnHash
+        txnHash: this.txnHash
       })
 
       this.db.addStudent(this.studentForm.value);
@@ -212,8 +225,6 @@ export class AddStudentComponent implements OnInit {
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
       console.log('Created student record!', createTxn.hash);
-      window.alert('Created student record! ' + createTxn.hash);
-      this.isMinting = false;
 
       return createTxn.hash;
     }catch(err: any){

@@ -46,6 +46,7 @@ export class AuthService {
     this.fireAuth.signOut().then(()=>{
       this.logging.info("User logout: " + localStorage.getItem('idUserEmail'));
       localStorage.removeItem('idToken');
+      localStorage.removeItem('idUserEmail');
 
       this.router.navigateByUrl('login');
     }, err =>{

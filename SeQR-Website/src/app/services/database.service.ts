@@ -27,7 +27,6 @@ export class DatabaseService {
   addStudent(student: any){
     const ref = this.afs.list('students');
     ref.push(student).then(()=>{
-      window.alert('Student added to database!');
       this.logs.info("User: " + localStorage.getItem('idUserEmail')+ " added a student record");
 
     }).catch(() =>{
