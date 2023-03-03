@@ -1,4 +1,52 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
+
+
+
+body{
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	font-family: 'Roboto', sans-serif;
+	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+    color: black;
+	padding-top: 25px;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: auto;
+	gap: 200px;
+
+}
+
+.chart {
+	padding: 2rem;
+	color: white;
+	border: 1px solid #f49131;
+	border-radius: 1rem;
+	background: #251c35;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+}
+
+canvas {
+	width: 450px;
+}
+
+
+
+
+
+/* 
 
 
 .container {
@@ -38,24 +86,24 @@
 
 
 
-/* Style for the select element */
+
 .table select {
 	border: none;
-	padding: 10px 30px 10px 10px; /* add more padding to the right to accommodate the arrow */
+	padding: 10px 30px 10px 10px;
 	background-color: #f5f5f5;
 	color: black;
 	-webkit-appearance: none;
 	appearance: none;
 	font-weight: bold;
 	text-align: left;
-	min-width: 150px; /* set a minimum width for the select element */
-	font-size: 14px; /* adjust font size for smaller screens */
+	min-width: 150px;
+	font-size: 14px; 
   }
   
-  /* Style for the select element arrow */
+
   
   .table select option {
-  	  content: attr(value); /* display the value of the option as is */
+  	  content: attr(value); 
   }
   .table select::-ms-expand {
 	  display: none;
@@ -68,7 +116,7 @@
 	  padding-right: 5px;
 	  pointer-events: none;
 	  position: absolute;
-	  right: 10px; /* adjust position of arrow to align with right padding */
+	  right: 10px;
 	  top: 50%;
 	  transform: translateY(-50%);
   }
@@ -87,14 +135,11 @@
   
 	.table select {
 	  
-	  min-width: 100px; /* adjust minimum width for smaller screens */
-	  font-size: 14px; /* adjust font size for smaller screens */
-	  padding: 8px 25px 8px 8px; /* adjust padding for smaller screens */
+	  min-width: 100px;
+	  font-size: 14px; 
+	  padding: 8px 25px 8px 8px; 
 	}
 
-	.table select [value="Bachelor of Science in Entertainment and Multimedia Computing"]::before {
-			content: "BSEMC  "; /* replace the text of the option with "BSST" */
-	}
 }
   
   
@@ -127,10 +172,10 @@
 	  }
   
 	  .table select {
-		  min-width: 80px; /* adjust minimum width for even smaller screens */
-		  font-size: 10px; /* adjust font size for even smaller screens */
-		  padding: 6px 20px 6px 6px; /* adjust padding for even smaller screens */
+		  min-width: 80px; 
+		  font-size: 10px;
+		  padding: 6px 20px 6px 6px; 
 	  }
 	}
   
-	
+	 */

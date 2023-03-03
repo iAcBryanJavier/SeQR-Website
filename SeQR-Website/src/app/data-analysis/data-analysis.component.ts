@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
 import { map } from 'rxjs/operators';
 import * as Chart from 'chart.js'
+import { ChartConfiguration, ChartDataset, ChartOptions } from 'chart.js';
 
 
 @Component({
@@ -35,31 +36,72 @@ export class DataAnalysisComponent implements OnInit {
   public selectedCourse: string = '';
   public courseStudentNum: number = 0;
 
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public pieChartOptions: ChartOptions<'pie'> = {
+    responsive: false,
+  };
   
-  constructor(private db: DatabaseService) { }
+  public pieChartLabels = [ [ 'BSCEM' ], [ 'BSIT' ], ['BSCS'], ['BSANIMATION'] , ['BSMAD'], ['BSFD'], ['BSFILM'], ['BAMUSIC'], ['BSPSYCH'], ['BSACCT']];
+  public pieChartDatasets: ChartDataset<'pie', number[]>[] = [];
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
+  
+  public barChartData: ChartConfiguration<'bar'>['data'];
+
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: false,
+  };
+  constructor(private db: DatabaseService) { 
+    this.barChartData = {
+      labels: ['Overall Students'],
+      datasets: [
+        { data: [0], label: 'Total Students' },
+        { data: [0], label: 'Female' },
+        { data: [0], label: 'Male' }
+      ]
+    };
+  }
 
   ngOnInit(): void {
     this.db.getCourses().subscribe(courses => {
       this.courses = courses;
     });
-
-      this.db.getStudent().subscribe(students => {
+  
+    this.db.getStudent().subscribe(students => {
       this.students = students;
       this.totalStudents = this.students.length;
-
+  
       this.db.getStudentsByGender('Male').subscribe(count => {
         const genderCounts: {males: number, females: number} = count;
         this.totalMales = genderCounts.males;
-      });
+  
+        this.db.getStudentsByGender('Female').subscribe(count => {
+          const genderCounts: {males: number, females: number} = count;
+          this.totalFemales = genderCounts.females;
+  
+          this.pieChartDatasets = [{
+            data: [this.totalStudents, this.totalMales, this.totalFemales]
+          }];
 
-      this.db.getStudentsByGender('Female').subscribe(count => {
-        const genderCounts: {males: number, females: number} = count;
-        this.totalFemales = genderCounts.females;
+          this.barChartData = {
+            labels: ['Overall Students'],
+            datasets: [
+              { data: [this.totalStudents], label: 'Total Students' },
+              { data: [this.totalFemales], label: 'Female' },
+              { data: [this.totalMales], label: 'Male' }
+            ]
+          };
+  
+          console.log(this.pieChartDatasets);
+        });
       });
-
     });
-    
   }
+           
+
+  
 
  onCourseSelected(selectedCourse: string) {
   
@@ -109,6 +151,8 @@ export class DataAnalysisComponent implements OnInit {
       console.log(this.courseCounts);
       return courseCounts;
     }
+
+    
     else {
       return 0;
     }
