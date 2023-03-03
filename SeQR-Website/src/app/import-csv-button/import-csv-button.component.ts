@@ -41,6 +41,8 @@ export class ImportCsvButtonComponent implements OnInit {
   jsonData!: any[];
   changeUrlCtr: number = 0;
   txnHash: any;
+  progressBarValue: number = 0;
+  progressBarMsg: string = '';
   
   blobUrls: Blob[] = [];
 
@@ -74,12 +76,12 @@ export class ImportCsvButtonComponent implements OnInit {
             });
             this.changeUrlCtr++
 
-            // if(this.changeUrlCtr == this.txnObjList.length){
-            //   this.blobUrls.forEach(item =>{
-            //     saveAs(item, `${this.txnHash}.png`);
-            //   })
-            //   return;
-            // }
+            if(this.changeUrlCtr == this.txnObjList.length){
+              // progress bar checkpoint
+              this.progressBarMsg = "Minting Complete! Creating QR Code.";
+              this.progressBarValue = 100;
+              return;
+            }
         }
       }
       //produces BLOB URI/URL, browser locally stored data
@@ -143,7 +145,15 @@ export class ImportCsvButtonComponent implements OnInit {
         console.log(JSON.stringify(this.studentList));
         let ctr = 0;
 
+         // progress bar checkpoint
+        this.progressBarMsg = "Uploading Files to IPFS";
+        this.progressBarValue = 50;
+
         const ipfsHash = await this.uploadToIPFS(this.studentList);
+
+        // progress bar checkpoint
+        this.progressBarMsg = "Creating Blockchain Transaction";
+        this.progressBarValue = 75;
 
         this.txnHash = await this.createTransaction(ipfsHash);
 
@@ -237,7 +247,6 @@ export class ImportCsvButtonComponent implements OnInit {
       this.isMinting = false;
     }
   }
-
 }
 
 function parseCSV(csv: string): string {
