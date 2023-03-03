@@ -12,7 +12,7 @@
 <body>
   <div class="container">
       <div class="heading">Add Student</div>
-      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" ngNativeValidate>
+      <form [formGroup]="studentForm" (ngSubmit)="onSubmit(content)" ngNativeValidate>
 
           <div class="card-details">
 
@@ -54,7 +54,6 @@
               <span class="details">ID Picture</span>
               <input class="form-control" type="file" id="formFile">
             </div>
-            
           </div>
           
           <div class="circal-form">
@@ -69,36 +68,46 @@
             Upload CSV
             <import-csv-button></import-csv-button>
           </div>
-          
+
           <div class="button">
-            <button type="submit" class="btn btn-primary mb-3">SUBMIT AND MINT</button>
+            <button type="submit" class="btn-form btn-primary mb-3">SUBMIT AND MINT</button>
+            <div *ngIf="isMinting">
+              <br>
+              <p>
+                <ngb-progressbar [showValue]="true" type="success" [value]="progressBarValue"></ngb-progressbar>
+                <br>
+                {{progressBarMsg}}
+              </p>
+              <br>
+              <div class="spinner-border text-dark" role="status">
+                <span class="sr-only"></span>
+              </div>
+            </div>
+           
           </div>
-<!-- 
+
           <div class="qr-middle">
-            <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="myAngularxQrCode" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
+            <qrcode (qrCodeURL)="onChangeURL($event, content)" [allowEmptyString]="true" [qrdata]="myAngularxQrCode" [alt]="filename" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
             <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download QR</a>
-          </div> -->
+          </div>
       </form>
   </div>
 </body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">SeQR QR Code Created! </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <p>Transaction Hash: {{txnHash}}</p>
+    <qrcode [allowEmptyString]="true" [qrdata]="myAngularxQrCode" [alt]="filename" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
+    <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download QR</a>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light" (click)="modal.close('Close click'); isMinting = false">Close</button>
+	</div>
+</ng-template>
 
 
 </html>

@@ -6,55 +6,28 @@
 </head>
 <app-navbar></app-navbar>
 <body>
-
   <div class="container">
-      <div class="row">
-          <div class="col">
-              <h2>
-                  Student Reports
-                  <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-              </h2>
-              <app-export-button></app-export-button>
-          </div>
-      </div>
-      <hr>
-
-      <!-- FOR DESKTOP -->
-      <div class="row search-dsktp">
-          <div class="col">
-              <div class="input-group">
-                  <input id="search-input" [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)" type="text" class="form-control" placeholder="Search anything...">
-              </div>
-          </div>
-          <div class="col">
-              <button id="search-button" type="button" class="btn btn-primary">
-                  Search
-              </button>
-          </div>
+    <div class="row search-dsktp">
+      <div class="col">
+        <div class="input-group">
+          <input id="search-input" type="search" class="form-control" placeholder="Search anything..." 
+                 [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)">
+        </div>
+        <app-export-button-change-logs></app-export-button-change-logs>
       </div>
 
-      <!-- FOR MOBILE -->
-      <div class="row search-mbl">
-          <div class="col">
-              <div class="input-group">
-                  <input id="search-input" [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)" type="search" class="form-control" placeholder="Search anything...">
-              </div>
-          </div>
+    <div class="row">
+      <div class="col">
+        <h2>
+          CHANGE LOGS
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </h2>
       </div>
-      <div class="row">
-          <div class="col">
-              <div class="search">
-                  <button id="search-button" type="button" class="btn btn-primary search-mbl-btn">
-                      Search
-                  </button>
-              </div>
-          </div>
-      </div>
-
+    </div>
     <div class="table-responsive-sm">
       <table class="table table-bordered table-striped">
         <thead>
@@ -95,8 +68,8 @@
         </button>
       </div>
     </div>
-  </div>
-
+    </div>
+   </div>
    </body>
     </html>
 

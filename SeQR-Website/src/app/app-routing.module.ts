@@ -16,6 +16,8 @@ import { ScanLandingComponent } from './components/scan-landing/scan-landing.com
 import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
+import { EditFormComponent } from './edit-form/edit-form.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
@@ -32,7 +34,10 @@ const routes: Routes = [
   { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'read-qr', component: ReadQrComponentComponent },
-  { path: 'data-analysis', component:  DataAnalysisComponent }
+  { path: 'edit-form', component: EditFormComponent },
+  { path: 'data-analysis', component:  DataAnalysisComponent },
+  { path: '**', pathMatch: 'full', 
+        component: PagenotfoundComponent },
 ];
 
 @NgModule({

@@ -43,6 +43,8 @@ import { LoggingService } from './services/logging.service';
 import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
 import { NgChartsModule } from 'ng2-charts';
 
+import { EditFormComponent } from './edit-form/edit-form.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { NgChartsModule } from 'ng2-charts';
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
-    ExportButtonChangeLogsComponent
+    ExportButtonChangeLogsComponent,
+    EditFormComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,

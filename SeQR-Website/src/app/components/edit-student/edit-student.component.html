@@ -15,6 +15,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </h2>
+            <app-export-button></app-export-button>
           </div>
         </div>
         <hr>
@@ -67,7 +68,7 @@
                 {{ student.soNumber }}
               </td>
               <td>
-                <button type="button" class="btn btn-primary" [routerLink]="['/edit-form', student.studentId, student.course]">EDIT</button>
+                <button type="button" class="btn btn-primary" (click)="onEditClick(student)">EDIT</button>
               </td>
             </tr>
           </tbody>
@@ -76,13 +77,13 @@
         <!-- PAGINATION -->
         <div class="pagination">
        
-          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPage(currentPage - 1)">
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPageMinus(currentPage)">
             Previous
           </button>
           <select #selectedValue [hidden]="pageCount == 0" (change)="setPageEvent()" [value]="currentPage">
             <option *ngFor="let i of range(pageCount)" [value]="i">{{i}}</option>
           </select>
-          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == pageCount" (click)="setPage(currentPage + 1)">
+          <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == pageCount" (click)="setPageAdd(currentPage)">
             {{next_button}}
           </button>
         </div>

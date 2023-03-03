@@ -9,7 +9,7 @@ constructor(private router: Router) { }
   
   canActivate() {
 
-    if (localStorage.getItem('idToken')) {
+    if (localStorage.getItem('idUserEmail') && localStorage.getItem('idToken')) {
       return true;
     }
     else {
