@@ -41,6 +41,11 @@ import { ExportButtonComponent } from './components/export-button/export-button.
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { LoggingService } from './services/logging.service';
 import { ExportButtonChangeLogsComponent } from './export-button-change-logs/export-button-change-logs.component';
+import { NgChartsModule } from 'ng2-charts';
+
+import { EditFormComponent } from './edit-form/edit-form.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +68,10 @@ import { ExportButtonChangeLogsComponent } from './export-button-change-logs/exp
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
-    ExportButtonChangeLogsComponent
+    ExportButtonChangeLogsComponent,
+    EditFormComponent,
+    PagenotfoundComponent,
+    ProgressbarComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +86,8 @@ import { ExportButtonChangeLogsComponent } from './export-button-change-logs/exp
     AngularFireStorageModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
 
   providers: [AuthGuard, FilterPipe, LoggingService,
