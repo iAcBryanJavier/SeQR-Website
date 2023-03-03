@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 import { ethers } from 'ethers';
 import contract from '../../../src/app/contracts/Student.json';
 import { LoggingService } from './logging.service';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
 
 @Injectable({
@@ -27,7 +27,6 @@ export class DatabaseService {
   addStudent(student: any){
     const ref = this.afs.list('students');
     ref.push(student).then(()=>{
-      window.alert('Student added to database!');
       this.logs.info("User: " + localStorage.getItem('idUserEmail')+ " added a student record");
 
     }).catch(() =>{
@@ -35,6 +34,43 @@ export class DatabaseService {
       throw "Add Student Failed";
     });
   }
+
+  updateStudent(student: any, x: any, y: any, z:any) {
+    // console.log(x,"-",y,"-",z);
+    // console.log(student.studentId,"-",student.course,"-",student.soNumber);
+    const ref = this.afs.list('students');
+    const studentToUpdate = ref.snapshotChanges().pipe(
+        map(changes =>
+            changes.map(c =>
+              ({ key: c.payload.key, ...(c.payload.val() as any) })
+            )
+        ),
+        map(students =>
+            students.find(s =>
+                s.studentId === x &&
+                s.course === y &&
+                s.soNumber === z
+            )
+        ),
+        take(1)
+    );
+    studentToUpdate.subscribe((foundStudent) => {
+        if (foundStudent) {
+
+          console.log(foundStudent);         
+          ref.update(foundStudent.key, student).then(() => {
+                window.alert('Student record updated successfully!');
+                this.logs.info("User: " + localStorage.getItem('idUserEmail') + " updated a student record");
+            }).catch(() => {
+                window.alert('An error occurred, please try again.');
+                throw "Update Student Failed";
+            });
+        } else {
+            window.alert('Student record not found.');
+        }
+    });
+}
+
 
   setStudentList(){
     console.log(this.getStudent());
@@ -54,7 +90,9 @@ export class DatabaseService {
               lastname: this.encryptFunction.decryptData(data.lastname),
               course: this.encryptFunction.decryptData(data.course),
               sex: this.encryptFunction.decryptData(data.sex),
-              soNumber: this.encryptFunction.decryptData(data.soNumber)
+              soNumber: this.encryptFunction.decryptData(data.soNumber),
+              dataImg: data.dataImg,
+              txnHash: data.txnHash
             };
           } else {
             return null;
