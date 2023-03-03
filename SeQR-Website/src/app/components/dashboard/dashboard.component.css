@@ -101,27 +101,35 @@ p {
 
 
 button {
-  height: 30px;
-  width: 180px;
-  color: #000;
-  font-size: 12px 0;
+  height: 2.5rem; /* use rem instead of px */
+  width: 10rem; /* use rem instead of px */
+  font-size: 1rem; /* use rem instead of px */
   background: #fff;
   border: 0;
   border-radius: 20px;
   outline: none;
-  margin-top: 20px
+  margin-top: 1.5rem; /* use rem instead of px */
+
+  /* adjust styling for smaller screens */
+  @media (max-width: 768px) {
+    height: 2rem;
+    width: 8rem;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  /* adjust styling for even smaller screens */
+  @media (max-width: 576px) {
+    height: 1.5rem;
+    width: 6rem;
+    font-size: 0.6rem;
+    margin-top: 0.5rem;
+  }
 }
 
 .align-center-custom {
   justify-content: center;
 }
-
-.col {
-  padding-top: 10px;
-  padding-left:50px;
-
-}
-
 
 .container-custom {
   max-width: 100%;
@@ -164,4 +172,49 @@ button:hover{
 .logo-details {
   text-align: left;
   margin: auto;
+}
+
+@media (max-width: 768px) {
+    
+
+  body {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .container {
+      max-width: 100%;
+      overflow: scroll;
+      flex-direction: column;
+  }
+  
+
+  .left-container  {
+   content: none;
+  }
+  
+
+  .container .container-custom .left-container {
+    max-width: 100%;
+  }
+
+  .container .container-custom .left-container .logo-details {
+    max-width: 100%;
+  }
+
+  .container .right-container {
+      max-width: 100%;
+      flex-direction: column;
+  }
+
+  .container .container-custom .right-container .card {
+    max-width: 0%;
+  }
+  
+  button {
+      width: 80%;
+  }
+
+
 }

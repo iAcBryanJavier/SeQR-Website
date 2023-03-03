@@ -41,6 +41,7 @@ export class ImportCsvButtonComponent implements OnInit {
   jsonData!: any[];
   changeUrlCtr: number = 0;
   txnHash: any;
+
   
   blobUrls: Blob[] = [];
 

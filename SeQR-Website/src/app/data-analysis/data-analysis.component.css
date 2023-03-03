@@ -1,0 +1,181 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+
+
+body{
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	font-family: 'Roboto', sans-serif;
+	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+    color: black;
+	padding-top: 25px;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: auto;
+	gap: 200px;
+
+}
+
+.chart {
+	padding: 2rem;
+	color: white;
+	border: 1px solid #f49131;
+	border-radius: 1rem;
+	background: #251c35;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+}
+
+canvas {
+	width: 450px;
+}
+
+
+
+
+
+/* 
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: auto;
+}
+
+.table {
+  font-size: 15px;
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  text-align: left;
+  width: 50%;
+  font-weight: bold;
+}
+
+.table td:last-child {
+  text-align: right;
+}
+
+
+
+
+.table select {
+	border: none;
+	padding: 10px 30px 10px 10px;
+	background-color: #f5f5f5;
+	color: black;
+	-webkit-appearance: none;
+	appearance: none;
+	font-weight: bold;
+	text-align: left;
+	min-width: 150px;
+	font-size: 14px; 
+  }
+  
+
+  
+  .table select option {
+  	  content: attr(value); 
+  }
+  .table select::-ms-expand {
+	  display: none;
+  }
+  
+  .table select::after {
+	  content: '\25BC';
+	  color: black;
+	  font-size: 12px;
+	  padding-right: 5px;
+	  pointer-events: none;
+	  position: absolute;
+	  right: 10px;
+	  top: 50%;
+	  transform: translateY(-50%);
+  }
+  
+
+ @media (max-width: 767px) {
+	
+	.container {
+	  width: auto;
+	}
+  
+	.table {
+	  font-size: 14px;
+	  width: auto;
+	}
+  
+	.table select {
+	  
+	  min-width: 100px;
+	  font-size: 14px; 
+	  padding: 8px 25px 8px 8px; 
+	}
+
+}
+  
+  
+  
+  @media (max-width: 576px) {
+  
+	  .container {
+		  width: auto;
+	  }
+	  
+	  .table th, 
+	  .table td {
+		font-size: 14px;
+		padding: 8px;
+	  }
+	  
+	  .table th {
+		width: auto;
+		padding-right: 20px;
+	  }
+	  
+	  .table td:last-child {
+		text-align: left;
+		padding-left: 20px;
+	  }
+	  
+	  .table select::after {
+		padding-right: 0;
+		padding-left: 5px;
+	  }
+  
+	  .table select {
+		  min-width: 80px; 
+		  font-size: 10px;
+		  padding: 6px 20px 6px 6px; 
+	  }
+	}
+  
+	 */

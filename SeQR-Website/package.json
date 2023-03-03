@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.0.0",
+    "@angular/cdk": "^14.2.0",
     "@angular/common": "^14.0.0",
     "@angular/compiler": "^14.0.0",
     "@angular/core": "^14.0.0",
@@ -47,6 +48,7 @@
     "json-to-csv-export": "2.1.1",
     "jsqr": "1.4.0",
     "jszip": "^3.10.1",
+    "ng2-charts": "^4.1.1",
     "ngx-csv-parser": "1.2.0",
     "qrcode-svg": "^1.1.0",
     "qrious": "^4.0.2",

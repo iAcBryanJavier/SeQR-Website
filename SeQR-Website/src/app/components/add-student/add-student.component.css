@@ -26,6 +26,23 @@ body{
     box-shadow: 5px 20px 50px black;
 }
 
+.card-details :nth-child(3).card-box .details::before {
+   content: none;
+}
+    
+  
+.card-details .card-box .details::before {
+    content: '*';
+    color: red; 
+    margin-right: 0.2em; 
+}
+
+.circal-form .circal-title::before {
+    content: '*';
+    color: red; 
+    margin-right: 0.2em; 
+}
+
 .container .heading{
     font-size: 25px;
     font-weight: 500;
