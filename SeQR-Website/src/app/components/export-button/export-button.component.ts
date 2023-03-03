@@ -14,26 +14,26 @@ export class ExportButtonComponent implements OnInit {
   items!: Student[];
   studentData!: string[];
   encryptFunction = new Encryption;
+  jsonStudentData!: JSON;
   constructor(private db: DatabaseService) { 
   }
 
   ngOnInit(): void {
+    this.db.getStudent().subscribe(items =>{
+      for (let item of items) {
+      
+      }
+      this.studentData = this.items = items;
+     this.jsonStudentData = JSON.parse(JSON.stringify(this.studentData));
+    //  console.log("STUDENT ARRAY: ", this.studentData, "\n JSON DATA: ", jsonStudentData);
+   
+    
+      
+    });
   }
 
  getStudentData(): void{
-  this.db.getStudent().subscribe(items =>{
-    for (let item of items) {
-    
-    }
-    this.studentData = this.items = items;
-    var jsonStudentData: JSON = JSON.parse(JSON.stringify(this.studentData));
-    console.log("STUDENT ARRAY: ", this.studentData, "\n JSON DATA: ", jsonStudentData);
- 
-  
-    this.exportCsv(jsonStudentData);
-  });
-
-
+    this.exportCsv(this.jsonStudentData);
  }
 
  exportCsv(data_to_export: JSON) {

@@ -122,7 +122,7 @@ export class LoggingService {
           .map(log => ({ id: log.payload.key, ...log.payload.val() }))
           .filter(log => {
             const values = Object.values(log);
-            return values.some(value => typeof value === 'string' && value.includes(query));
+            return values.some(value => typeof value === 'string' && value.includes(query) &&  log.LogLevel !=="Error");
           })
       )
     );
