@@ -1,4 +1,4 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, SecurityContext } from '@angular/core';
 
 import { Encryption } from '../models/encryption';
 import { StudentCsvService } from '../services/student-csv.service';
@@ -21,6 +21,10 @@ import JSZip, { file } from 'jszip';
 })
 
 export class ImportCsvButtonComponent implements OnInit {
+  @Output() isMintingEvent = new EventEmitter<boolean>();
+  @Output() progressBarValueEvent = new EventEmitter<number>();
+  @Output() progressBarMsgEvent = new EventEmitter<string>();
+
   fileInput!: object;
 
   studentData!: Student;
@@ -80,6 +84,8 @@ export class ImportCsvButtonComponent implements OnInit {
               // progress bar checkpoint
               this.progressBarMsg = "Minting Complete! Creating QR Code.";
               this.progressBarValue = 100;
+              this.progressBarMsgEvent.emit(this.progressBarMsg);
+              this.progressBarValueEvent.emit(this.progressBarValue);
               return;
             }
         }
@@ -114,6 +120,10 @@ export class ImportCsvButtonComponent implements OnInit {
     })
     const input = event.target as HTMLInputElement;
     if (input.files) { // CHECKS IF FILES IS NULL
+      this.isMinting = true;
+      console.log(this.isMinting)
+      this.isMintingEvent.emit(this.isMinting);
+
       this.changeUrlCtr = 0;
       console.log(this.txnObjList.length)
       console.log(this.changeUrlCtr);
@@ -148,12 +158,16 @@ export class ImportCsvButtonComponent implements OnInit {
          // progress bar checkpoint
         this.progressBarMsg = "Uploading Files to IPFS";
         this.progressBarValue = 50;
+        this.progressBarMsgEvent.emit(this.progressBarMsg);
+        this.progressBarValueEvent.emit(this.progressBarValue);
 
         const ipfsHash = await this.uploadToIPFS(this.studentList);
 
         // progress bar checkpoint
         this.progressBarMsg = "Creating Blockchain Transaction";
         this.progressBarValue = 75;
+        this.progressBarMsgEvent.emit(this.progressBarMsg);
+        this.progressBarValueEvent.emit(this.progressBarValue);
 
         this.txnHash = await this.createTransaction(ipfsHash);
 
@@ -225,7 +239,7 @@ export class ImportCsvButtonComponent implements OnInit {
       return;
     }
 
-    this.isMinting = true;
+
     const provider = new ethers.providers.Web3Provider(this.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
@@ -236,8 +250,6 @@ export class ImportCsvButtonComponent implements OnInit {
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
       console.log('Created student record!', createTxn.hash);
-      window.alert('Created student record! ' + createTxn.hash);
-      this.isMinting = false;
 
       return createTxn.hash;
     }catch(err: any){
@@ -245,6 +257,7 @@ export class ImportCsvButtonComponent implements OnInit {
       window.alert('Minting Failed' + err.message);
       this.myAngularxQrCode = "";
       this.isMinting = false;
+      this.isMintingEvent.emit(this.isMinting);
     }
   }
 }

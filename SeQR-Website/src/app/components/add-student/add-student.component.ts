@@ -237,7 +237,18 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  
+  receiveIsMinting(data: any){
+    console.log(data)
+    this.isMinting = data;
+  }
+
+  receiveProgressBarValue(data: any){
+    this.progressBarValue = data;
+  }
+
+  receiverProgressBarMsg(data: any){
+    this.progressBarMsg = data;
+  }
 
   // private async fetchNFTs(): Promise<any> {
   //   const provider = new ethers.providers.Web3Provider(this.ethereum);

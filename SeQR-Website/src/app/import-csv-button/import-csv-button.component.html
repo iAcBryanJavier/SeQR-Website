@@ -7,18 +7,6 @@
     [alt]="filename" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
 </div>
 
-<div *ngIf="isMinting">
-  <br>
-  <p>
-    <ngb-progressbar [showValue]="true" type="success" [value]="progressBarValue"></ngb-progressbar>
-    <br>
-    {{progressBarMsg}}
-  </p>
-  <br>
-  <div class="spinner-border text-dark" role="status">
-    <span class="sr-only"></span>
-  </div>
-</div>
 
 <!-- <input class="csv-btn" type="file" name="File Upload" id="csvFileUpload" (change)="storeStudent()"
     accept=".json" /> -->
