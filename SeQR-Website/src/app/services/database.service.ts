@@ -4,13 +4,17 @@ import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import { LoggingService } from './logging.service';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, switchMap, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
+import { IpfsStudent } from '../interfaces/IpfsStudent';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DatabaseService {
+
   student!: AngularFireObject<Student>;
   studentList!: Observable <any[]>;
   decryptedList!: Observable <any[]>;
@@ -54,7 +58,7 @@ export class DatabaseService {
     studentToUpdate.subscribe((foundStudent) => {
         if (foundStudent) {
 
-          console.log(foundStudent);         
+          console.log(foundStudent);
           ref.update(foundStudent.key, student).then(() => {
                 window.alert('Student record updated successfully!');
                 this.logs.info("User: " + localStorage.getItem('idUserEmail') + " updated a student record");
@@ -78,7 +82,7 @@ export class DatabaseService {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         return items.map(item => {
-       
+
           const data = item.payload.val();
           if (data) { // check if data is not null
             return {
@@ -120,22 +124,22 @@ export class DatabaseService {
             return null;
           }
         }).filter(item => item !== null) // remove null items from the array;
-  
+
         const result = {
           males: 0,
           females: 0
         };
-  
+
         students.forEach(student => {
           if (student) { // check if data is not null
             if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
-              result.males++; 
+              result.males++;
             } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
               result.females++;
             }
           }
         });
-  
+
         return result;
       })
     );
@@ -161,24 +165,24 @@ export class DatabaseService {
   //           return null;
   //         }
   //       }).filter(item => item !== null) // remove null items from the array;
-  
+
   //       const result = {
   //         BSEMC: 0,
-  //         BSIT: 0, 
-  //         BSCS: 0, 
-  //         BSANIMATION: 0, 
-  //         BSMAD: 0, 
-  //         BSFD: 0,  
-  //         BSFILM: 0, 
+  //         BSIT: 0,
+  //         BSCS: 0,
+  //         BSANIMATION: 0,
+  //         BSMAD: 0,
+  //         BSFD: 0,
+  //         BSFILM: 0,
   //         BAMUSIC: 0,
   //         BSPSYCH: 0,
   //         BSACCT: 0
   //       };
-  
+
   //       students.forEach(student => {
   //         if (student) { // check if data is not null
   //           if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-  //             result.BSEMC++; 
+  //             result.BSEMC++;
   //           } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
   //             result.BSIT++;
   //           }
@@ -208,12 +212,12 @@ export class DatabaseService {
   //           }
   //         }
   //       });
-  
+
   //       return result;
   //     })
   //   );
   // }
-  getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
+  getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number,
     BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number, BSPSYCH: number, BSACCT: number}> {
       return this.afs.list('students').snapshotChanges().pipe(
         map((items: any[]) => {
@@ -234,15 +238,15 @@ export class DatabaseService {
               return null;
             }
           }).filter(item => item !== null) // remove null items from the array;
-  
+
           const result = {
               BSEMC: 0,
-              BSIT: 0, 
-              BSCS: 0, 
-              BSANIMATION: 0, 
-              BSMAD: 0, 
-              BSFD: 0,  
-              BSFILM: 0, 
+              BSIT: 0,
+              BSCS: 0,
+              BSANIMATION: 0,
+              BSMAD: 0,
+              BSFD: 0,
+              BSFILM: 0,
               BAMUSIC: 0,
               BSPSYCH: 0,
               BSACCT: 0
@@ -252,11 +256,11 @@ export class DatabaseService {
             males: 0,
             females: 0
           }
-      
+
             students.forEach(student => {
               if (student) { // check if data is not null
                 if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-                  result.BSEMC++; 
+                  result.BSEMC++;
                 } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                   result.BSIT++;
                 }
@@ -286,7 +290,7 @@ export class DatabaseService {
                 }
               }
             });
-      
+
             return result;
           })
         );
@@ -312,24 +316,24 @@ export class DatabaseService {
               return null;
             }
           }).filter(item => item !== null) // remove null items from the array;
-    
+
           const result = {
             BSEMC: 0,
-            BSIT: 0, 
-            BSCS: 0, 
-            BSANIMATION: 0, 
-            BSMAD: 0, 
-            BSFD: 0,  
-            BSFILM: 0, 
+            BSIT: 0,
+            BSCS: 0,
+            BSANIMATION: 0,
+            BSMAD: 0,
+            BSFD: 0,
+            BSFILM: 0,
             BAMUSIC: 0,
             BSPSYCH: 0,
             BSACCT: 0
           };
-    
+
           students.forEach(student => {
             if (student) { // check if data is not null
               if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-                result.BSEMC++; 
+                result.BSEMC++;
               } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                 result.BSIT++;
               }
@@ -359,18 +363,18 @@ export class DatabaseService {
               }
             }
           });
-    
+
           return result;
         })
       );
     }
-  
-  
-    
+
+
+
   getCourses(): Observable<any[]> {
     return this.afs.list('courses').valueChanges();
   }
-  
+
   getSearchStudent(query: string): Observable<any[]> {
     return this.studentList.pipe(
       map((students: any[]) => {
@@ -381,5 +385,21 @@ export class DatabaseService {
       })
     );
   }
-  
+
+  getStudentFromIpfs(ipfsLink: string): Observable<any>{
+    return this.http.get(ipfsLink).pipe(
+      switchMap((user: any)=>{
+        return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
+      })
+    )
+  }
+
+  getStudentFromIpfsByIndex(ipfsLink: string, index: number): Observable<any>{
+    return this.http.get(ipfsLink).pipe(
+      switchMap((user: any)=>{
+        return this.getSearchStudent(this.encryptFunction.decryptData(user[index].studentId));
+      })
+    )
+  }
+
 }

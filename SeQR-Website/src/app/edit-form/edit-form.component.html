@@ -54,9 +54,9 @@
               <span class="details">ID Picture</span>
               <input class="form-control" type="file" id="formFile">
             </div>
-            
-            
-            
+
+
+
 
           </div>
           <div class="circal-form">
@@ -70,15 +70,15 @@
           <div class="button">
             <button type="submit" class="btn btn-primary mb-3" (click)="backClick()">GO BACK</button>
           </div>
-          
+
           <div class="button">
             <button type="submit" class="btn btn-primary mb-3">SAVE AND RE-MINT</button>
           </div>
 
           <div class="qr-middle">
             <qrcode (qrCodeURL)="onChangeURL($event)" [allowEmptyString]="true" [qrdata]="myAngularxQrCode" [alt]="filename" [width]="150" [errorCorrectionLevel]="'M'"></qrcode>
-            <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download QR</a>
-          </div> 
+            <a [href]="qrCodeDownloadLink" [download]="this.studentForm.controls['studentId'].value">Download QR</a>
+          </div>
       </form>
   </div>
 </body>

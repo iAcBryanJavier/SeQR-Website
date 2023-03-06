@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
+import { GoerliEtherscanService } from 'src/app/services/goerli-etherscan.service';
 
 @Component({
   selector: 'app-scan-qr',
@@ -11,6 +12,8 @@ export class ScanQrComponent  {
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo | undefined;
   @ViewChild("selectedValue") selectedValue!: ElementRef;
+
+  constructor(private goerli_http: GoerliEtherscanService){}
 
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
@@ -24,8 +27,6 @@ export class ScanQrComponent  {
 
   qrResultString!: string;
 
-
-
   clearResult(): void {
     this.qrResultString = "";
   }
@@ -37,19 +38,17 @@ export class ScanQrComponent  {
 
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
-    alert(this.qrResultString);
+    this.goerli_http.getTransactionByHash(this.qrResultString).subscribe(item =>{
+      alert(item.result.input);
+    })
   }
-
-
 
   onDeviceSelectChange(){
     const selected = this.selectedValue.nativeElement.value;
     const device = this.availableDevices.find(x => x.deviceId === selected);
     this.currentDevice = device || undefined ;
-   
+
   }
-
-
 
   onHasPermission(has: boolean) {
     this.hasPermission = has;
@@ -61,7 +60,7 @@ export class ScanQrComponent  {
       hasPermission: this.hasPermission,
     };
 
-    
+
   }
-  
+
 }

@@ -46,6 +46,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { DiplomaComponent } from './components/diploma/diploma.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     ExportButtonChangeLogsComponent,
     EditFormComponent,
     PagenotfoundComponent,
-    ProgressbarComponent
+    ProgressbarComponent,
+    DiplomaComponent
   ],
   imports: [
     BrowserModule,
