@@ -47,6 +47,8 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { DiplomaComponent } from './components/diploma/diploma.component';
+import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
+import { SpinnersComponent } from './components/spinners/spinners.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { DiplomaComponent } from './components/diploma/diploma.component';
     EditFormComponent,
     PagenotfoundComponent,
     ProgressbarComponent,
-    DiplomaComponent
+    DiplomaComponent,
+    DiplomaTemplateComponent,
+    SpinnersComponent
   ],
   imports: [
     BrowserModule,

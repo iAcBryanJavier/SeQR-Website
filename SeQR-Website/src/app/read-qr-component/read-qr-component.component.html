@@ -13,25 +13,19 @@
 </head>
 
 <body>
-
   <div class="center">
-
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Dropdown button
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" routerLink="/landing-scan">Scan QR</a>
+        <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
         <a class="dropdown-item" routerLink="/login">Login</a>
-
       </div>
     </div>
-
     <div class="main">
-
       <div class="hide-component upload-qr">
-
         <button class="buttonRead">
           <input #imageInput
                 type="file"
@@ -40,14 +34,18 @@
         </button>
         <br>
         <img class="no-click " unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
+        <app-spinners [isLoading]="isLoading" [msg]="progressBarMsg"></app-spinners>
     </div>
-
     </div>
-
   </div>
-
 </body>
-
 </html>
 
-<app-diploma [ipfsLink]="ipfsLink" [index]="ipfsIndex"></app-diploma>
+<app-diploma
+  [ipfsLink]="ipfsLink"
+  [index]="ipfsIndex"
+  [txnHash]="txnHash"
+  (isLoadingEvent)="receiveLoadingValue($event)"
+  (progressBarMsgEvent)="receiveProgressBarMsg($event)"
+  (progressBarValueEvent)="receiveProgressBarValue($event)">
+</app-diploma>

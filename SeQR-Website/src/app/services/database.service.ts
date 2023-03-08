@@ -7,7 +7,10 @@ import { LoggingService } from './logging.service';
 import { map, Observable, switchMap, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
 import { IpfsStudent } from '../interfaces/IpfsStudent';
-
+import { GoerliEtherscanService } from './goerli-etherscan.service';
+import { PinataService } from './pinata.service';
+import { environment } from 'src/environments/environment';
+import web3 from 'web3';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +24,10 @@ export class DatabaseService {
   encryptFunction = new Encryption;
   public maleCount = 0;
   public femaleCount = 0;
+  private BASE_URL = 'https://api-goerli.etherscan.io/api';
 
-  constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService) { }
+  constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService,
+    private goerliService: GoerliEtherscanService, private pinataService: PinataService) { }
 
   //add student
   addStudent(student: any){
@@ -392,6 +397,43 @@ export class DatabaseService {
         return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
       })
     )
+  }
+
+  getStudentDiplomaFromBlockchain(txnHash: string, index: number): Observable<any> {
+    const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txnHash}&apikey=${environment.goerli_etherscan.apiKey}`
+    if (index == -1) {
+      return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
+        switchMap((item: any) =>{
+          let ipfsLink;
+          try{
+            ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 148)
+          }catch(err){
+            ipfsLink = '';
+          }
+          return this.http.get(ipfsLink.toString()).pipe(
+            switchMap((user: any) => {
+              return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
+            })
+          )
+        })
+      )
+    } else {
+      return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
+        switchMap((item: any) =>{
+          let ipfsLink;
+          try{
+            ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 148)
+          }catch(err){
+            ipfsLink = '';
+          }
+          return this.http.get(ipfsLink.toString()).pipe(
+            switchMap((user: any) => {
+              return this.getSearchStudent(this.encryptFunction.decryptData(user[index].studentId));
+            })
+          )
+        })
+      )
+    }
   }
 
   getStudentFromIpfsByIndex(ipfsLink: string, index: number): Observable<any>{

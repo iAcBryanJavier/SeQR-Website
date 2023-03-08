@@ -3,52 +3,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatabaseService } from 'src/app/services/database.service';
 import { PinataService } from 'src/app/services/pinata.service';
-
-// QR Code Template Component
-@Component({
-	selector: 'ngbd-modal-content',
-	standalone: true,
-	template: `
-		<div class="modal-header">
-      <h4 class="modal-title">SeQR QR Code Diploma</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <div class="container">
-        <div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
-          <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
-            <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
-            <br><br>
-            <span style="font-size:25px"><i>This is to certify that</i></span>
-            <br><br>
-            <span style="font-size:30px"><b>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename ??
-                ''}}</b></span><br /><br />
-            <span style="font-size:25px"><i>has completed the course</i></span> <br /><br />
-            <span style="font-size:30px">{{ipfsData.course}}</span> <br /><br />
-            <span style="font-size:20px">SO Number: <b>{{ipfsData.soNumber}}</b></span> <br /><br /><br /><br />
-            <span style="font-size:25px"><i>dated</i></span><br>
-            <span style="font-size:30px"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click'); refresh()">Close</button>
-    </div>
-	`,
-  styleUrls: ['./diploma.component.css']
-})
-export class NgbdModalContent {
-	@Input() ipfsData: any;
-
-	constructor(public activeModal: NgbActiveModal, private router: Router) {}
-
-  refresh() {
-    this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
-      this.router.navigate(['read-qr']);
-    });
-  }
-}
+import { DiplomaTemplateComponent } from '../diploma-template/diploma-template.component';
 
 // QR Code Data Processing Component
 @Component({
@@ -59,9 +14,18 @@ export class NgbdModalContent {
 export class DiplomaComponent implements OnInit, OnChanges {
   @Input() ipfsLink: string = '';
   @Input() index: number = -1;
+  @Input() txnHash: string = '';
+  @Output() isLoadingEvent = new EventEmitter<boolean>;
+  @Output() progressBarMsgEvent = new EventEmitter<string>;
+  @Output() progressBarValueEvent = new EventEmitter<number>;
+
+  isLoading: boolean = false;
+  progressBarMsg: string = ''
+  progressBarValue: number = 0;
+
   ipfsData: any;
 
-  constructor(private modalService: NgbModal, private db: DatabaseService) { }
+  constructor(private modalService: NgbModal, private db: DatabaseService, private router: Router) { }
 
   ngOnInit(): void {
     this.db.setStudentList();
@@ -69,32 +33,67 @@ export class DiplomaComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     // handle input property changes
-    if(changes['ipfsLink']){
-      if(this.index == -1){
-        // this.httpPinata.getDataFromPinata(this.ipfsLink).subscribe(item =>{
-        //   console.log(item);
-        //   this.ipfsData = item;
-        // })
-        this.db.getStudentFromIpfs(this.ipfsLink).subscribe(item =>{
-          this.ipfsData = item[0];
-          const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
-		      modalRef.componentInstance.ipfsData = item[0];
-        })
-      }else{
-        // this.httpPinata.getDataFromPinata(this.ipfsLink).subscribe(item =>{
-        //   console.log(item);
-        //   this.ipfsData = item[this.index];
-        // })
+    if(changes['txnHash']){
+      this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.index).subscribe(item =>{
+        this.progressBarMsg = 'Displaying Student Diploma...';
 
-        this.db.getStudentFromIpfsByIndex(this.ipfsLink, this.index).subscribe(item =>{
-          this.ipfsData = item[0];
-          const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
-		      modalRef.componentInstance.ipfsData = item[0];
-        })
-      }
+        this.isLoadingEvent.emit(this.isLoading);
+        this.progressBarValueEvent.emit(this.progressBarValue);
+        this.progressBarMsgEvent.emit(this.progressBarMsg);
+
+        const modalRef = this.modalService.open(DiplomaTemplateComponent, { size: 'xl' });
+        modalRef.componentInstance.ipfsData = item[0];
+
+        this.refresh();
+      })
+
+
+
+      // if(this.index == -1){
+      //   this.db.getStudentFromIpfs(this.ipfsLink).subscribe(item =>{
+      //     this.isLoading = true;
+      //     this.progressBarValue = 75
+      //     this.progressBarMsg = 'Getting Student From IPFS'
+
+      //     this.isLoadingEvent.emit(this.isLoading);
+      //     this.progressBarValueEvent.emit(this.progressBarValue);
+      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
+
+      //     this.ipfsData = item[0];
+
+      //     this.progressBarValue = 100
+      //     this.progressBarMsg = 'Displaying Student Diploma'
+      //     this.progressBarValueEvent.emit(this.progressBarValue);
+      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
+
+      //     const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
+		  //     modalRef.componentInstance.ipfsData = item[0];
+      //   })
+      // }else{
+      //   console.log(this.txnHash);
+      //   this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.index).subscribe(item =>{
+      //     this.isLoading = true;
+      //     this.progressBarValue = 100;
+      //     this.progressBarMsg = 'Displaying Student from IPFS';
+
+      //     this.isLoadingEvent.emit(this.isLoading);
+      //     this.progressBarValueEvent.emit(this.progressBarValue);
+      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
+
+      //     const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
+		  //     modalRef.componentInstance.ipfsData = item[0];
+      //   })
+      // }
     }
   }
+
   decryptData(ipfs: any){
     console.log(ipfs);
+  }
+
+  refresh(){
+    this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
+      this.router.navigate(['read-qr']);
+    });
   }
 }

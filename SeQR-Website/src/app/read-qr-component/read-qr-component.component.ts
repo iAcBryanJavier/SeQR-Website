@@ -15,26 +15,22 @@ export class ReadQrComponentComponent  {
   result!: any;
   url: string|null|ArrayBuffer = '';
   ipfsLink: string = '';
+  txnHash: string = '';
   ipfsIndex!: number;
+  isLoading: boolean = false;
+  progressBarMsg: string = '';
+  progressBarValue: number = 0;
+
   constructor(private goerli_http: GoerliEtherscanService, private modalService: NgbModal) {
     // this.myScriptElement = document.createElement("script");
     // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
     // document.body.appendChild(this.myScriptElement);
   }
 
-  ngOnInit(): void {
-  }
-
-  getIpfsLink(result: any){
-    this.goerli_http.getTransactionByHash(result.toString()).subscribe(item =>{
-      console.log(item);
-      console.log(web3.utils.hexToAscii(item.result.input).slice(68, 148));
-      alert(web3.utils.hexToAscii(item.result.input).slice(68, 148));
-      this.ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 148)
-    })
-  }
+  ngOnInit(): void { }
 
   decodeOrCode(): void {
+    this.progressBarMsg = 'Loading Student Diploma'
     const codeReader = new BrowserMultiFormatReader();
     codeReader
       .decodeFromImageElement("img")
@@ -43,10 +39,10 @@ export class ReadQrComponentComponent  {
         try {
           const resultParsed = JSON.parse(result.toString());
           console.log(typeof resultParsed);
-          this.getIpfsLink(resultParsed.txnHash);
+          this.txnHash = resultParsed.txnHash;
           this.ipfsIndex = resultParsed.index;
         } catch (error) {
-          this.getIpfsLink(result)
+          this.txnHash = result.toString();
           this.ipfsIndex = -1;
         }
       })
@@ -66,6 +62,10 @@ export class ReadQrComponentComponent  {
 
   processFile(imageInput: any) {
     this.url = '';
+    this.isLoading = true;
+    this.progressBarValue = 15
+    this.progressBarMsg = 'Processing QR Code Image'
+
     const file: File = imageInput.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file)
@@ -81,6 +81,18 @@ export class ReadQrComponentComponent  {
       console.log(file);
       this.decodeOrCode();
     }
+  }
+
+  receiveLoadingValue(loadingValue: any){
+    this.isLoading = loadingValue;
+  }
+
+  receiveProgressBarMsg(msg: any){
+    this.progressBarMsg = msg;
+  }
+
+  receiveProgressBarValue(progressBarValue: any){
+    this.progressBarValue = progressBarValue;
   }
 }
 
