@@ -24,6 +24,7 @@ export class ScanQrComponent  {
 
   qrResultString!: string;
 
+  idUserEmail: string | null = localStorage.getItem("idUserEmail")
 
 
   clearResult(): void {
