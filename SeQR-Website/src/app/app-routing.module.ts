@@ -12,24 +12,25 @@ import { ManageAccountComponent } from './components/manage-account/manage-accou
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
-import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
   { path: 'landing', component: LandingComponent}, 
   { path: 'login', component: LoginComponent },
-  { path: 'landing-scan', component: ScanLandingComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },
   { path: 'change-logs', component: ChangeLogsComponent, canActivate: [AuthGuard] },
   { path: 'edit-student', component: EditStudentComponent, canActivate: [AuthGuard] },
   { path: 'report-logs', component: ReportLogsComponent, canActivate: [AuthGuard] },
-  { path: 'scan-qr', component: ScanQrComponent, canActivate: [AuthGuard] },
+  { path: 'scan-qr', component: ScanQrComponent },
+  { path: 'scan-qr-page', component: ScanQrPageComponent, canActivate: [AuthGuard] },
   { path: 'manage-account', component: ManageAccountComponent, canActivate: [AuthGuard] },
   { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
