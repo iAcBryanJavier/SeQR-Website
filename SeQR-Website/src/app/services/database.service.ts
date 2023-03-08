@@ -4,7 +4,7 @@ import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import { LoggingService } from './logging.service';
-import { map, Observable, switchMap, take } from 'rxjs';
+import { filter, map, switchMap, Observable, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
 import { IpfsStudent } from '../interfaces/IpfsStudent';
 import { GoerliEtherscanService } from './goerli-etherscan.service';
@@ -77,11 +77,97 @@ export class DatabaseService {
     });
 }
 
+// getStudentCount(): Promise<number> {
+//   let count = 0;
+//   return new Promise<number>((resolve, reject) => {
+//     this.afs.list<Student>('students').valueChanges().pipe(
+//       take(1)
+//     ).subscribe((students: Student[]) => {
+//       if (students) {
+//         resolve(students.length);
+//       } else {
+//         reject("No students found");
+//       }
+//     });
+//   });
+// }
+
+
+async checkAddDuplicate(studentId: string | null, course: string | null, soNumber: string | null): Promise<any> {
+  const result = {
+    dupeCount: 0,
+    dupeMessage: "",
+  };
+
+  return new Promise<any>((resolve, reject) => {
+    this.afs.list('students').snapshotChanges().subscribe((items: any[]) => {
+      const students = items.map(item => {
+        const data = item.payload.val();
+        if (data) {
+          if(this.encryptFunction.decryptData(data.soNumber) === soNumber ){
+            result.dupeMessage = "This Diploma number already exists!"
+            result.dupeCount++;
+           }else if(this.encryptFunction.decryptData(data.course) === course &&
+           this.encryptFunction.decryptData(data.studentId) === studentId ){
+            result.dupeMessage = "This Student already has a diploma record with the same degree!"
+            result.dupeCount++;
+           }
+
+        }
+        return data;
+      }).filter(item => item !== null) // remove null items from the array;
+
+      resolve(result);
+    }, error => {
+      reject(error);
+    });
+  });
+}
+
+async checkEditDuplicate(studentId: string | null, course: string | null, soNumber: string | null): Promise<any> {
+  const result = {
+    dupeCount: 0,
+    dupeMessage: "",
+  };
+
+  return new Promise<any>((resolve, reject) => {
+    this.afs.list('students').snapshotChanges().subscribe((items: any[]) => {
+      const students = items.map(item => {
+        const data = item.payload.val();
+        if (data) {
+          if(this.encryptFunction.decryptData(data.soNumber) === soNumber ){
+            result.dupeMessage = "This Diploma number already exists!"
+            result.dupeCount++;
+           }else if(this.encryptFunction.decryptData(data.course) === course &&
+           this.encryptFunction.decryptData(data.studentId) === studentId ){
+            result.dupeMessage = "This Student already has a diploma record with the same degree!"
+            result.dupeCount++;
+           }
+
+        }
+        return data;
+      }).filter(item => item !== null) // remove null items from the array;
+
+      resolve(result);
+    }, error => {
+      reject(error);
+    });
+  });
+}
+
+
+
+
+
+
+
 
   setStudentList(){
     console.log(this.getStudent());
     this.studentList = this.getStudent();
   }
+
+
 
   getStudent(): Observable<any[]> {
     return this.afs.list('students').snapshotChanges().pipe(
