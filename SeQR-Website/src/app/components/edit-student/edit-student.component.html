@@ -23,11 +23,11 @@
           <div class="row search-dsktp">
             <div class="col">
               <div class="input-group">
-                <input id="search-input" type="search" class="form-control" placeholder="Search anything..." 
+                <input id="search-input" type="search" class="form-control" placeholder="Search anything..."
                        [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)" >
               </div>
             </div>
-      
+
 
       <!-- HTML BODY STARTS HERE -->
         <div class="table-responsive-sm">
@@ -74,10 +74,10 @@
               </tr>
             </tbody>
           </table>
-  
+
         <!-- PAGINATION -->
         <div class="pagination">
-       
+
           <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPageMinus(currentPage)">
             Previous
           </button>
@@ -92,6 +92,7 @@
 
 
       </div>
-</div></div>
+</div>
+</div>
   </body>
   </html>

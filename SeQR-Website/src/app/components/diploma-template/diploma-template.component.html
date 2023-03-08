@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h4 class="modal-title">SeQR QR Code Diploma</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+      <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+        <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
+        <br><br>
+        <span style="font-size:25px"><i>This is to certify that</i></span>
+        <br><br>
+        <span style="font-size:30px"><b>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename ??
+            ''}}</b></span><br /><br />
+        <span style="font-size:25px"><i>has completed the course</i></span> <br /><br />
+        <span style="font-size:30px">{{ipfsData.course}}</span> <br /><br />
+        <span style="font-size:20px">SO Number: <b>{{ipfsData.soNumber}}</b></span> <br /><br /><br /><br />
+        <span style="font-size:25px"><i>dated</i></span><br>
+        <span style="font-size:30px"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

@@ -35,7 +35,7 @@ export class AddStudentComponent implements OnInit {
   public students:  any = [];
   public filename: string = "";
   public blobUrl!: Blob;
-
+  public isDuplicate: any;
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
@@ -44,7 +44,7 @@ export class AddStudentComponent implements OnInit {
   encryptFunction = new Encryption();
   public progressBarValue: number = 0;
   public progressBarMsg: string = "";
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -68,7 +68,7 @@ export class AddStudentComponent implements OnInit {
        this.progressBarValue = 100;
 
       // Opens the modal and puts the qr code inside the content
-      this.modalService.open(content, { centered: true });
+      this.modalService.open(content, { size: 'xl' });
       console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
@@ -95,7 +95,7 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  
+
 
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();
@@ -139,54 +139,81 @@ export class AddStudentComponent implements OnInit {
   });
   }
 
+
   async onSubmit(content: any) {
-    if (this.studentForm.valid) {
-      this.isMinting = true;
 
+    this.isMinting = true;
+
+    this.progressBarMsg = "Checking for Duplicate Records";
+    this.progressBarValue = 25;
+     
+   const dupeCounter = await this.db.checkAddDuplicate(
+     this.studentForm.controls['studentId'].value,
+      this.studentForm.controls['course'].value,
+      this.studentForm.controls['soNumber'].value
+    ).then((res: any) => {
+      return res;
+    });
+
+   
+    if (this.studentForm.valid  &&  dupeCounter.dupeCount < 1) {
+     
       // progress bar checkpoint
-      this.progressBarMsg = "Uploading Files to IPFS";
-      this.progressBarValue = 50;
+    this.progressBarMsg = "Uploading Files to IPFS";
+    this.progressBarValue = 50;
 
-      const ipfsHash = await this.uploadToIPFS(
-        this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-        .then((res) => {
-          return res;
-        });
+    const ipfsHash = await this.uploadToIPFS(
+      this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+      .then((res) => {
+        return res;
+      });
 
-      // progress bar checkpoint
-      this.progressBarMsg = "Creating Blockchain Transaction";
-      this.progressBarValue = 75;
+    // progress bar checkpoint
+    this.progressBarMsg = "Creating Blockchain Transaction";
+    this.progressBarValue = 75;
 
-       this.txnHash = await this.createTransaction(ipfsHash)
-        .then((res) => {
-          return res;
-        })
-
-      this.hasSubmit = true;
-
-      if(this.studentForm.controls['studentId'].value && this.txnHash){
-        this.filename = this.studentForm.controls['studentId'].value;
-        this.myAngularxQrCode = this.txnHash;
-      }
-
-      this.studentForm.setValue({
-        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-        dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-        txnHash: this.txnHash
+     this.txnHash = await this.createTransaction(ipfsHash)
+      .then((res) => {
+        return res;
       })
 
-      this.db.addStudent(this.studentForm.value);
+
+ 
+
+    this.hasSubmit = true;
+
+    // if(this.studentForm.controls['studentId'].value && this.txnHash){
+    //   this.filename = this.studentForm.controls['studentId'].value;
+    //   this.myAngularxQrCode = this.txnHash;
+    // }
+
+    this.studentForm.setValue({
+      studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+      middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+      lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+      course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+      sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+      soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+      dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+      txnHash:  this.txnHash
+    })
+
+    this.db.addStudent(this.studentForm.value);
+    this.studentForm.reset();
+    this.hasSubmit = false;
+    } else {
+      window.alert(dupeCounter.dupeMessage);
       this.studentForm.reset();
-      this.hasSubmit = false;
+    this.hasSubmit = false;
+    this.progressBarMsg = "";
+    this.progressBarValue = 0;
     }
+
   }
+
+  
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
     let responseValue: string = '';

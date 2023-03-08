@@ -47,7 +47,7 @@ export class ImportCsvButtonComponent implements OnInit {
   txnHash: any;
   progressBarValue: number = 0;
   progressBarMsg: string = '';
-  
+
   blobUrls: Blob[] = [];
 
   ngOnInit(): void {
@@ -107,7 +107,7 @@ export class ImportCsvButtonComponent implements OnInit {
   //       })
   //     index++;
   //   });
-  
+
   //   zip.generateAsync({type: 'blob'})
   //   .then(content =>{
   //     saveAs(content, `${this.txnHash}.zip`);
@@ -178,7 +178,7 @@ export class ImportCsvButtonComponent implements OnInit {
             txnObj.setIndex(ctr);
             this.txnObjList.push(JSON.stringify(txnObj));
 
-            item.txnHash = ipfsHash;
+            item.txnHash = JSON.stringify(txnObj);
             item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
             this.saveStudent(item);
             ctr++;

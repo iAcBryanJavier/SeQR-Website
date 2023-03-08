@@ -47,6 +47,9 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.component';
 import { ReadQrPageComponent } from './components/read-qr-page/read-qr-page.component';
+import { DiplomaComponent } from './components/diploma/diploma.component';
+import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
+import { SpinnersComponent } from './components/spinners/spinners.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +76,10 @@ import { ReadQrPageComponent } from './components/read-qr-page/read-qr-page.comp
     PagenotfoundComponent,
     ProgressbarComponent,
     ScanQrPageComponent,
-    ReadQrPageComponent
+    ReadQrPageComponent,
+    DiplomaComponent,
+    DiplomaTemplateComponent,
+    SpinnersComponent
   ],
   imports: [
     BrowserModule,
