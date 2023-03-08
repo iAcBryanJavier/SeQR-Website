@@ -5,6 +5,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { GoerliEtherscanService } from 'src/app/services/goerli-etherscan.service';
 import { DiplomaTemplateComponent } from '../diploma-template/diploma-template.component';
 import { Router } from '@angular/router';
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: 'app-scan-qr',
@@ -30,7 +31,11 @@ export class ScanQrComponent  {
 
   idUserEmail: string | null = localStorage.getItem("idUserEmail")
 
-  constructor(private db: DatabaseService, private modalService: NgbModal, private router: Router){}
+  isLoggedIn!: boolean;
+
+  constructor(private db: DatabaseService, private modalService: NgbModal, private router: Router, private authService: AuthService){
+    this.isLoggedIn  = authService.checkLogin();
+  }
 
   clearResult(): void {
     this.qrResultString = "";

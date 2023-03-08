@@ -11,8 +11,12 @@ import * as firebase from 'firebase/compat';
 export class AuthService {
   schoolName!: any;
 
+  private isLoggedIn = false;
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-    private db: AngularFireDatabase, private logging: LoggingService) { }
+    private db: AngularFireDatabase, private logging: LoggingService) {
+      const authToken = localStorage.getItem('idToken');
+      this.isLoggedIn = !!authToken;
+     }
 
   login(email: string, password: string){
     this.fireAuth.signInWithEmailAndPassword(email, password)
@@ -31,6 +35,7 @@ export class AuthService {
           
           
             localStorage.getItem('idToken');
+         
             this.router.navigateByUrl('dashboard');
         });
     }, (err): void => {
@@ -43,11 +48,11 @@ export class AuthService {
   }
 
   logout(){
+    this.isLoggedIn = false;
     this.fireAuth.signOut().then(()=>{
       this.logging.info("User logout: " + localStorage.getItem('idUserEmail'));
       localStorage.removeItem('idToken');
       localStorage.removeItem('idUserEmail');
-
       this.router.navigateByUrl('login');
     }, err =>{
       this.logging.error("Error, no existing session ID.", err);
@@ -101,6 +106,12 @@ export class AuthService {
       const errorMessage = error.message;
       alert(errorMessage);
     });
+  }
+
+  checkLogin(): boolean {
+    const authToken = localStorage.getItem('idToken');
+    this.isLoggedIn = !!authToken;
+    return this.isLoggedIn;
   }
 
 
