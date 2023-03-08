@@ -46,6 +46,7 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
 import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.component';
+import { ReadQrPageComponent } from './components/read-qr-page/read-qr-page.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.comp
     EditFormComponent,
     PagenotfoundComponent,
     ProgressbarComponent,
-    ScanQrPageComponent
+    ScanQrPageComponent,
+    ReadQrPageComponent
   ],
   imports: [
     BrowserModule,

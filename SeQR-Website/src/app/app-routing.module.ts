@@ -18,8 +18,10 @@ import { CustomErrorHandlerService } from './services/custom-error-handler.servi
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.component';
+import { ReadQrPageComponent } from './components/read-qr-page/read-qr-page.component';
 
 
+ReadQrPageComponent
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full'},
   { path: 'landing', component: LandingComponent}, 
@@ -35,6 +37,7 @@ const routes: Routes = [
   { path: 'forget-password', component: ForgetPasswordComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'read-qr', component: ReadQrComponentComponent },
+  { path: 'read-qr-page', component: ReadQrPageComponent, canActivate: [AuthGuard] },
   { path: 'edit-form', component: EditFormComponent },
   { path: 'data-analysis', component:  DataAnalysisComponent },
   { path: '**', pathMatch: 'full', 

@@ -97,3 +97,14 @@ svg{
     width: 1em;
     height: 1em;
 }
+
+@media (-webkit-device-pixel-ratio: 1.25) {
+	html {
+	  zoom: 95%;
+	}
+  
+	.card {
+	  zoom: 80%
+	}
+  
+  }
