@@ -141,78 +141,6 @@ export class DatabaseService {
     );
   }
 
-  // getStudentsByCourse(course: string): Observable<{ [key: string]: number }> {
-  //   return this.afs.list('students').snapshotChanges().pipe(
-  //     map((items: any[]) => {
-  //       const students = items.map(item => {
-  //         const data = item.payload.val();
-  //         if (data) { // check if data is not null
-  //           const student = {
-  //             studentId: this.encryptFunction.decryptData(data.studentId),
-  //             firstname: this.encryptFunction.decryptData(data.firstname),
-  //             middlename: this.encryptFunction.decryptData(data.middlename),
-  //             lastname: this.encryptFunction.decryptData(data.lastname),
-  //             course: this.encryptFunction.decryptData(data.course),
-  //             sex: this.encryptFunction.decryptData(data.sex),
-  //             soNumber: this.encryptFunction.decryptData(data.soNumber)
-  //           };
-  //           return student;
-  //         } else {
-  //           return null;
-  //         }
-  //       }).filter(item => item !== null) // remove null items from the array;
-  
-  //       const result = {
-  //         BSEMC: 0,
-  //         BSIT: 0, 
-  //         BSCS: 0, 
-  //         BSANIMATION: 0, 
-  //         BSMAD: 0, 
-  //         BSFD: 0,  
-  //         BSFILM: 0, 
-  //         BAMUSIC: 0,
-  //         BSPSYCH: 0,
-  //         BSACCT: 0
-  //       };
-  
-  //       students.forEach(student => {
-  //         if (student) { // check if data is not null
-  //           if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-  //             result.BSEMC++; 
-  //           } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
-  //             result.BSIT++;
-  //           }
-  //           else if (student.course === 'BSCS'  || student.course === 'Bachelor of Science in Computer Science' ) {
-  //             result.BSCS++;
-  //           }
-  //           else if (student.course === 'BS-ANIMATION' || student.course === 'Bachelor of Science in Animation'  ) {
-  //             result.BSANIMATION++;
-  //           }
-  //           else if (student.course === 'BS-MAD' || student.course === 'Bachelor of Arts in Multimedia Arts and Design'  ) {
-  //             result.BSMAD++;
-  //           }
-  //           else if (student.course === 'BSFD'  || student.course === 'Bachelor of Arts in Fashion Design and Technology' ) {
-  //             result.BSFD++;
-  //           }
-  //           else if (student.course === 'BS-FILM' || student.course === 'Bachelor of Arts in Film and Visual Effects' ) {
-  //             result.BSFILM++;
-  //           }
-  //           else if (student.course === 'BS-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
-  //             result.BAMUSIC++;
-  //           }
-  //           else if (student.course === 'BSPSYCH' || student.course === 'Bachelor of Arts in Psychology' ) {
-  //             result.BSPSYCH++;
-  //           }
-  //           else if (student.course === 'BSACCT' || student.course === 'Bachelor of Science in Accountancy' ) {
-  //             result.BSACCT++;
-  //           }
-  //         }
-  //       });
-  
-  //       return result;
-  //     })
-  //   );
-  // }
   getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
     BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number, BSPSYCH: number, BSACCT: number}> {
       return this.afs.list('students').snapshotChanges().pipe(
@@ -245,128 +173,119 @@ export class DatabaseService {
               BSFILM: 0, 
               BAMUSIC: 0,
               BSPSYCH: 0,
-              BSACCT: 0
+              BSACCT: 0,
+              //gender
+              BSEMC_male: 0,
+              BSEMC_female: 0,
+              BSIT_male: 0, 
+              BSIT_female: 0, 
+              BSCS_male: 0, 
+              BSCS_female: 0, 
+              BSANIMATION_male: 0, 
+              BSANIMATION_female: 0, 
+              BSMAD_male: 0, 
+              BSMAD_female: 0, 
+              BSFD_male: 0,  
+              BSFD_female: 0,  
+              BSFILM_male: 0, 
+              BSFILM_female: 0, 
+              BAMUSIC_male: 0,
+              BAMUSIC_female: 0,
+              BSPSYCH_male: 0,
+              BSPSYCH_female: 0,
+              BSACCT_male: 0,
+              BSACCT_female: 0
             };
 
-          const gender = {
-            males: 0,
-            females: 0
-          }
-      
             students.forEach(student => {
               if (student) { // check if data is not null
                 if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
                   result.BSEMC++; 
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSEMC_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSEMC_female++;
+                  }
                 } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                   result.BSIT++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSIT_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSIT_female++;
+                  }
                 }
                 else if (student.course === 'BSCS'  || student.course === 'Bachelor of Science in Computer Science' ) {
                   result.BSCS++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSCS_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSCS_female++;
+                  }
                 }
                 else if (student.course === 'BS-ANIMATION' || student.course === 'Bachelor of Science in Animation'  ) {
                   result.BSANIMATION++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSANIMATION_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSANIMATION_female++;
+                  }
                 }
                 else if (student.course === 'BS-MAD' || student.course === 'Bachelor of Arts in Multimedia Arts and Design'  ) {
                   result.BSMAD++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSMAD_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSMAD_female++;
+                  }
                 }
                 else if (student.course === 'BSFD'  || student.course === 'Bachelor of Arts in Fashion Design and Technology' ) {
                   result.BSFD++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSFD_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSFD_female++;
+                  }
                 }
                 else if (student.course === 'BS-FILM' || student.course === 'Bachelor of Arts in Film and Visual Effects' ) {
                   result.BSFILM++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSFILM_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSFILM_female++;
+                  }
                 }
-                else if (student.course === 'BS-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
+                else if (student.course === 'BA-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
                   result.BAMUSIC++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BAMUSIC_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BAMUSIC_female++;
+                  }
                 }
                 else if (student.course === 'BSPSYCH' || student.course === 'Bachelor of Arts in Psychology' ) {
                   result.BSPSYCH++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSPSYCH_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSPSYCH_female++;
+                  }
                 }
                 else if (student.course === 'BSACCT' || student.course === 'Bachelor of Science in Accountancy' ) {
                   result.BSACCT++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSACCT_male++; 
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSACCT_female++;
+                  }
                 }
               }
             });
-      
+            console.log(result);
             return result;
           })
         );
     }
 
-    getGenderByCourse(course: string): Observable<{ [key: string]: number }> {
-      return this.afs.list('students').snapshotChanges().pipe(
-        map((items: any[]) => {
-          const students = items.map(item => {
-            const data = item.payload.val();
-            if (data) { // check if data is not null
-              const student = {
-                studentId: this.encryptFunction.decryptData(data.studentId),
-                firstname: this.encryptFunction.decryptData(data.firstname),
-                middlename: this.encryptFunction.decryptData(data.middlename),
-                lastname: this.encryptFunction.decryptData(data.lastname),
-                course: this.encryptFunction.decryptData(data.course),
-                sex: this.encryptFunction.decryptData(data.sex),
-                soNumber: this.encryptFunction.decryptData(data.soNumber)
-              };
-              return student;
-            } else {
-              return null;
-            }
-          }).filter(item => item !== null) // remove null items from the array;
-    
-          const result = {
-            BSEMC: 0,
-            BSIT: 0, 
-            BSCS: 0, 
-            BSANIMATION: 0, 
-            BSMAD: 0, 
-            BSFD: 0,  
-            BSFILM: 0, 
-            BAMUSIC: 0,
-            BSPSYCH: 0,
-            BSACCT: 0
-          };
-    
-          students.forEach(student => {
-            if (student) { // check if data is not null
-              if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-                result.BSEMC++; 
-              } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
-                result.BSIT++;
-              }
-              else if (student.course === 'BSCS'  || student.course === 'Bachelor of Science in Computer Science' ) {
-                result.BSCS++;
-              }
-              else if (student.course === 'BS-ANIMATION' || student.course === 'Bachelor of Science in Animation'  ) {
-                result.BSANIMATION++;
-              }
-              else if (student.course === 'BS-MAD' || student.course === 'Bachelor of Arts in Multimedia Arts and Design'  ) {
-                result.BSMAD++;
-              }
-              else if (student.course === 'BSFD'  || student.course === 'Bachelor of Arts in Fashion Design and Technology' ) {
-                result.BSFD++;
-              }
-              else if (student.course === 'BS-FILM' || student.course === 'Bachelor of Arts in Film and Visual Effects' ) {
-                result.BSFILM++;
-              }
-              else if (student.course === 'BS-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
-                result.BAMUSIC++;
-              }
-              else if (student.course === 'BSPSYCH' || student.course === 'Bachelor of Arts in Psychology' ) {
-                result.BSPSYCH++;
-              }
-              else if (student.course === 'BSACCT' || student.course === 'Bachelor of Science in Accountancy' ) {
-                result.BSACCT++;
-              }
-            }
-          });
-    
-          return result;
-        })
-      );
-    }
-  
-  
-    
   getCourses(): Observable<any[]> {
     return this.afs.list('courses').valueChanges();
   }

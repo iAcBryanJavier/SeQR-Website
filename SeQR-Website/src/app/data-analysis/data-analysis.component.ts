@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from 'src/app/services/database.service';
 import { map } from 'rxjs/operators';
-import * as Chart from 'chart.js'
+
 import { ChartConfiguration, ChartDataset, ChartOptions } from 'chart.js';
 
 
@@ -18,9 +18,10 @@ export class DataAnalysisComponent implements OnInit {
   public totalStudents: number = 0;
   public totalMales: number = 0;
   public totalFemales: number = 0;
-  
 
   public courseCounts: any = {};
+  public courseMaleCounts: any =  {};
+  public courseFemaleCounts: any = {};
 
   public BSEMC: number = 0;
   public BSIT: number = 0;
@@ -35,6 +36,37 @@ export class DataAnalysisComponent implements OnInit {
   public selectDropdown = document.getElementById('select-dropdown');
   public selectedCourse: string = '';
   public courseStudentNum: number = 0;
+
+  //genders
+  public BSEMC_male: number = 0;
+  public BSEMC_female: number = 0;
+
+  public BSIT_male: number = 0;
+  public BSIT_female: number = 0;
+
+  public BSCS_male: number = 0;
+  public BSCS_female: number = 0;
+
+  public BSANIMATION_male: number =  0; 
+  public BSANIMATION_female: number =  0; 
+
+  public BSMAD_male: number =  0; 
+  public BSMAD_female: number =  0; 
+ 
+  public BSFD_male: number =  0; 
+  public BSFD_female: number =  0; 
+
+  public BSFILIM_male: number =  0; 
+  public BSFILM_female: number =  0; 
+ 
+  public BAMUSIC_male: number =  0; 
+  public BAMUSIC_female: number =  0; 
+
+  public BSPSYCH_male: number =  0; 
+  public BSPSYCH_female: number =  0; 
+
+  public BSACCT_male: number =  0; 
+  public BSACCT_female: number =  0; 
 
   public barChartLegend = true;
   public barChartPlugins = [];
@@ -53,6 +85,11 @@ export class DataAnalysisComponent implements OnInit {
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
   };
+
+  public barChartGenderGraph: ChartConfiguration<'bar'>['data'];
+
+   
+
   constructor(private db: DatabaseService) { 
     this.barChartData = {
       labels: ['Overall Students'],
@@ -62,13 +99,22 @@ export class DataAnalysisComponent implements OnInit {
         { data: [0], label: 'Male' }
       ]
     };
+
+    this.barChartGenderGraph = {
+      labels: [],
+      datasets: [
+        { data: [], label: 'Male' },
+        { data: [], label: 'Female' }
+      ]
+    };
   }
 
+  
   ngOnInit(): void {
     this.db.getCourses().subscribe(courses => {
       this.courses = courses;
     });
-  
+
     this.db.getStudent().subscribe(students => {
       this.students = students;
       this.totalStudents = this.students.length;
@@ -79,6 +125,7 @@ export class DataAnalysisComponent implements OnInit {
           BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number, BSPSYCH: number, BSACCT:number} = count;
           this.BSEMC = courseCounts.BSEMC;
           console.log(`Total BSEMC students: ${this.BSEMC}`);
+
       });
 
       this.db.getStudentsByCourse('BSIT').subscribe(count => {
@@ -144,6 +191,9 @@ export class DataAnalysisComponent implements OnInit {
           this.BSPSYCH = courseCounts.BSPSYCH ;
           console.log(`Total BSPSYCH students: ${this.BSPSYCH}`);
       });
+      
+      
+      
   
       this.db.getStudentsByGender('Male').subscribe(count => {
         const genderCounts: {males: number, females: number} = count;
@@ -166,25 +216,14 @@ export class DataAnalysisComponent implements OnInit {
               { data: [this.totalMales], label: 'Male' }
             ]
           };
+
   
           console.log(this.pieChartDatasets);
         });
       });
     });
+
   }
-           
-
   
-
- 
-  
-  
-
   
 }
-
-
-
-
-
-
