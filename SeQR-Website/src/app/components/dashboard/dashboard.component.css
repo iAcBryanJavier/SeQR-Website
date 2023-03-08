@@ -1,19 +1,38 @@
-body{
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
+body {
+  font-family: 'Jost', sans-serif;
   background: linear-gradient(to bottom, #E4E5E6   , #00416A);
 }
 
-.col {
-  flex-basis: 50%;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-/* https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif og background */ 
-h1 {
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  
+}
+
+.logo-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button:hover{
+  background: #00416A;
+  color: white;
+  transform: scale(1.08);
+  transition: all 0.3s ease-in-out;
+}
+
+.logo-details h1 {
   background-image: url(https://media.tenor.com/9vRAkntogEMAAAAd/background.gif);
   color: transparent;
   -moz-background-clip: text;
@@ -24,13 +43,65 @@ h1 {
   background-position: top;
 }
 
-p {
-  color: #fff;
-  font-size:18px;
+.logo-details p {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-#tooltipText {
- position: absolute;
+button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #0e2e47;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.right-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  
+}
+
+.card {
+  display: flex;
+  margin: 1rem;
+  padding: 1rem;
+  width: 15rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #2C3E50      , #000000);
+  border: none;
+  z-index: 0;
+}
+
+.card img {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+.card span {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+}
+
+.card span#tooltipText {
+  position: absolute;
  left: 50%;
  top: 0;
  transform: translateX(-50%);
@@ -44,7 +115,7 @@ p {
  transition: opacity 0.5s ease;
 }
 
-#tooltipText::before {
+.card span#tooltipText::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -54,167 +125,50 @@ p {
   border-color: #fff #0000 #0000 #0000;
 }
 
-.card:hover #tooltipText {
-  top: 72%;
-  left: 25%;
+.card:hover span#tooltipText {
+  top: 65%;
+  left: 35%;
   visibility: visible;
   opacity: 1;
-  background-color: white;
 }
 
-.card {
-  cursor: pointer;
-  width: 300px;
-  height: 230px;
-  display: inline-block;
-  margin: 12px 40px;
-  border-radius: 20px;
-  overflow: hidden;
-  border: none;
-  position:relative;
-  background: linear-gradient(to right, #2C3E50      , #000000);
-
-}
-
-.card-img {
-  display: flex;
-  width: 72%;
-  margin: auto;
-  align-items: center;
-  object-fit: fill;
-  padding-top: 20px;
-  padding-left: 16px;
-  padding-right: 8px;
-}
-
-.card-img1 {
-  display: flex;
-  width: 72%;
-  margin: auto;
-  align-items: center;
-  object-fit: fill;
-  padding-top: 30px;
-  padding-left: 29px;
-  padding-right: 0px;
-}
-
-
-
-button {
-  height: 2.5rem; /* use rem instead of px */
-  width: 10rem; /* use rem instead of px */
-  font-size: 1rem; /* use rem instead of px */
-  background: #fff;
-  border: 0;
-  border-radius: 20px;
-  outline: none;
-  margin-top: 1.5rem; /* use rem instead of px */
-
-  /* adjust styling for smaller screens */
-  @media (max-width: 768px) {
-    height: 2rem;
-    width: 8rem;
-    font-size: 0.8rem;
-    margin-top: 1rem;
-  }
-
-  /* adjust styling for even smaller screens */
-  @media (max-width: 576px) {
-    height: 1.5rem;
-    width: 6rem;
-    font-size: 0.6rem;
-    margin-top: 0.5rem;
-  }
-}
-
-.align-center-custom {
-  justify-content: center;
-}
-
-.container-custom {
-  max-width: 100%;
-}
-
-button {
-  transition: .2s ease-in;
-  cursor: pointer;
-}
-
-.card:hover {
-    transition: .2s ease-in;
-    transform: scale(1.05); 
-}
-
-button:hover{
-  background: #00416A;
-  color: white;
-  transform: scale(1.08); 
-}
-
-.left-container {
-  width: 50%;
-  display: flex;
-  float: left;
-  align-items: center;
-
-}
-.right-container {
-  background-color: black;
-  width: 43%;
-  float: right;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 5px 20px 50px  black;
-  background: linear-gradient(to bottom, #E4E5E6   , #00416A);
-
-}
-
-.logo-details {
-  text-align: left;
-  margin: auto;
-}
-
-@media (max-width: 768px) {
-    
-
-  body {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-  }
-
+@media screen and (max-width: 768px) {
   .container {
-      max-width: 100%;
-      overflow: scroll;
-      flex-direction: column;
-  }
-  
-
-  .left-container  {
-   content: none;
-  }
-  
-
-  .container .container-custom .left-container {
-    max-width: 100%;
+    flex-direction: column;
+    height: auto;
   }
 
-  .container .container-custom .left-container .logo-details {
-    max-width: 100%;
+  .card span#tooltipText  {
+    content: none;
   }
 
-  .container .right-container {
-      max-width: 100%;
-      flex-direction: column;
+  .logo-details h1 {
+    font-size: 130px;
   }
 
-  .container .container-custom .right-container .card {
-    max-width: 0%;
-  }
-  
-  button {
-      width: 80%;
+  .logo-details p {
+    font-size: 18px;
+    color: black;
+    margin-bottom: 20px;
+    text-align: center;
   }
 
+  .left-container,
+  .right-container {
+    width: 100%;
+  }
 
+  .left-container {
+    margin-top: 137px;
+    margin-bottom: 51px;
+  }
+
+  .card {
+    width: 80%;
+    margin: 10px auto;
+  }
+
+  .card:nth-child(1), .card:nth-child(2), .card:nth-child(5) {
+    display: none;
+  }
 }
