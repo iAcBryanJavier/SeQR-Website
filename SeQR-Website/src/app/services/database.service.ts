@@ -4,21 +4,30 @@ import { Student } from '../interfaces/Student';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import { LoggingService } from './logging.service';
-import { filter, map, Observable, take } from 'rxjs';
+import { filter, map, switchMap, Observable, take } from 'rxjs';
 import { Encryption } from '../models/encryption';
+import { IpfsStudent } from '../interfaces/IpfsStudent';
+import { GoerliEtherscanService } from './goerli-etherscan.service';
+import { PinataService } from './pinata.service';
+import { environment } from 'src/environments/environment';
+import web3 from 'web3';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DatabaseService {
+
   student!: AngularFireObject<Student>;
   studentList!: Observable <any[]>;
   decryptedList!: Observable <any[]>;
   encryptFunction = new Encryption;
   public maleCount = 0;
   public femaleCount = 0;
+  private BASE_URL = 'https://api-goerli.etherscan.io/api';
 
-  constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService) { }
+  constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService,
+    private goerliService: GoerliEtherscanService, private pinataService: PinataService) { }
 
   //add student
   addStudent(student: any){
@@ -54,7 +63,7 @@ export class DatabaseService {
     studentToUpdate.subscribe((foundStudent) => {
         if (foundStudent) {
 
-          console.log(foundStudent);         
+          console.log(foundStudent);
           ref.update(foundStudent.key, student).then(() => {
                 window.alert('Student record updated successfully!');
                 this.logs.info("User: " + localStorage.getItem('idUserEmail') + " updated a student record");
@@ -89,7 +98,7 @@ async checkAddDuplicate(studentId: string | null, course: string | null, soNumbe
     dupeCount: 0,
     dupeMessage: "",
   };
-  
+
   return new Promise<any>((resolve, reject) => {
     this.afs.list('students').snapshotChanges().subscribe((items: any[]) => {
       const students = items.map(item => {
@@ -97,13 +106,13 @@ async checkAddDuplicate(studentId: string | null, course: string | null, soNumbe
         if (data) {
           if(this.encryptFunction.decryptData(data.soNumber) === soNumber ){
             result.dupeMessage = "This Diploma number already exists!"
-            result.dupeCount++; 
-           }else if(this.encryptFunction.decryptData(data.course) === course && 
+            result.dupeCount++;
+           }else if(this.encryptFunction.decryptData(data.course) === course &&
            this.encryptFunction.decryptData(data.studentId) === studentId ){
             result.dupeMessage = "This Student already has a diploma record with the same degree!"
-            result.dupeCount++; 
+            result.dupeCount++;
            }
-        
+
         }
         return data;
       }).filter(item => item !== null) // remove null items from the array;
@@ -120,7 +129,7 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
     dupeCount: 0,
     dupeMessage: "",
   };
-  
+
   return new Promise<any>((resolve, reject) => {
     this.afs.list('students').snapshotChanges().subscribe((items: any[]) => {
       const students = items.map(item => {
@@ -128,13 +137,13 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
         if (data) {
           if(this.encryptFunction.decryptData(data.soNumber) === soNumber ){
             result.dupeMessage = "This Diploma number already exists!"
-            result.dupeCount++; 
-           }else if(this.encryptFunction.decryptData(data.course) === course && 
+            result.dupeCount++;
+           }else if(this.encryptFunction.decryptData(data.course) === course &&
            this.encryptFunction.decryptData(data.studentId) === studentId ){
             result.dupeMessage = "This Student already has a diploma record with the same degree!"
-            result.dupeCount++; 
+            result.dupeCount++;
            }
-        
+
         }
         return data;
       }).filter(item => item !== null) // remove null items from the array;
@@ -157,14 +166,14 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
     console.log(this.getStudent());
     this.studentList = this.getStudent();
   }
-  
-  
+
+
 
   getStudent(): Observable<any[]> {
     return this.afs.list('students').snapshotChanges().pipe(
       map((items: any[]) => {
         return items.map(item => {
-       
+
           const data = item.payload.val();
           if (data) { // check if data is not null
             return {
@@ -206,22 +215,22 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
             return null;
           }
         }).filter(item => item !== null) // remove null items from the array;
-  
+
         const result = {
           males: 0,
           females: 0
         };
-  
+
         students.forEach(student => {
           if (student) { // check if data is not null
             if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
-              result.males++; 
+              result.males++;
             } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
               result.females++;
             }
           }
         });
-  
+
         return result;
       })
     );
@@ -247,24 +256,24 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
   //           return null;
   //         }
   //       }).filter(item => item !== null) // remove null items from the array;
-  
+
   //       const result = {
   //         BSEMC: 0,
-  //         BSIT: 0, 
-  //         BSCS: 0, 
-  //         BSANIMATION: 0, 
-  //         BSMAD: 0, 
-  //         BSFD: 0,  
-  //         BSFILM: 0, 
+  //         BSIT: 0,
+  //         BSCS: 0,
+  //         BSANIMATION: 0,
+  //         BSMAD: 0,
+  //         BSFD: 0,
+  //         BSFILM: 0,
   //         BAMUSIC: 0,
   //         BSPSYCH: 0,
   //         BSACCT: 0
   //       };
-  
+
   //       students.forEach(student => {
   //         if (student) { // check if data is not null
   //           if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-  //             result.BSEMC++; 
+  //             result.BSEMC++;
   //           } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
   //             result.BSIT++;
   //           }
@@ -294,12 +303,12 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
   //           }
   //         }
   //       });
-  
+
   //       return result;
   //     })
   //   );
   // }
-  getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number, 
+  getStudentsByCourse(course: string): Observable<{ BSEMC: number, BSIT: number, BSCS: number, BSANIMATION: number,
     BSMAD: number, BSFD: number,  BSFILM: number, BAMUSIC: number, BSPSYCH: number, BSACCT: number}> {
       return this.afs.list('students').snapshotChanges().pipe(
         map((items: any[]) => {
@@ -320,15 +329,15 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
               return null;
             }
           }).filter(item => item !== null) // remove null items from the array;
-  
+
           const result = {
               BSEMC: 0,
-              BSIT: 0, 
-              BSCS: 0, 
-              BSANIMATION: 0, 
-              BSMAD: 0, 
-              BSFD: 0,  
-              BSFILM: 0, 
+              BSIT: 0,
+              BSCS: 0,
+              BSANIMATION: 0,
+              BSMAD: 0,
+              BSFD: 0,
+              BSFILM: 0,
               BAMUSIC: 0,
               BSPSYCH: 0,
               BSACCT: 0
@@ -338,11 +347,11 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
             males: 0,
             females: 0
           }
-      
+
             students.forEach(student => {
               if (student) { // check if data is not null
                 if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-                  result.BSEMC++; 
+                  result.BSEMC++;
                 } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                   result.BSIT++;
                 }
@@ -372,7 +381,7 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
                 }
               }
             });
-      
+
             return result;
           })
         );
@@ -398,24 +407,24 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
               return null;
             }
           }).filter(item => item !== null) // remove null items from the array;
-    
+
           const result = {
             BSEMC: 0,
-            BSIT: 0, 
-            BSCS: 0, 
-            BSANIMATION: 0, 
-            BSMAD: 0, 
-            BSFD: 0,  
-            BSFILM: 0, 
+            BSIT: 0,
+            BSCS: 0,
+            BSANIMATION: 0,
+            BSMAD: 0,
+            BSFD: 0,
+            BSFILM: 0,
             BAMUSIC: 0,
             BSPSYCH: 0,
             BSACCT: 0
           };
-    
+
           students.forEach(student => {
             if (student) { // check if data is not null
               if (student.course === 'BSEMC'  || student.course === 'Bachelor of Science in Entertainment and Multimedia Computing'  ){
-                result.BSEMC++; 
+                result.BSEMC++;
               } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                 result.BSIT++;
               }
@@ -445,18 +454,18 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
               }
             }
           });
-    
+
           return result;
         })
       );
     }
-  
-  
-    
+
+
+
   getCourses(): Observable<any[]> {
     return this.afs.list('courses').valueChanges();
   }
-  
+
   getSearchStudent(query: string): Observable<any[]> {
     return this.studentList.pipe(
       map((students: any[]) => {
@@ -467,5 +476,58 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
       })
     );
   }
-  
+
+  getStudentFromIpfs(ipfsLink: string): Observable<any>{
+    return this.http.get(ipfsLink).pipe(
+      switchMap((user: any)=>{
+        return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
+      })
+    )
+  }
+
+  getStudentDiplomaFromBlockchain(txnHash: string, index: number): Observable<any> {
+    const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txnHash}&apikey=${environment.goerli_etherscan.apiKey}`
+    if (index == -1) {
+      return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
+        switchMap((item: any) =>{
+          let ipfsLink;
+          try{
+            ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 148)
+          }catch(err){
+            ipfsLink = '';
+          }
+          return this.http.get(ipfsLink.toString()).pipe(
+            switchMap((user: any) => {
+              return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
+            })
+          )
+        })
+      )
+    } else {
+      return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
+        switchMap((item: any) =>{
+          let ipfsLink;
+          try{
+            ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 148)
+          }catch(err){
+            ipfsLink = '';
+          }
+          return this.http.get(ipfsLink.toString()).pipe(
+            switchMap((user: any) => {
+              return this.getSearchStudent(this.encryptFunction.decryptData(user[index].studentId));
+            })
+          )
+        })
+      )
+    }
+  }
+
+  getStudentFromIpfsByIndex(ipfsLink: string, index: number): Observable<any>{
+    return this.http.get(ipfsLink).pipe(
+      switchMap((user: any)=>{
+        return this.getSearchStudent(this.encryptFunction.decryptData(user[index].studentId));
+      })
+    )
+  }
+
 }

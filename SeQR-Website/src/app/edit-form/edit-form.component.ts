@@ -33,7 +33,7 @@ export class EditFormComponent implements OnInit {
   passedCourse!: any;
   passedStudent!: Student;
   public ipfsUrlPrefix: string  = "https://ipfs.io/ipfs/";
-  public ipfsHash: any; 
+  public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
   public sanitizedUrl!: string | null;
@@ -57,7 +57,7 @@ export class EditFormComponent implements OnInit {
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
   encryptFunction = new Encryption();
 
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -71,42 +71,38 @@ export class EditFormComponent implements OnInit {
   })
 
   constructor(private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
-   
-  
+
+
     this.passedStudent = this.formService.getStudentData();
-   
- 
-    
-   
-  
-    if(this.passedStudent){
+
+    if (this.passedStudent) {
       this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
-    this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
-    this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
-  
-      this.passedCourse =  this.formService.getCourseData();
-    this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
-    this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
-    this.studentForm.patchValue({
-      course: this.passedStudent.course
-    });
-      
-    }else{
+      this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
+      this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
+
+      this.passedCourse = this.formService.getCourseData();
+      this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
+      this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
+      this.studentForm.patchValue({
+        course: this.passedStudent.course
+      });
+
+    } else {
       this.router.navigate(['/dashboard']);
     }
-   }
- 
+  }
+
    ngOnInit(): void {
 
     this.checkIfMetamaskInstalled();
     // this.fetchNFTs();
- 
-  
-    
+
+
+
 
 
   }
-  // NEED TO IMPORT DOM SANITZER 
+  // NEED TO IMPORT DOM SANITZER
 
   isButtonTrue(gender: string): boolean {
     // Check if the passedStudent object exists and has a valid sex property
@@ -164,10 +160,10 @@ export class EditFormComponent implements OnInit {
       console.log(this.qrCodeDownloadLink);
     }
     // TODO: remove this method
- 
+
   }
 
-  
+
 
   private checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
@@ -193,16 +189,16 @@ export class EditFormComponent implements OnInit {
     this.pinata.pinJSONToIPFS(body, options).then((result) => {
       //handle results here
      this.createTransaction(result.IpfsHash);
-      
+
   }).catch((err) => {
       throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-  }); 
+  });
   }
 
   async onSubmit() {
     if (this.studentForm.valid) {
-    
+
       const ipfsHash = await this.uploadToIPFS(
         this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
         this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
@@ -221,7 +217,7 @@ export class EditFormComponent implements OnInit {
         this.filename = this.studentForm.controls['studentId'].value;
         this.myAngularxQrCode = txnHash;
       }
-      
+
       this.studentForm.setValue({
         studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
         firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
@@ -237,7 +233,7 @@ export class EditFormComponent implements OnInit {
       this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
       this.hasSubmit = false;
       this.backClick();
-      
+
 
     }
   }
@@ -275,7 +271,7 @@ export class EditFormComponent implements OnInit {
     const provider = new ethers.providers.Web3Provider(this.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
-    
+
     try{
       const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
 

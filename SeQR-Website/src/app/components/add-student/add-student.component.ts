@@ -44,7 +44,7 @@ export class AddStudentComponent implements OnInit {
   encryptFunction = new Encryption();
   public progressBarValue: number = 0;
   public progressBarMsg: string = "";
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -68,7 +68,7 @@ export class AddStudentComponent implements OnInit {
        this.progressBarValue = 100;
 
       // Opens the modal and puts the qr code inside the content
-      this.modalService.open(content, { centered: true });
+      this.modalService.open(content, { size: 'xl' });
       console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
@@ -95,7 +95,7 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  
+
 
   ngOnInit(): void {
     this.checkIfMetamaskInstalled();

@@ -24,7 +24,7 @@ export class EditStudentComponent implements OnInit {
   next_button = "Next";
   decryptedStudentList!: Observable <any[]>;
   encryptFunction = new Encryption();
-  constructor(private students: DatabaseService, private router: Router, private route: ActivatedRoute, private formService: EditFormService) { 
+  constructor(private students: DatabaseService, private router: Router, private route: ActivatedRoute, private formService: EditFormService) {
         this.students.setStudentList();
         this.setTableItems(this.students.getStudent());
 
@@ -46,10 +46,10 @@ export class EditStudentComponent implements OnInit {
 
   setTableItems(list: Observable <any[]>){
 		list.subscribe(items =>{
-			
+
       this.items = items.reverse();
       this.listItem = this.getPageItems(this.currentPage);
-     this.pageCount = this.getPages();
+      this.pageCount = this.getPages();
     });
   }
 
@@ -63,7 +63,7 @@ export class EditStudentComponent implements OnInit {
     var pageNumber: number = +selected;
     this.setPage(pageNumber);
     this.currentPage = pageNumber;
-    
+
   }
 
  setPageAdd(page: number): void {
@@ -91,19 +91,17 @@ setPage(page: number): void {
     this.router.navigate(['/edit-form']);
   }
 
- 
+
 
 
   getSearch(searchQuery: string): Observable <any[]>{
- 
+
     return this.students.getSearchStudent(searchQuery);
-  
+
   }
 
   getPages(): number {
     const pageCount = Math.ceil(this.items.length / 10);
-  
-
     return pageCount;
   }
   public range(count: number): number[] {
