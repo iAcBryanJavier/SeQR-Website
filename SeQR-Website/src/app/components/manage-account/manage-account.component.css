@@ -65,3 +65,14 @@ button:hover{
 	width: 30px;
 	height: 30px;
 }
+
+@media (-webkit-device-pixel-ratio: 1.25) {
+	html {
+	  zoom: 95%;
+	}
+  
+	.card {
+	  zoom: 80%
+	}
+  
+}

@@ -21,6 +21,7 @@
             <div class ="form-group was-validated">
                 <input type="password" id="password" [(ngModel)]= "password" placeholder="password" [ngModelOptions]="{standalone:  true}" required>
                 <button (click)="login()" type="submit">Login</button>
+                <button routerLink="/landing">Back To Landing</button>
             </div>
                 
             </form>

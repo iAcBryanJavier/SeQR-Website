@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScanLandingComponent } from './scan-landing.component';
+import { ReadQrPageComponent } from './read-qr-page.component';
 
-describe('ScanLandingComponent', () => {
-  let component: ScanLandingComponent;
-  let fixture: ComponentFixture<ScanLandingComponent>;
+describe('ReadQrPageComponent', () => {
+  let component: ReadQrPageComponent;
+  let fixture: ComponentFixture<ReadQrPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ScanLandingComponent ]
+      declarations: [ ReadQrPageComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ScanLandingComponent);
+    fixture = TestBed.createComponent(ReadQrPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-  selector: 'read-qr-component',
+  selector: 'app-read-qr',
   templateUrl: './read-qr-component.component.html',
   styleUrls: ['./read-qr-component.component.css']
 })
@@ -14,6 +14,7 @@ export class ReadQrComponentComponent  {
   // declare GetQrData: string;
   result!: any;
   url: string|null|ArrayBuffer = '';
+  idUserEmail: string | null = localStorage.getItem("idUserEmail");
   ipfsLink: string = '';
   txnHash: string = '';
   ipfsIndex!: number;

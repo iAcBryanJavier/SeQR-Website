@@ -28,6 +28,8 @@ export class ScanQrComponent  {
   isLoading: boolean = false;
   progressBarMsg: string = '';
 
+  idUserEmail: string | null = localStorage.getItem("idUserEmail")
+
   constructor(private db: DatabaseService, private modalService: NgbModal, private router: Router){}
 
   clearResult(): void {

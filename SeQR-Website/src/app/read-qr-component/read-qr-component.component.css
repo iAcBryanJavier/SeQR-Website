@@ -1,6 +1,5 @@
 button{
 	margin: 10px auto;
-	justify-content: center;
 	display: block;
 	font-size: 1.1em;
 	font-weight: bold;
@@ -27,9 +26,7 @@ img {
 }
 
 body {
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 ;
+	margin: 0;
 	padding: 0;
 	display: flex;
 	justify-content: center;
@@ -37,42 +34,77 @@ body {
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
 	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+
 }
 
 .main{
-	width: 900px;
-	height: 700px;
+	max-width: 100%;
+	height: auto;
 	background: red;
 	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-	border-radius: 10px;
-	box-shadow: 5px 20px 50px #000;
-	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+	background: none;
 }
-
 
 .center {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
-
 }
 
 .dropdown {
     position: relative;
     display: inline-block;
-  }
-  
-  .dropdown-menu {
+}
+
+.dropdown-menu {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-  }
+}
   
-  .dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown-menu {
     display: block;
-  }
+}
+
+@media screen and (max-width: 600px) {
+	.main {
+		border-radius: 0;
+		box-shadow: none;
+	}
+	.hide-component.upload-qr {
+		max-width: 70%;
+		margin: 0 auto;
+	  }
+
+}
+
+
+@media screen and (max-width: 767px) {
+	input {
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+	input {
+		font-size: 16px;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	input {
+		font-size: 18px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	input {
+		font-size: 12px;
+		padding: 5px;
+	}
+}
+

@@ -20,8 +20,9 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
-        <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
-        <a class="dropdown-item" routerLink="/login">Login</a>
+        <a class="dropdown-item" routerLink="/read-qr-page">Upload QR</a>
+        <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
+
       </div>
     </div>
     <div class="main">

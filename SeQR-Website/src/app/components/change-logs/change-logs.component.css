@@ -41,6 +41,10 @@ button{
 	padding-bottom: 30px;
 }
 
+.pagination {
+    margin-bottom: 50px;
+}
+
 button:disabled {
 	background-color:lightblue;
 	cursor: not-allowed;
@@ -59,8 +63,8 @@ p, td, th{
 
 
 button:hover{
-	background: #00416A;
-    color: white;
+	background:  #4F97A3;
+    color: black;
     transform: scale(1.08);
     cursor: pointer; 
 }
@@ -74,30 +78,30 @@ svg{
     height: 1em;
 }
 
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    background-color: #ADD8E6;
+ }
+
+.table-striped>tbody>tr:nth-of-type(even)>* {
+    background-color: #B0E0E6;
+}
+
 .search-mbl, .search-mbl-btn{
     display: none;
 }
-
-.input-group>.form-control, .input-group>.form-floating, .input-group>.form-select {
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    min-width: 0;
-    font-size: 17px;
-}
-
-select {
-    word-wrap: normal;
-    padding: -20px 30px;
-    margin-left: -120px;
-    margin-right: -120px;
-    width: 7.5%;
-    text-align: center;
-}
-
 
 .table>tbody {
     vertical-align: inherit;
     font-size: 1.25em !important;
 }
 
+@media (-webkit-device-pixel-ratio: 1.25) {
+	html {
+	  zoom: 95%;
+	}
+  
+	.card {
+	  zoom: 80%
+	}
+  
+}

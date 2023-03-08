@@ -35,7 +35,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { FilterPipe } from './filter.pipe';
 import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
-import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
@@ -46,6 +45,8 @@ import { NgChartsModule } from 'ng2-charts';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { ScanQrPageComponent } from './components/scan-qr-page/scan-qr-page.component';
+import { ReadQrPageComponent } from './components/read-qr-page/read-qr-page.component';
 import { DiplomaComponent } from './components/diploma/diploma.component';
 import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
 import { SpinnersComponent } from './components/spinners/spinners.component';
@@ -67,7 +68,6 @@ import { SpinnersComponent } from './components/spinners/spinners.component';
     RegisterComponent,
     ReadQrComponentComponent,
     LandingComponent,
-    ScanLandingComponent,
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
@@ -75,6 +75,8 @@ import { SpinnersComponent } from './components/spinners/spinners.component';
     EditFormComponent,
     PagenotfoundComponent,
     ProgressbarComponent,
+    ScanQrPageComponent,
+    ReadQrPageComponent,
     DiplomaComponent,
     DiplomaTemplateComponent,
     SpinnersComponent

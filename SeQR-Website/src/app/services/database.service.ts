@@ -340,7 +340,28 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
               BSFILM: 0,
               BAMUSIC: 0,
               BSPSYCH: 0,
-              BSACCT: 0
+              BSACCT: 0,
+              //gender
+              BSEMC_male: 0,
+              BSEMC_female: 0,
+              BSIT_male: 0,
+              BSIT_female: 0,
+              BSCS_male: 0,
+              BSCS_female: 0,
+              BSANIMATION_male: 0,
+              BSANIMATION_female: 0,
+              BSMAD_male: 0,
+              BSMAD_female: 0,
+              BSFD_male: 0,
+              BSFD_female: 0,
+              BSFILM_male: 0,
+              BSFILM_female: 0,
+              BAMUSIC_male: 0,
+              BAMUSIC_female: 0,
+              BSPSYCH_male: 0,
+              BSPSYCH_female: 0,
+              BSACCT_male: 0,
+              BSACCT_female: 0
             };
 
           const gender = {
@@ -354,34 +375,78 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
                   result.BSEMC++;
                 } else if (student.course === 'BSIT' || student.course === 'Bachelor of Science in Information Technology'  ) {
                   result.BSIT++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSIT_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSIT_female++;
+                  }
                 }
                 else if (student.course === 'BSCS'  || student.course === 'Bachelor of Science in Computer Science' ) {
                   result.BSCS++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSCS_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSCS_female++;
+                  }
                 }
                 else if (student.course === 'BS-ANIMATION' || student.course === 'Bachelor of Science in Animation'  ) {
                   result.BSANIMATION++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSANIMATION_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSANIMATION_female++;
+                  }
                 }
                 else if (student.course === 'BS-MAD' || student.course === 'Bachelor of Arts in Multimedia Arts and Design'  ) {
                   result.BSMAD++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSMAD_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSMAD_female++;
+                  }
                 }
                 else if (student.course === 'BSFD'  || student.course === 'Bachelor of Arts in Fashion Design and Technology' ) {
                   result.BSFD++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSFD_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSFD_female++;
+                  }
                 }
                 else if (student.course === 'BS-FILM' || student.course === 'Bachelor of Arts in Film and Visual Effects' ) {
                   result.BSFILM++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSFILM_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSFILM_female++;
+                  }
                 }
-                else if (student.course === 'BS-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
+                else if (student.course === 'BA-MUSIC' || student.course === 'Bachelor of Arts in Music Production and Sound Design' ) {
                   result.BAMUSIC++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BAMUSIC_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BAMUSIC_female++;
+                  }
                 }
                 else if (student.course === 'BSPSYCH' || student.course === 'Bachelor of Arts in Psychology' ) {
                   result.BSPSYCH++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSPSYCH_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSPSYCH_female++;
+                  }
                 }
                 else if (student.course === 'BSACCT' || student.course === 'Bachelor of Science in Accountancy' ) {
                   result.BSACCT++;
+                  if (student.sex === 'Male' || student.sex === 'male'|| student.sex === 'm' || student.sex === 'M' ){
+                    result.BSACCT_male++;
+                  } else if (student.sex === 'Female' || student.sex === 'female' || student.sex === 'f' || student.sex === 'F'  ) {
+                    result.BSACCT_female++;
+                  }
                 }
               }
             });
-
             return result;
           })
         );
