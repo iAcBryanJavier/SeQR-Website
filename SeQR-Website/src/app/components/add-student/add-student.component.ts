@@ -61,6 +61,7 @@ export class AddStudentComponent implements OnInit {
   constructor(private db: DatabaseService, private sanitizer: DomSanitizer
     , private modalService: NgbModal) {}
 
+
   onChangeURL(url?: SafeUrl, content?: any) {
     if (this.myAngularxQrCode != "") {
        // progress bar checkpoint
@@ -203,11 +204,13 @@ export class AddStudentComponent implements OnInit {
     this.db.addStudent(this.studentForm.value);
     this.studentForm.reset();
     this.hasSubmit = false;
+    this.progressBarValue = 0;
+    this.progressBarMsg = '';
     } else {
       window.alert(dupeCounter.dupeMessage);
       this.studentForm.reset();
     this.hasSubmit = false;
-    this.progressBarMsg = "";
+
     this.progressBarValue = 0;
     }
 

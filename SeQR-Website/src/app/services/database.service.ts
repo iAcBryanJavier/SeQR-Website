@@ -18,7 +18,7 @@ import web3 from 'web3';
 
 export class DatabaseService {
 
-  student!: AngularFireObject<Student>;
+ 
   studentList!: Observable <any[]>;
   decryptedList!: Observable <any[]>;
   encryptFunction = new Encryption;
@@ -62,7 +62,7 @@ export class DatabaseService {
     );
     studentToUpdate.subscribe((foundStudent) => {
         if (foundStudent) {
-
+          ref.remove
           console.log(foundStudent);
           ref.update(foundStudent.key, student).then(() => {
                 window.alert('Student record updated successfully!');
@@ -177,6 +177,7 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
           const data = item.payload.val();
           if (data) { // check if data is not null
             return {
+              key: item.payload.key,
               studentId: this.encryptFunction.decryptData(data.studentId),
               firstname: this.encryptFunction.decryptData(data.firstname),
               middlename: this.encryptFunction.decryptData(data.middlename),
@@ -595,4 +596,22 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
     )
   }
 
+  deleteStudentRecord(recordKey: any){
+
+    const confirmed = window.confirm("Are you sure you want to delete this record?");
+if (confirmed) {
+  try {
+    const ref = this.afs.list('students');
+    ref.remove(recordKey);
+  } catch (error) {
+  
+  }
+
+} else {
+  // user clicked "Cancel"
+  // do nothing
+}
+  
+
+}
 }
