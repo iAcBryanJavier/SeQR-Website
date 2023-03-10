@@ -22,10 +22,10 @@ export class NavbarComponent implements OnInit{
     if (this.MetamaskService.checkIfMetamaskInstalled()) {
       this.isIdentified = true;
       if (this.ethereum) {
-        // this.connectMetamask();
+      
       }
     }else{
-      this.authService.logout();
+
     }
   }
 

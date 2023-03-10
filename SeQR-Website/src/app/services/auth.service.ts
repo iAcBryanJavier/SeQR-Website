@@ -7,6 +7,7 @@ import * as firebase from 'firebase/compat';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
 import { MetamaskService } from './metamask.service';
+import { interval } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -48,9 +49,13 @@ export class AuthService {
           
       });
     }else{
+       
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "Metamask not detected, please install metamask before logging in. If you're on mobile, Metamask is not yet supported on the browser. Please switch to a Computer Device.";
-      
+      setTimeout(() => {
+        window.open('https://metamask.io', '_blank', 'noopener,noreferrer');
+      }, 1500);
+
       
     }
   }
@@ -105,7 +110,7 @@ export class AuthService {
   
   
    resetPassword(email: any){
-    console.log(email);
+
     return this.fireAuth.sendPasswordResetEmail(email).then(() => {
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "Email has been sent! Check your email." ;

@@ -13,13 +13,13 @@ export class MetamaskService {
   constructor() { }
 
   
-  checkIfMetamaskInstalled(): boolean {
+   checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
+      this.ethereum = (window as any).ethereum;
       return true;
     }
     return false;
   }
-
 
   private storeMetamask() {
     localStorage.setItem(this.METAMASK_KEY, this.ownerAddress);
