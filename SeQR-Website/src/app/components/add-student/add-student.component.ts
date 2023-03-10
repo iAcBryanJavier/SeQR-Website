@@ -106,7 +106,7 @@ export class AddStudentComponent implements OnInit {
 
     this.db.getCourses().subscribe(i => {
       this.courses = i;
-      console.log(this.courses);
+      // console.log(this.courses);
     });
 
   }

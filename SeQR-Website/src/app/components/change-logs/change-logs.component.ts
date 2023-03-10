@@ -91,7 +91,7 @@ setPage(page: number): void {
   getPages(): number {
     const pageCount = Math.ceil(this.items.length / 10);
   
-    console.log(pageCount);
+    // console.log(pageCount);
     // if(this.currentPage == pageCount){
     //   this.next_button = "";
     // }else{

@@ -166,7 +166,7 @@ async checkEditDuplicate(studentId: string | null, course: string | null, soNumb
 
 
   setStudentList(){
-    console.log(this.getStudent());
+    // console.log(this.getStudent());
     this.studentList = this.getStudent();
   }
 
