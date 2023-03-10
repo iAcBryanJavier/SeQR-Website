@@ -50,7 +50,7 @@ export class ScanQrComponent  {
 
   onCodeResult(resultString: string) {
     this.toggleScannerStatus();
-    this.qrResultString = resultString;
+    this.scannerStatus = false;
     // this.isLoading = true;
     // this.progressBarMsg = 'Loading Student Diploma...'
     try{

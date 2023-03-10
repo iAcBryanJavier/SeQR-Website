@@ -16,40 +16,15 @@ export class AuthService {
 
   private isLoggedIn = false;
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-    private db: AngularFireDatabase, private logging: LoggingService) {
+    private db: AngularFireDatabase, private logging: LoggingService, private modalService: NgbModal, private MetamaskService: MetamaskService) {
       const authToken = localStorage.getItem('idToken');
       this.isLoggedIn = !!authToken;
      }
 
   login(email: string, password: string){
-    this.fireAuth.signInWithEmailAndPassword(email, password)
-    .then(user => {
-        user.user?.getIdToken().then(idToken => {
-            // Store the token in local storage
-            const userEmail = user.user?.email
-            localStorage.setItem('idToken', idToken);
-            if(userEmail){
-              localStorage.setItem('idUserEmail', userEmail);
-              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
-            }else{
-              localStorage.setItem('idUserEmail', "Guest Account");
-              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
-            }
-          
-          
-            localStorage.getItem('idToken');
-         
-            this.router.navigateByUrl('dashboard');
-        });
-    }, (err): void => {
-        this.logging.error("Login Failed, reason: might be forms related.", err);
-        window.alert("The email or password is incorrect");
-        this.router.navigateByUrl('/login');
-        
-    });
+
 
   //METAMASK CALL
-
     if(this.MetamaskService.checkIfMetamaskInstalled()){
       this.fireAuth.signInWithEmailAndPassword(email, password)
       .then(user => {
