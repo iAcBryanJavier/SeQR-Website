@@ -22,7 +22,8 @@ import { MetamaskService } from 'src/app/services/metamask.service';
   styleUrls: ['./add-student.component.css']
 })
 export class AddStudentComponent implements OnInit {
-  public ipfsUrlPrefix: string  = "https://gateway.pinata.cloud/ipfs/";
+  public ipfsUrlPrefix: string  = environment.pinatacloud.gateway;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
@@ -262,7 +263,7 @@ export class AddStudentComponent implements OnInit {
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
     try{
-      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
+      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
 
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();

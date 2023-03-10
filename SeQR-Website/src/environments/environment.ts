@@ -26,6 +26,9 @@ export const environment = {
     apiKey: '6fd36318b68fbfe0ab29',
     apiJwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI5OTI4ODdmMi05Y2Y5LTQzOTctOGRiZC00MDU4ZTY0MTBkOWYiLCJlbWFpbCI6IjIwMTkwMTE2NUBpYWNhZGVteS5lZHUucGgiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiNmZkMzYzMThiNjhmYmZlMGFiMjkiLCJzY29wZWRLZXlTZWNyZXQiOiI1YzY4NjcxZmUxNGFjNDc3YjRlZWE5MDM0NTRiOTk4MDBjMjY1Yzc1OWE0YmY3Nzg5ZDlkMTgzZGY4MjdlOWZjIiwiaWF0IjoxNjc3NTc5MzEzfQ.VqV0UI1QM-SIuGzUDNSUtwSNbYajTu4mPBpntViqsCw',
     apiSecret: '5c68671fe14ac477b4eea903454b99800c265c759a4bf7789d9d183df827e9fc',
+    gateway: 'https://seqr.mypinata.cloud/ipfs/',
+    gatewayToken: 'WjFIp9LeIazbR30sWdz24UAUvKdEWt8nn13bPwtCefimAahimRG5hmEKjyKak4KQ',
+    gatewayTokenQuery: '?pinataGatewayToken='
   },
   goerli_etherscan:{
     apiKey: '375SZYKA558DGXRVV74AQ9BHDT9HB6GK4S'

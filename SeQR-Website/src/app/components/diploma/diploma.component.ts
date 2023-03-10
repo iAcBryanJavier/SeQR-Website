@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { take } from 'rxjs';
 import { DatabaseService } from 'src/app/services/database.service';
 import { PinataService } from 'src/app/services/pinata.service';
 import { DiplomaTemplateComponent } from '../diploma-template/diploma-template.component';
@@ -45,45 +46,9 @@ export class DiplomaComponent implements OnInit, OnChanges {
         modalRef.componentInstance.ipfsData = item[0];
 
         this.refresh();
-      })
+      }
+      )
 
-
-
-      // if(this.index == -1){
-      //   this.db.getStudentFromIpfs(this.ipfsLink).subscribe(item =>{
-      //     this.isLoading = true;
-      //     this.progressBarValue = 75
-      //     this.progressBarMsg = 'Getting Student From IPFS'
-
-      //     this.isLoadingEvent.emit(this.isLoading);
-      //     this.progressBarValueEvent.emit(this.progressBarValue);
-      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
-
-      //     this.ipfsData = item[0];
-
-      //     this.progressBarValue = 100
-      //     this.progressBarMsg = 'Displaying Student Diploma'
-      //     this.progressBarValueEvent.emit(this.progressBarValue);
-      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
-
-      //     const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
-		  //     modalRef.componentInstance.ipfsData = item[0];
-      //   })
-      // }else{
-      //   console.log(this.txnHash);
-      //   this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.index).subscribe(item =>{
-      //     this.isLoading = true;
-      //     this.progressBarValue = 100;
-      //     this.progressBarMsg = 'Displaying Student from IPFS';
-
-      //     this.isLoadingEvent.emit(this.isLoading);
-      //     this.progressBarValueEvent.emit(this.progressBarValue);
-      //     this.progressBarMsgEvent.emit(this.progressBarMsg);
-
-      //     const modalRef = this.modalService.open(NgbdModalContent, { size: 'xl' });
-		  //     modalRef.componentInstance.ipfsData = item[0];
-      //   })
-      // }
     }
   }
 
