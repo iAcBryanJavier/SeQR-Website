@@ -4,6 +4,9 @@ import { GoerliEtherscanService } from '../services/goerli-etherscan.service';
 import web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from "src/app/services/auth.service";
+import { DatabaseService } from '../services/database.service';
+import { DiplomaTemplateComponent } from '../components/diploma-template/diploma-template.component';
+import { IpfsStudent } from '../interfaces/IpfsStudent';
 
 
 @Component({
@@ -22,18 +25,28 @@ export class ReadQrComponentComponent  {
   isLoading: boolean = false;
   progressBarMsg: string = '';
   progressBarValue: number = 0;
+  ipfsData: IpfsStudent = {
+    firstname: '',
+    middlename: '',
+    lastname: '',
+    studentId: '',
+    soNumber: '',
+    course: ''
+  };
 
   isLoggedIn!: boolean;
 
-  constructor(private goerli_http: GoerliEtherscanService, private modalService: NgbModal,  private authService: AuthService) {
+  constructor(private modalService: NgbModal, private db: DatabaseService) {
 
-    this.isLoggedIn  = authService.checkLogin();
+    // this.isLoggedIn  = authService.checkLogin();
     // this.myScriptElement = document.createElement("script");
     // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
     // document.body.appendChild(this.myScriptElement);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.db.setStudentList();
+   }
 
   decodeOrCode(): void {
     this.progressBarMsg = 'Loading Student Diploma'
@@ -47,9 +60,21 @@ export class ReadQrComponentComponent  {
           console.log(typeof resultParsed);
           this.txnHash = resultParsed.txnHash;
           this.ipfsIndex = resultParsed.index;
+
+          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex).subscribe(item =>{
+            this.ipfsData = item[0]
+            this.isLoading = true;
+          })
+          
         } catch (error) {
           this.txnHash = result.toString();
           this.ipfsIndex = -1;
+
+          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex).subscribe(item =>{
+            this.ipfsData = item[0]
+            this.isLoading = true;
+          })
+
         }
       })
       .catch((err) => {

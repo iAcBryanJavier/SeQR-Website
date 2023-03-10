@@ -46,7 +46,7 @@
   </div>
 </body>
 </html>
-
+<!-- 
 <app-diploma
   [ipfsLink]="ipfsLink"
   [index]="ipfsIndex"
@@ -54,4 +54,20 @@
   (isLoadingEvent)="receiveLoadingValue($event)"
   (progressBarMsgEvent)="receiveProgressBarMsg($event)"
   (progressBarValueEvent)="receiveProgressBarValue($event)">
-</app-diploma>
+</app-diploma> -->
+
+
+<div class="certificate" *ngIf="isLoading">
+  <div class="certificate-header">
+    <h1>Certificate of Completion</h1>
+  </div>
+  <div class="certificate-body">
+    <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+    <p>This is to certify that</p>
+    <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
+    <p>has successfully completed the course on</p>
+    <h3>{{ipfsData.course}}</h3>
+    <p>SO Number: </p>
+    <h4>{{ipfsData.soNumber}}</h4>
+  </div>
+</div>

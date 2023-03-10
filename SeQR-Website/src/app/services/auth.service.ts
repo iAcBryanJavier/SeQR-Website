@@ -16,12 +16,8 @@ export class AuthService {
 
   private isLoggedIn = false;
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-<<<<<<< Updated upstream
-    private db: AngularFireDatabase, private logging: LoggingService, private modalService: NgbModal, private MetamaskService: MetamaskService) {
-=======
     private db: AngularFireDatabase, private logging: LoggingService,
     private MetamaskService: MetamaskService, private modalService: NgbModal) {
->>>>>>> Stashed changes
       const authToken = localStorage.getItem('idToken');
       this.isLoggedIn = !!authToken;
      }
