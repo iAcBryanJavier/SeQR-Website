@@ -4,7 +4,9 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Router } from '@angular/router';
 import { LoggingService } from './logging.service';
 import * as firebase from 'firebase/compat';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { MetamaskService } from './metamask.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,34 +14,45 @@ export class AuthService {
   schoolName!: any;
 
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-    private db: AngularFireDatabase, private logging: LoggingService) { }
+    private db: AngularFireDatabase, private logging: LoggingService, private modalService: NgbModal, private MetamaskService: MetamaskService) { }
 
   login(email: string, password: string){
-    this.fireAuth.signInWithEmailAndPassword(email, password)
-    .then(user => {
-        user.user?.getIdToken().then(idToken => {
-            // Store the token in local storage
-            const userEmail = user.user?.email
-            localStorage.setItem('idToken', idToken);
-            if(userEmail){
-              localStorage.setItem('idUserEmail', userEmail);
-              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
-            }else{
-              localStorage.setItem('idUserEmail', "Guest Account");
-              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
-            }
-          
-          
-            localStorage.getItem('idToken');
-            this.router.navigateByUrl('dashboard');
-        });
-    }, (err): void => {
-        this.logging.error("Login Failed, reason: might be forms related.", err);
-        window.alert("The email or password is incorrect");
-        this.router.navigateByUrl('/login');
-        
-    });
 
+  //METAMASK CALL
+
+    if(this.MetamaskService.checkIfMetamaskInstalled()){
+      this.fireAuth.signInWithEmailAndPassword(email, password)
+      .then(user => {
+          user.user?.getIdToken().then(idToken => {
+              // Store the token in local storage
+              const userEmail = user.user?.email
+              localStorage.setItem('idToken', idToken);
+              if(userEmail){
+                localStorage.setItem('idUserEmail', userEmail);
+                this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+              }else{
+                localStorage.setItem('idUserEmail', "Guest Account");
+                this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+              }
+              
+            
+              localStorage.getItem('idToken');
+              this.router.navigateByUrl('dashboard');
+          });
+      }, (err): void => {
+          this.logging.error("Login Failed, reason: might be forms related.", err);
+          const modalRef = this.modalService.open(ModalPopupComponent);
+          modalRef.componentInstance.message = "The email or password is incorrect";
+       
+          this.router.navigateByUrl('/login');
+          
+      });
+    }else{
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = "Metamask not detected, please install metamask before logging in. If you're on mobile, Metamask is not yet supported on the browser. Please switch to a Computer Device.";
+      
+      
+    }
   }
 
   logout(){
@@ -94,14 +107,16 @@ export class AuthService {
    resetPassword(email: any){
     console.log(email);
     return this.fireAuth.sendPasswordResetEmail(email).then(() => {
-      alert("Email has been sent! Check your email.")
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = "Email has been sent! Check your email." ;
     })
     .catch((error) => {
-   
-      const errorMessage = error.message;
-      alert(errorMessage);
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = "There is no user record corresponding to this identifier. The user may not have existed or has been deleted. " ;
+  
     });
   }
+
 
 
 }

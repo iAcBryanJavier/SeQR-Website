@@ -11,6 +11,8 @@ import { GoerliEtherscanService } from './goerli-etherscan.service';
 import { PinataService } from './pinata.service';
 import { environment } from 'src/environments/environment';
 import web3 from 'web3';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
 
 @Injectable({
   providedIn: 'root'
@@ -27,14 +29,15 @@ export class DatabaseService {
   private BASE_URL = 'https://api-goerli.etherscan.io/api';
 
   constructor(private afs: AngularFireDatabase, private http: HttpClient, private logs:LoggingService,
-    private goerliService: GoerliEtherscanService, private pinataService: PinataService) { }
+    private goerliService: GoerliEtherscanService, private pinataService: PinataService, private modalService: NgbModal) { }
 
   //add student
   addStudent(student: any){
     const ref = this.afs.list('students');
     ref.push(student).then(()=>{
       this.logs.info("User: " + localStorage.getItem('idUserEmail')+ " added a student record");
-
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = 'Added student record!';
     }).catch(() =>{
       window.alert('An error occured, please try again.');
       throw "Add Student Failed";

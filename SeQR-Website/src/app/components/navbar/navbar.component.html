@@ -71,11 +71,11 @@
           <a class="nav-link btn" *ngIf="!isIdentified" href="https://metamask.io" (click)="isMenuCollapsed = true"
             target="_blank">Install Metamask</a>
 
-          <a *ngIf="isIdentified && !isConnected" class="nav-link btn" (click)="connectMetamask()">
+          <a *ngIf="isIdentified && !getConnectionStatus()" class="nav-link btn" (click)="navbarConnectMetamask()">
             Connect using Metamask
           </a>
 
-          <a class="nav-link btn" *ngIf="isIdentified && isConnected">CONNECTED</a>
+          <a class="nav-link btn" *ngIf="isIdentified && getConnectionStatus()">CONNECTED</a>
         </li>
         <li class="nav-item">
           <a class="nav-link btn" (click)="isMenuCollapsed = true; logout()" routerLink="/">LOGOUT</a>

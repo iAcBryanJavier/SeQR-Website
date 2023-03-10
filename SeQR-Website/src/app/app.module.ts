@@ -51,6 +51,7 @@ import { DiplomaComponent } from './components/diploma/diploma.component';
 import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
 import { SpinnersComponent } from './components/spinners/spinners.component';
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
+import { ModalPopupComponent } from './modal-popup/modal-popup.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { DeleteButtonComponent } from './delete-button/delete-button.component';
     DiplomaComponent,
     DiplomaTemplateComponent,
     SpinnersComponent,
-    DeleteButtonComponent
+    DeleteButtonComponent,
+    ModalPopupComponent
   ],
   imports: [
     BrowserModule,

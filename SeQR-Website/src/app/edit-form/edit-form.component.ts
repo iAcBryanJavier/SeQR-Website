@@ -16,6 +16,9 @@ import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Student } from '../interfaces/Student';
 import { EditFormService } from '../services/edit-form.service';
+import { MetamaskService } from '../services/metamask.service';
+import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-edit-form',
   templateUrl: './edit-form.component.html',
@@ -70,12 +73,13 @@ export class EditFormComponent implements OnInit {
     txnHash: new FormControl('')
   })
 
-  constructor(private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
+  constructor( private ModalService: NgbModal, private MetamaskService: MetamaskService, private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
 
 
     this.passedStudent = this.formService.getStudentData();
 
     if (this.passedStudent) {
+      
       this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
       this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
       this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
@@ -94,7 +98,7 @@ export class EditFormComponent implements OnInit {
 
    ngOnInit(): void {
 
-    this.checkIfMetamaskInstalled();
+   
     // this.fetchNFTs();
 
 
@@ -163,15 +167,15 @@ export class EditFormComponent implements OnInit {
 
   }
 
+  // TODO: TO REMOVE
 
-
-  private checkIfMetamaskInstalled(): boolean {
-    if (typeof (window as any).ethereum !== 'undefined') {
-      this.ethereum = (window as any).ethereum;
-      return true;
-    }
-    return false;
-  }
+  // private checkIfMetamaskInstalled(): boolean {
+  //   if (typeof (window as any).ethereum !== 'undefined') {
+  //     this.ethereum = (window as any).ethereum;
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   async pinFileToPinata(studentIdData: any, soNumberData: any) {
     var responseValue;
@@ -197,45 +201,60 @@ export class EditFormComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.studentForm.valid) {
+    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) =>{
+      this.ethereum = (window as any).ethereum;
+      return res;
+    })
 
-      const ipfsHash = await this.uploadToIPFS(
-        this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-        .then((res) => {
-          return res;
-        });
+if(metamaskConnection){
+  if (this.studentForm.valid) {
 
-      const txnHash = await this.createTransaction(ipfsHash)
-        .then((res) => {
-          return res;
-        })
+    const ipfsHash = await this.uploadToIPFS(
+      this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+      .then((res) => {
+        return res;
+      });
 
-      this.hasSubmit = true;
-      // if(this.studentForm.controls['studentId'].value && txnHash){
-      if(this.studentForm.controls['studentId'].value && txnHash){
-        this.filename = this.studentForm.controls['studentId'].value;
-        this.myAngularxQrCode = txnHash;
-      }
-
-      this.studentForm.setValue({
-        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-        dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-        txnHash: txnHash
+    const txnHash = await this.createTransaction(ipfsHash)
+      .then((res) => {
+        return res;
       })
-        console.log(this.dupStudentId);
-      this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
-      this.hasSubmit = false;
-      this.backClick();
 
-
+    this.hasSubmit = true;
+    // if(this.studentForm.controls['studentId'].value && txnHash){
+    if(this.studentForm.controls['studentId'].value && txnHash){
+      this.filename = this.studentForm.controls['studentId'].value;
+      this.myAngularxQrCode = txnHash;
     }
+
+    this.studentForm.setValue({
+      studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+      middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+      lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+      course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+      sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+      soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+      dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+      txnHash: txnHash
+    })
+      console.log(this.dupStudentId);
+    this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
+    this.hasSubmit = false;
+    this.backClick();
+
+
+  }else{
+    const modalRef = this.ModalService.open(ModalPopupComponent);
+modalRef.componentInstance.message = "Entry is invalid, check the form.";
+  }
+ 
+} else{
+  const modalRef = this.ModalService.open(ModalPopupComponent);
+modalRef.componentInstance.message = "No Metamask connection found!";
+}
+    
   }
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
