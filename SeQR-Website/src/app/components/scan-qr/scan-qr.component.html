@@ -30,6 +30,7 @@
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
         <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
       </div>
+      <button type="button" class="btn btn-primary" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'On' : 'Off'}}</button>
     </div>
 
 
@@ -44,9 +45,9 @@
         </select>
 
         <zxing-scanner class="scanner-window" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
-          [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)"
+          [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)" [enable]="scannerStatus"
           (camerasFound)="onCamerasFound($event)"></zxing-scanner>
-
+         
 
 
       </div>

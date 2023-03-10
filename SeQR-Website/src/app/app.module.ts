@@ -48,6 +48,8 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
 import { DiplomaComponent } from './components/diploma/diploma.component';
 import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
 import { SpinnersComponent } from './components/spinners/spinners.component';
+import { DeleteButtonComponent } from './delete-button/delete-button.component';
+import { ModalPopupComponent } from './modal-popup/modal-popup.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { SpinnersComponent } from './components/spinners/spinners.component';
     ProgressbarComponent,
     DiplomaComponent,
     DiplomaTemplateComponent,
-    SpinnersComponent
+    SpinnersComponent,
+    DeleteButtonComponent,
+    ModalPopupComponent
   ],
   imports: [
     BrowserModule,

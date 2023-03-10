@@ -91,6 +91,11 @@ setPage(page: number): void {
     this.router.navigate(['/edit-form']);
   }
 
+  onDeleteClick(student: Student["key"]) {
+    this.students.deleteStudentRecord(student);
+  }
+
+
 
 
 

@@ -23,6 +23,8 @@ export class ScanQrComponent  {
     BarcodeFormat.EAN_13,
     BarcodeFormat.QR_CODE,
   ];
+
+  scannerStatus: boolean = true;
   hasDevices!: boolean;
   hasPermission!: boolean;
   qrResultString!: string;
@@ -47,6 +49,7 @@ export class ScanQrComponent  {
   }
 
   onCodeResult(resultString: string) {
+    this.toggleScannerStatus();
     this.qrResultString = resultString;
     // this.isLoading = true;
     // this.progressBarMsg = 'Loading Student Diploma...'
@@ -56,7 +59,13 @@ export class ScanQrComponent  {
     }catch(err){
       this.fetchStudentDiploma(resultString, -1);
     }
+  
+   
 
+  }
+
+  toggleScannerStatus(): void {
+    this.scannerStatus = !this.scannerStatus;
   }
 
   onDeviceSelectChange(){

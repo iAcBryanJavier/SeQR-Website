@@ -9,10 +9,12 @@ import { ethers } from 'ethers';
 import contract from '../../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { MetamaskService } from 'src/app/services/metamask.service';
 
 @Component({
   selector: 'app-add-student',
@@ -59,7 +61,8 @@ export class AddStudentComponent implements OnInit {
 
   // NEED TO IMPORT DOM SANITZER
   constructor(private db: DatabaseService, private sanitizer: DomSanitizer
-    , private modalService: NgbModal) {}
+    , private modalService: NgbModal, private MetamaskService: MetamaskService) {}
+
 
   onChangeURL(url?: SafeUrl, content?: any) {
     if (this.myAngularxQrCode != "") {
@@ -98,7 +101,7 @@ export class AddStudentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.checkIfMetamaskInstalled();
+    this.MetamaskService.checkIfMetamaskInstalled();
     // this.fetchNFTs();
 
     this.db.getCourses().subscribe(i => {
@@ -106,14 +109,6 @@ export class AddStudentComponent implements OnInit {
       console.log(this.courses);
     });
 
-  }
-
-  private checkIfMetamaskInstalled(): boolean {
-    if (typeof (window as any).ethereum !== 'undefined') {
-      this.ethereum = (window as any).ethereum;
-      return true;
-    }
-    return false;
   }
 
   async pinFileToPinata(studentIdData: any, soNumberData: any) {
@@ -141,12 +136,23 @@ export class AddStudentComponent implements OnInit {
 
 
   async onSubmit(content: any) {
+    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) =>{
+      this.ethereum = (window as any).ethereum;
+      return res;
+    })
 
+    // console.log(metamaskConnection);
+
+    if(metamaskConnection){
+
+    
     this.isMinting = true;
 
     this.progressBarMsg = "Checking for Duplicate Records";
     this.progressBarValue = 25;
      
+
+    interval(1000);
    const dupeCounter = await this.db.checkAddDuplicate(
      this.studentForm.controls['studentId'].value,
       this.studentForm.controls['course'].value,
@@ -203,14 +209,21 @@ export class AddStudentComponent implements OnInit {
     this.db.addStudent(this.studentForm.value);
     this.studentForm.reset();
     this.hasSubmit = false;
+    this.progressBarValue = 0;
+    this.progressBarMsg = '';
     } else {
-      window.alert(dupeCounter.dupeMessage);
+  
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = dupeCounter.dupeMessage;
       this.studentForm.reset();
     this.hasSubmit = false;
-    this.progressBarMsg = "";
+    this.progressBarMsg = '';
     this.progressBarValue = 0;
     }
-
+  }else{
+    const modalRef = this.modalService.open(ModalPopupComponent);
+    modalRef.componentInstance.message = "No Metamask connection found!";
+  }
   }
 
   
