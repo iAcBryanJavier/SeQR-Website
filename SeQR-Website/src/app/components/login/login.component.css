@@ -104,3 +104,11 @@ button:hover{
 	transform: scale(.6);
 }
 
+@media screen and (max-width: 400px) { 
+	.labelClass  {
+		margin: 37px
+	}
+}
+
+
+

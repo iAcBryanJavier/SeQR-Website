@@ -3,6 +3,7 @@ import { BrowserMultiFormatReader } from '@zxing/browser';
 import { GoerliEtherscanService } from '../services/goerli-etherscan.service';
 import web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from "src/app/services/auth.service";
 
 
 @Component({
@@ -22,7 +23,11 @@ export class ReadQrComponentComponent  {
   progressBarMsg: string = '';
   progressBarValue: number = 0;
 
-  constructor(private goerli_http: GoerliEtherscanService, private modalService: NgbModal) {
+  isLoggedIn!: boolean;
+
+  constructor(private goerli_http: GoerliEtherscanService, private modalService: NgbModal,  private authService: AuthService) {
+
+    this.isLoggedIn  = authService.checkLogin();
     // this.myScriptElement = document.createElement("script");
     // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
     // document.body.appendChild(this.myScriptElement);

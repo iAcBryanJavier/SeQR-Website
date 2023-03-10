@@ -14,10 +14,39 @@ import { interval } from 'rxjs';
 export class AuthService {
   schoolName!: any;
 
+  private isLoggedIn = false;
   constructor(private fireAuth: AngularFireAuth, private router: Router,
-    private db: AngularFireDatabase, private logging: LoggingService, private modalService: NgbModal, private MetamaskService: MetamaskService) { }
+    private db: AngularFireDatabase, private logging: LoggingService) {
+      const authToken = localStorage.getItem('idToken');
+      this.isLoggedIn = !!authToken;
+     }
 
   login(email: string, password: string){
+    this.fireAuth.signInWithEmailAndPassword(email, password)
+    .then(user => {
+        user.user?.getIdToken().then(idToken => {
+            // Store the token in local storage
+            const userEmail = user.user?.email
+            localStorage.setItem('idToken', idToken);
+            if(userEmail){
+              localStorage.setItem('idUserEmail', userEmail);
+              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+            }else{
+              localStorage.setItem('idUserEmail', "Guest Account");
+              this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
+            }
+          
+          
+            localStorage.getItem('idToken');
+         
+            this.router.navigateByUrl('dashboard');
+        });
+    }, (err): void => {
+        this.logging.error("Login Failed, reason: might be forms related.", err);
+        window.alert("The email or password is incorrect");
+        this.router.navigateByUrl('/login');
+        
+    });
 
   //METAMASK CALL
 
@@ -61,11 +90,11 @@ export class AuthService {
   }
 
   logout(){
+    this.isLoggedIn = false;
     this.fireAuth.signOut().then(()=>{
       this.logging.info("User logout: " + localStorage.getItem('idUserEmail'));
       localStorage.removeItem('idToken');
       localStorage.removeItem('idUserEmail');
-
       this.router.navigateByUrl('login');
     }, err =>{
       this.logging.error("Error, no existing session ID.", err);
@@ -120,6 +149,12 @@ export class AuthService {
       modalRef.componentInstance.message = "There is no user record corresponding to this identifier. The user may not have existed or has been deleted. " ;
   
     });
+  }
+
+  checkLogin(): boolean {
+    const authToken = localStorage.getItem('idToken');
+    this.isLoggedIn = !!authToken;
+    return this.isLoggedIn;
   }
 
 
