@@ -35,7 +35,8 @@ export class EditFormComponent implements OnInit {
 
   passedCourse!: any;
   passedStudent!: Student;
-  public ipfsUrlPrefix: string  = "https://ipfs.io/ipfs/";
+  public ipfsUrlPrefix: string  = environment.pinatacloud.gateway;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
@@ -79,7 +80,7 @@ export class EditFormComponent implements OnInit {
     this.passedStudent = this.formService.getStudentData();
 
     if (this.passedStudent) {
-      
+
       this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
       this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
       this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
@@ -98,7 +99,7 @@ export class EditFormComponent implements OnInit {
 
    ngOnInit(): void {
 
-   
+
     // this.fetchNFTs();
 
 
@@ -249,12 +250,12 @@ if(metamaskConnection){
     const modalRef = this.ModalService.open(ModalPopupComponent);
 modalRef.componentInstance.message = "Entry is invalid, check the form.";
   }
- 
+
 } else{
   const modalRef = this.ModalService.open(ModalPopupComponent);
 modalRef.componentInstance.message = "No Metamask connection found!";
 }
-    
+
   }
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
@@ -292,7 +293,7 @@ modalRef.componentInstance.message = "No Metamask connection found!";
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
     try{
-      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
+      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
 
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();

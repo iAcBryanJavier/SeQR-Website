@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit{
 
   public isIdentified: boolean = false;
   public ethereum: any;
- 
+
   public ownerAddress: string = '';
   isMenuCollapsed = true;
 
@@ -21,14 +21,8 @@ export class NavbarComponent implements OnInit{
   ngOnInit(): void {
     if (this.MetamaskService.checkIfMetamaskInstalled()) {
       this.isIdentified = true;
-      if (this.ethereum) {
-      
-      }
-    }else{
-
     }
   }
-
 
   getConnectionStatus(){
     return this.MetamaskService.getConnectedStatus();
@@ -37,8 +31,6 @@ export class NavbarComponent implements OnInit{
   navbarConnectMetamask(){
     this.MetamaskService.connectMetamask();
   }
-
-
 
   logout(){
     this.authService.logout();

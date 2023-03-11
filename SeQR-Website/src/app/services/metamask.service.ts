@@ -6,14 +6,12 @@ import { Injectable } from '@angular/core';
 export class MetamaskService {
   readonly METAMASK_KEY: string = 'metamask';
 
-
   public ethereum: any;
   public isConnected: boolean = false;
   public ownerAddress: string = '';
   constructor() { }
 
-  
-   checkIfMetamaskInstalled(): boolean {
+  checkIfMetamaskInstalled(): boolean {
     if (typeof (window as any).ethereum !== 'undefined') {
       this.ethereum = (window as any).ethereum;
       return true;
@@ -25,8 +23,6 @@ export class MetamaskService {
     localStorage.setItem(this.METAMASK_KEY, this.ownerAddress);
   }
 
-  
-
   private connected() {
     this.isConnected = true;
   }
@@ -35,17 +31,15 @@ export class MetamaskService {
     this.isConnected = false;
   }
 
-   getConnectedStatus() {
+  getConnectedStatus() {
     return this.isConnected;
   }
-  setConnectedStatusTrue(){
+  setConnectedStatusTrue() {
     this.connected();
   }
-  setConnectedStatusFalse(){
+  setConnectedStatusFalse() {
     this.disconnected();
   }
-
-
 
   public async connectMetamask() {
     try {
@@ -68,7 +62,7 @@ export class MetamaskService {
       const accounts = await (window as any).ethereum.request({
         method: "eth_requestAccounts",// wait up to 1 second for a response
       });
-  
+
       // if accounts is an empty array, the user is not connected
       if (accounts.length > 0) {
         return Promise.resolve(true);
@@ -80,5 +74,5 @@ export class MetamaskService {
       return Promise.resolve(false);
     }
   }
-  
+
 }
