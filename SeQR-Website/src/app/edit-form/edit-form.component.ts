@@ -16,6 +16,9 @@ import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Student } from '../interfaces/Student';
 import { EditFormService } from '../services/edit-form.service';
+import { MetamaskService } from '../services/metamask.service';
+import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-edit-form',
   templateUrl: './edit-form.component.html',
@@ -32,8 +35,9 @@ export class EditFormComponent implements OnInit {
 
   passedCourse!: any;
   passedStudent!: Student;
-  public ipfsUrlPrefix: string  = "https://ipfs.io/ipfs/";
-  public ipfsHash: any; 
+  public ipfsUrlPrefix: string  = environment.pinatacloud.gateway;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
+  public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
   public sanitizedUrl!: string | null;
@@ -57,7 +61,7 @@ export class EditFormComponent implements OnInit {
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
   encryptFunction = new Encryption();
 
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -70,43 +74,40 @@ export class EditFormComponent implements OnInit {
     txnHash: new FormControl('')
   })
 
-  constructor(private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
-   
-  
+  constructor( private ModalService: NgbModal, private MetamaskService: MetamaskService, private route: ActivatedRoute,private router: Router, private db: DatabaseService, private sanitizer: DomSanitizer, private formService: EditFormService ) {
+
+
     this.passedStudent = this.formService.getStudentData();
-   
- 
-    
-   
-  
-    if(this.passedStudent){
+
+    if (this.passedStudent) {
+
       this.dupSoNumber = this.encryptFunction.encryptData(this.passedStudent.soNumber);
-    this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
-    this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
-  
-      this.passedCourse =  this.formService.getCourseData();
-    this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
-    this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
-    this.studentForm.patchValue({
-      course: this.passedStudent.course
-    });
-      
-    }else{
+      this.dupStudentId = this.encryptFunction.encryptData(this.passedStudent.studentId);
+      this.dupStudentCourse = this.encryptFunction.encryptData(this.passedStudent.course);
+
+      this.passedCourse = this.formService.getCourseData();
+      this.passedStudent.sex = this.passedStudent.sex!.toLowerCase();
+      this.myAngularxQrCode = this.passedStudent.txnHash ?? "No txnHash for this Record! Inform the registrar.";
+      this.studentForm.patchValue({
+        course: this.passedStudent.course
+      });
+
+    } else {
       this.router.navigate(['/dashboard']);
     }
-   }
- 
+  }
+
    ngOnInit(): void {
 
-    this.checkIfMetamaskInstalled();
+
     // this.fetchNFTs();
- 
-  
-    
+
+
+
 
 
   }
-  // NEED TO IMPORT DOM SANITZER 
+  // NEED TO IMPORT DOM SANITZER
 
   isButtonTrue(gender: string): boolean {
     // Check if the passedStudent object exists and has a valid sex property
@@ -164,18 +165,18 @@ export class EditFormComponent implements OnInit {
       console.log(this.qrCodeDownloadLink);
     }
     // TODO: remove this method
- 
+
   }
 
-  
+  // TODO: TO REMOVE
 
-  private checkIfMetamaskInstalled(): boolean {
-    if (typeof (window as any).ethereum !== 'undefined') {
-      this.ethereum = (window as any).ethereum;
-      return true;
-    }
-    return false;
-  }
+  // private checkIfMetamaskInstalled(): boolean {
+  //   if (typeof (window as any).ethereum !== 'undefined') {
+  //     this.ethereum = (window as any).ethereum;
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   async pinFileToPinata(studentIdData: any, soNumberData: any) {
     var responseValue;
@@ -193,53 +194,68 @@ export class EditFormComponent implements OnInit {
     this.pinata.pinJSONToIPFS(body, options).then((result) => {
       //handle results here
      this.createTransaction(result.IpfsHash);
-      
+
   }).catch((err) => {
       throw "Pinata pinJSONtoIPFS Failed";
       responseValue = 'failed';
-  }); 
+  });
   }
 
   async onSubmit() {
-    if (this.studentForm.valid) {
-    
-      const ipfsHash = await this.uploadToIPFS(
-        this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-        .then((res) => {
-          return res;
-        });
+    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) =>{
+      this.ethereum = (window as any).ethereum;
+      return res;
+    })
 
-      const txnHash = await this.createTransaction(ipfsHash)
-        .then((res) => {
-          return res;
-        })
+if(metamaskConnection){
+  if (this.studentForm.valid) {
 
-      this.hasSubmit = true;
-      // if(this.studentForm.controls['studentId'].value && txnHash){
-      if(this.studentForm.controls['studentId'].value && txnHash){
-        this.filename = this.studentForm.controls['studentId'].value;
-        this.myAngularxQrCode = txnHash;
-      }
-      
-      this.studentForm.setValue({
-        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-        dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-        txnHash: txnHash
+    const ipfsHash = await this.uploadToIPFS(
+      this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+      .then((res) => {
+        return res;
+      });
+
+    const txnHash = await this.createTransaction(ipfsHash)
+      .then((res) => {
+        return res;
       })
-        console.log(this.dupStudentId);
-      this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
-      this.hasSubmit = false;
-      this.backClick();
-      
 
+    this.hasSubmit = true;
+    // if(this.studentForm.controls['studentId'].value && txnHash){
+    if(this.studentForm.controls['studentId'].value && txnHash){
+      this.filename = this.studentForm.controls['studentId'].value;
+      this.myAngularxQrCode = txnHash;
     }
+
+    this.studentForm.setValue({
+      studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+      middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+      lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+      course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+      sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+      soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+      dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+      txnHash: txnHash
+    })
+      console.log(this.dupStudentId);
+    this.db.updateStudent(this.studentForm.value, this.dupStudentId, this.dupStudentCourse,  this.dupSoNumber);
+    this.hasSubmit = false;
+    this.backClick();
+
+
+  }else{
+    const modalRef = this.ModalService.open(ModalPopupComponent);
+modalRef.componentInstance.message = "Entry is invalid, check the form.";
+  }
+
+} else{
+  const modalRef = this.ModalService.open(ModalPopupComponent);
+modalRef.componentInstance.message = "No Metamask connection found!";
+}
+
   }
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
@@ -275,9 +291,9 @@ export class EditFormComponent implements OnInit {
     const provider = new ethers.providers.Web3Provider(this.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
-    
+
     try{
-      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
+      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
 
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();

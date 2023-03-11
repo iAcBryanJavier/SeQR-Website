@@ -1,17 +1,23 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BarcodeFormat } from '@zxing/library';
+import { DatabaseService } from 'src/app/services/database.service';
+import { GoerliEtherscanService } from 'src/app/services/goerli-etherscan.service';
+import { DiplomaTemplateComponent } from '../diploma-template/diploma-template.component';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { IpfsStudent } from 'src/app/interfaces/IpfsStudent';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scan-qr',
   templateUrl: './scan-qr.component.html',
   styleUrls: ['./scan-qr.component.css'],
-
 })
-export class ScanQrComponent  {
+export class ScanQrComponent {
+  @ViewChild('selectedValue') selectedValue!: ElementRef;
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo | undefined;
-  @ViewChild("selectedValue") selectedValue!: ElementRef;
-
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
     BarcodeFormat.DATA_MATRIX,
@@ -19,15 +25,41 @@ export class ScanQrComponent  {
     BarcodeFormat.QR_CODE,
   ];
 
+  scannerStatus: boolean = true;
   hasDevices!: boolean;
   hasPermission!: boolean;
-
   qrResultString!: string;
+  isLoading: boolean = false;
+  progressBarMsg: string = '';
+  ipfsData: IpfsStudent = {
+    studentId: '',
+    soNumber: '',
+    lastname: '',
+    middlename: '',
+    firstname: '',
+    course: '',
+  };
+  studentObservable!: Observable<any>;
 
+  idUserEmail: string | null = localStorage.getItem('idUserEmail');
 
+  isLoggedIn!: boolean;
+
+  constructor(
+    private db: DatabaseService,
+    private modalService: NgbModal,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.isLoggedIn = authService.checkLogin();
+  }
+
+  ngOnInit(): void {
+    this.db.setStudentList();
+  }
 
   clearResult(): void {
-    this.qrResultString = "";
+    this.qrResultString = '';
   }
 
   onCamerasFound(devices: MediaDeviceInfo[]): void {
@@ -36,20 +68,29 @@ export class ScanQrComponent  {
   }
 
   onCodeResult(resultString: string) {
-    this.qrResultString = resultString;
-    alert(this.qrResultString);
+    this.toggleScannerStatus();
+    this.scannerStatus = false;
+    // this.isLoading = true;
+    // this.progressBarMsg = 'Loading Student Diploma...'
+    try {
+      const resultParsed = JSON.parse(resultString);
+      this.fetchStudentDiploma(resultParsed.txnHash, resultParsed.index);
+      this.isLoading = true;
+    } catch (err) {
+      this.fetchStudentDiploma(resultString, -1);
+      this.isLoading = true;
+    }
   }
 
+  toggleScannerStatus(): void {
+    this.scannerStatus = !this.scannerStatus;
+  }
 
-
-  onDeviceSelectChange(){
+  onDeviceSelectChange() {
     const selected = this.selectedValue.nativeElement.value;
-    const device = this.availableDevices.find(x => x.deviceId === selected);
-    this.currentDevice = device || undefined ;
-   
+    const device = this.availableDevices.find((x) => x.deviceId === selected);
+    this.currentDevice = device || undefined;
   }
-
-
 
   onHasPermission(has: boolean) {
     this.hasPermission = has;
@@ -60,8 +101,25 @@ export class ScanQrComponent  {
       hasDevices: this.hasDevices,
       hasPermission: this.hasPermission,
     };
-
-    
   }
-  
+
+  refresh() {
+    this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
+      this.router.navigate(['read-qr']);
+    });
+  }
+
+  fetchStudentDiploma(txnHash: string, index: number) {
+    try {
+      this.studentObservable = this.db.getStudentDiplomaFromBlockchain(
+        txnHash,
+        index
+      );
+      this.studentObservable.subscribe((item) => {
+        this.ipfsData = item[0];
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

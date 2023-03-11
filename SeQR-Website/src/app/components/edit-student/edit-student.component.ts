@@ -9,47 +9,47 @@ import { EditFormService } from 'src/app/services/edit-form.service';
 @Component({
   selector: 'app-edit-student',
   templateUrl: './edit-student.component.html',
-  styleUrls: ['./edit-student.component.css']
+  styleUrls: ['./edit-student.component.css'],
 })
 export class EditStudentComponent implements OnInit {
-
-  @ViewChild("selectedValue") selectedValue!: ElementRef;
+  @ViewChild('selectedValue') selectedValue!: ElementRef;
   courses!: any;
   searchQuery: string = '';
   items!: Student[];
-	listItem!: Student[];
+  listItem!: Student[];
   currentPage = 1;
   pageCount!: number;
   pageCounting!: number;
-  next_button = "Next";
-  decryptedStudentList!: Observable <any[]>;
+  next_button = 'Next';
+  decryptedStudentList!: Observable<any[]>;
   encryptFunction = new Encryption();
-  constructor(private students: DatabaseService, private router: Router, private route: ActivatedRoute, private formService: EditFormService) { 
-        this.students.setStudentList();
-        this.setTableItems(this.students.getStudent());
+  constructor(
+    private students: DatabaseService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private formService: EditFormService
+  ) {
+    this.students.setStudentList();
+    this.setTableItems(this.students.getStudent());
 
-        this.students.getCourses().subscribe(i => {
-          this.courses = i;
-         // console.log("THIS", this.passedCourse);
-        });
-	}
-
-  ngOnInit(): void {
-
+    this.students.getCourses().subscribe((i) => {
+      this.courses = i;
+      // console.log("THIS", this.passedCourse);
+    });
   }
+
+  ngOnInit(): void {}
 
   onSearchInputChange(event: any) {
-   this.setTableItems((this.getSearch(event)));
-   this.setPage(1);
+    this.setTableItems(this.getSearch(event));
+    this.setPage(1);
   }
 
-
-  setTableItems(list: Observable <any[]>){
-		list.subscribe(items =>{
-			
+  setTableItems(list: Observable<any[]>) {
+    list.subscribe((items) => {
       this.items = items.reverse();
       this.listItem = this.getPageItems(this.currentPage);
-     this.pageCount = this.getPages();
+      this.pageCount = this.getPages();
     });
   }
 
@@ -63,27 +63,21 @@ export class EditStudentComponent implements OnInit {
     var pageNumber: number = +selected;
     this.setPage(pageNumber);
     this.currentPage = pageNumber;
-    
   }
 
- setPageAdd(page: number): void {
+  setPageAdd(page: number): void {
     page = page + 1;
     this.setPage(page);
-}
-setPageMinus(page: number): void {
-  page = page - 1;
-  this.setPage(page);
-}
+  }
+  setPageMinus(page: number): void {
+    page = page - 1;
+    this.setPage(page);
+  }
 
-
-setPage(page: number): void {
-  this.currentPage = page;
-  this.listItem = this.getPageItems(this.currentPage);
-
-}
-
-
-
+  setPage(page: number): void {
+    this.currentPage = page;
+    this.listItem = this.getPageItems(this.currentPage);
+  }
 
   onEditClick(student: Student) {
     this.formService.setStudentData(student);
@@ -91,19 +85,16 @@ setPage(page: number): void {
     this.router.navigate(['/edit-form']);
   }
 
- 
+  onDeleteClick(student: Student['key']) {
+    this.students.deleteStudentRecord(student);
+  }
 
-
-  getSearch(searchQuery: string): Observable <any[]>{
- 
+  getSearch(searchQuery: string): Observable<any[]> {
     return this.students.getSearchStudent(searchQuery);
-  
   }
 
   getPages(): number {
     const pageCount = Math.ceil(this.items.length / 10);
-  
-
     return pageCount;
   }
   public range(count: number): number[] {

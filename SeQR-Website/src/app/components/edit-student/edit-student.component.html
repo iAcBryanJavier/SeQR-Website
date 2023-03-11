@@ -23,60 +23,68 @@
           <div class="row search-dsktp">
             <div class="col">
               <div class="input-group">
-                <input id="search-input" type="search" class="form-control" placeholder="Search anything..." 
+                <input id="search-input" type="search" class="form-control" placeholder="Search anything..."
                        [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)" >
               </div>
             </div>
-      
+
 
       <!-- HTML BODY STARTS HERE -->
-      <div class="table-responsive-sm">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
+        <div class="table-responsive-sm">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
               <th scope="col">Student ID</th>
               <th scope="col">First Name</th>
               <th scope="col">Middle Name</th>
               <th scope="col">Last Name</th>
               <th scope="col">Course</th>
-              <th scope="col">Sex</th>
+              <th scope="col">Gender</th>
               <th scope="col">SO Number</th>
-              <th scope="col">Edit Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let student of listItem; index as i">
-              <td>
-                {{ student.studentId }}
-              </td>
-              <td>
-                {{ student.firstname }}
-              </td>
-              <td>
-                {{ student.middlename }}
-              </td>
-              <td>
-                {{ student.lastname }}
-              </td>
-              <td>
-                {{ student.course }}
-              </td>
-              <td>
-                {{ student.sex }}
-              </td>
-                <td>
-                {{ student.soNumber }}
-              </td>
-              <td>
-                <button type="button" class="btn btn-primary" (click)="onEditClick(student)">EDIT</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-  
+              <th scope="col"></th>
+              <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of listItem; index as i">
+                <tr *ngFor="let student of listItem; index as i">
+                  <td>
+                    {{ student.studentId }}
+                  </td>
+                  <td>
+                    {{ student.firstname }}
+                  </td>
+                  <td>
+                    {{ student.middlename }}
+                  </td>
+                  <td>
+                    {{ student.lastname }}
+                  </td>
+                  <td>
+                    {{ student.course }}
+                  </td>
+                  <td>
+                    {{ student.sex }}
+                  </td>
+                    <td>
+                    {{ student.soNumber }}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary" (click)="onEditClick(student)">EDIT</button>
+               
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary" (click)="onDeleteClick(student.key)">DELETE</button>
+               
+                  </td>
+                
+              </tr>
+            </tbody>
+          </table>
+
         <!-- PAGINATION -->
         <div class="pagination">
-       
+
           <button class="btn btn-link" [hidden]="pageCount == 0" [disabled]="currentPage == 1"(click)="setPageMinus(currentPage)">
             Previous
           </button>
@@ -91,6 +99,7 @@
 
 
       </div>
-</div></div>
+</div>
+</div>
   </body>
   </html>

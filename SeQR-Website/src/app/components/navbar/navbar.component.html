@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark nav-custom-col-blue bg-body-tertiary">
 
-  <a class="navbar-brand" routerLink="/dashboard"><img src="../../../assets/img/logo-no-background.png"></a>
+  <h1 class="navbar-brand" routerLink="/dashboard"><img src="../../../assets/img/qr-navbar-logo.png">SeQR</h1>
   <div class="container-fluid">
 
     <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
@@ -33,8 +33,8 @@
               </svg> MANAGE ACCOUNT</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " routerLink="/scan-qr"><svg class="w-6 h-6 svgicons" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <a class="nav-link " routerLink="/scan-qr"><svg class="w-6 h-6 svgicons" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
                 </path>
@@ -54,12 +54,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                 </path>
-              </svg> REPORTS</a>
+              </svg>DATA ANALYSIS </a>
           </li>
         </ul>
       </div>
     </div>
-
 
     <!-- Step 2: Add the ngbCollapse directive to the element below. -->
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
@@ -72,16 +71,16 @@
           <a class="nav-link btn" *ngIf="!isIdentified" href="https://metamask.io" (click)="isMenuCollapsed = true"
             target="_blank">Install Metamask</a>
 
-          <a *ngIf="isIdentified && !isConnected" class="nav-link btn" (click)="connectMetamask()">
+          <a *ngIf="isIdentified && !getConnectionStatus()" class="nav-link btn" (click)="navbarConnectMetamask()">
             Connect using Metamask
           </a>
 
-          <a class="nav-link btn" *ngIf="isIdentified && isConnected">CONNECTED</a>
+          <a class="nav-link btn" *ngIf="isIdentified && getConnectionStatus()">CONNECTED</a>
         </li>
         <li class="nav-item">
           <a class="nav-link btn" (click)="isMenuCollapsed = true; logout()" routerLink="/">LOGOUT</a>
         </li>
       </ul>
     </div>
-    </div>
+  </div>
 </nav>

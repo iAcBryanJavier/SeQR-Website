@@ -2,64 +2,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Slide Navbar</title>
+  <title>Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="dashboard.component.css">
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container container-custom">
-    <div class="row">
-      <div class="left-container">
-        <div class="logo-details">
+  <div class="container">
+    <div class="left-container">
+      <div class="logo-details">
+        <h1>SeQR</h1>
+        <p>Established by the blockchain as a service pioneers</p>
+        <button type="button" onclick="window.open('https://docs.google.com/document/d/1A1AUh-AfgHXu95Lp5ljigGaOCO6eEywubkmG_aqzeY4/edit?usp=sharing', '_blank')">Explore</button>
+      </div>
+    </div>
 
-          <h1>SeQR</h1>
-          <!-- <h2>School Name</h2>
-                      <h3>- {{schoolName}}</h3>
-                      <h2>Email</h2>
-                      <h3>- {{email}}</h3> -->
-          <p>Established by the blockchain as a service pioneers
+    <div class="right-container">
 
-          </p>
-          <button type="button">Explore</button>
-
-        </div>
+      <div class="card">
+        <span id="tooltipText">Add Student</span>
+        <img src="../../../assets/img/add2.png" routerLink="/add-student" class="card-img" alt="" title="Add Student">
       </div>
 
-      <div class="right-container">
-
-        <div class="card">
-            <span id="tooltipText">Add Student</span>
-            <span><img src="../../../assets/img/add2.png" routerLink="/add-student" class="card-img1" alt=""></span>
-        </div>
-
-        <div class="card">
-          <span id="tooltipText">Edit Student</span>
-          <img src="../../../assets/img/edit-student.png" routerLink="/edit-student" class="card-img1" alt="" title="Edit Student">
-        </div>
-      
-        <div class="card">
-          <span id="tooltipText">Manage Account</span>
-          <img src="../../../assets/img/manage-account.png" routerLink="/manage-account" class="card-img" alt="" title="Manage Account">
-        </div>
-      
-        <div class="card">
-          <span id="tooltipText">Scan QR</span>
-          <img src="../../../assets/img/scan-qr.png" routerLink="/scan-qr" class="card-img" alt="" title="Scan QR">
-        </div>
-      
-        <div class="card">
-          <span id="tooltipText">Change Logs</span>
-          <img src="../../../assets/img/logs.png" routerLink="/change-logs" class="card-img" alt="" title="Change Logs">
-        </div>
-      
-        <div class="card">
-          <span id="tooltipText">Report Logs</span>
-          <img src="../../../assets/img/reports.png" routerLink="/report-logs" class="card-img" alt="" title="Report Logs">
-        </div>
+      <div class="card">
+        <span id="tooltipText">Edit Student</span>
+        <img src="../../../assets/img/edit-student.png" routerLink="/edit-student" class="card-img" alt="" title="Edit Student">
       </div>
 
-     
+      <div class="card">
+        <span id="tooltipText">Manage Account</span>
+        <img src="../../../assets/img/manage-account.png" routerLink="/manage-account" class="card-img" alt="" title="Manage Account">
+      </div>
+
+      <div class="card">
+        <span id="tooltipText">Scan QR</span>
+        <img src="../../../assets/img/scan-qr.png" routerLink="/scan-qr" class="card-img" alt="" title="Scan QR">
+      </div>
+
+      <div class="card">
+        <span id="tooltipText">Change Logs</span>
+        <img src="../../../assets/img/logs.png" routerLink="/change-logs" class="card-img" alt="" title="Change Logs">
+      </div>
+
+      <div class="card">
+        <span id="tooltipText">Data Analysis</span>
+        <img src="../../../assets/img/reports.png" routerLink="/data-analysis" class="card-img" alt="" title="Report Logs">
+      </div>
+
+
     </div>
   </div>
 </body>

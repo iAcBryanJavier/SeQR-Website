@@ -1,36 +1,102 @@
-import { Component } from '@angular/core';
-
-
+import { Component, ViewChild } from '@angular/core';
+import { BrowserMultiFormatReader } from '@zxing/browser';
+import { GoerliEtherscanService } from '../services/goerli-etherscan.service';
+import web3 from 'web3';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from "src/app/services/auth.service";
+import { DatabaseService } from '../services/database.service';
+import { DiplomaTemplateComponent } from '../components/diploma-template/diploma-template.component';
+import { IpfsStudent } from '../interfaces/IpfsStudent';
 
 
 @Component({
-  selector: 'read-qr-component',
+  selector: 'app-read-qr',
   templateUrl: './read-qr-component.component.html',
   styleUrls: ['./read-qr-component.component.css']
 })
 export class ReadQrComponentComponent  {
   // declare GetQrData: string;
   result!: any;
-  url: string|null|ArrayBuffer = ''; 
-  constructor() { 
+  url: string|null|ArrayBuffer = '';
+  idUserEmail: string | null = localStorage.getItem("idUserEmail");
+  ipfsLink: string = '';
+  txnHash: string = '';
+  ipfsIndex!: number;
+  isLoading: boolean = false;
+  progressBarMsg: string = '';
+  progressBarValue: number = 0;
+  ipfsData: IpfsStudent = {
+    firstname: '',
+    middlename: '',
+    lastname: '',
+    studentId: '',
+    soNumber: '',
+    course: ''
+  };
+
+  isLoggedIn!: boolean;
+
+  constructor(private modalService: NgbModal, private db: DatabaseService) {
+
+    // this.isLoggedIn  = authService.checkLogin();
     // this.myScriptElement = document.createElement("script");
     // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
     // document.body.appendChild(this.myScriptElement);
-  
   }
 
   ngOnInit(): void {
-   
-  }
+    this.db.setStudentList();
+   }
 
-  decodeOrCode(): void{
-    import('../../assets/js/decode-script.js').then(randomFile =>{
-       randomFile.GetQrData();
-       this.result = randomFile.resultOfQR;
-    });
+  decodeOrCode(): void {
+    this.progressBarMsg = 'Loading Student Diploma'
+    const codeReader = new BrowserMultiFormatReader();
+    codeReader
+      .decodeFromImageElement("img")
+      .then(result => {
+        console.log(result);
+        try {
+          const resultParsed = JSON.parse(result.toString());
+          console.log(typeof resultParsed);
+          this.txnHash = resultParsed.txnHash;
+          this.ipfsIndex = resultParsed.index;
+
+          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex).subscribe(item =>{
+            this.ipfsData = item[0]
+            this.isLoading = true;
+          })
+          
+        } catch (error) {
+          this.txnHash = result.toString();
+          this.ipfsIndex = -1;
+
+          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex).subscribe(item =>{
+            this.ipfsData = item[0]
+            this.isLoading = true;
+          })
+
+        }
+      })
+      .catch((err) => {
+        throw (
+          "Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code. More Info: " +
+          err
+        );
+      });
+
+    // import('../../assets/js/decode-script.js').then(async randomFile => {
+    //   randomFile.GetQrData();
+    //   this.result = randomFile.resultOfQR;
+    //   alert(this.result);
+    // });
   }
 
   processFile(imageInput: any) {
+    this.url = '';
+    this.isLoading = true;
+    this.progressBarValue = 15
+    this.progressBarMsg = 'Processing QR Code Image'
+
     const file: File = imageInput.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file)
@@ -46,12 +112,22 @@ export class ReadQrComponentComponent  {
       console.log(file);
       this.decodeOrCode();
     }
-    
+  }
 
+  receiveLoadingValue(loadingValue: any){
+    this.isLoading = loadingValue;
+  }
+
+  receiveProgressBarMsg(msg: any){
+    this.progressBarMsg = msg;
+  }
+
+  receiveProgressBarValue(progressBarValue: any){
+    this.progressBarValue = progressBarValue;
   }
 }
 
- 
- 
-  
+
+
+
 

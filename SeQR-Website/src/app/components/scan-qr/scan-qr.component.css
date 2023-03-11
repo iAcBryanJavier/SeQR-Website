@@ -1,55 +1,158 @@
-.scanner-window{
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-	
+html {
+	font-size: 16px;
 }
 
+.certificate {
+	border: none;
+	margin: 50px auto;
+	max-width: 800px;
+	padding: 20px;
+	text-align: center;
+	position: relative;
+	border-image: url("../../../assets/img/certificate-background.jpg") 20 round;
+	border-width: 20px;
+	border-style: solid;
+	background-color: white;
+	background-image: url("../../../assets/img/certificate.jpg");
+}
+
+.certificate-header {
+	background: linear-gradient(to right, #000428, #004e92);
+	color: #fff;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+.certificate-header h1 {
+	font-size: 36px;
+	margin: 0;
+}
+
+.certificate-body {
+	font-size: 24px;
+	position: relative;
+}
+
+.certificate-image {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 150px;
+	height: auto;
+	opacity: 0.8;
+}
+
+.certificate-body h2 {
+	font-size: 44px;
+	margin: 20px 0;
+	font-family: "Brush Script MT", cursive;
+}
+
+.certificate-body h3 {
+	font-size: 30px;
+	margin: 20px 0;
+}
+
+.certificate-body h4 {
+	font-size: 24px;
+	margin: 20px 0;
+}
+
+@media only screen and (max-width: 600px) {
+	.certificate-header h1 {
+		font-size: 24px;
+	}
+
+	.certificate-body {
+		font-size: 18px;
+	}
+
+	.certificate-image {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 150px;
+		height: auto;
+		opacity: 0;
+		width: 100px;
+	}
+
+	.certificate-body h2 {
+		font-size: 24px;
+		margin: 10px 0;
+	}
+
+	.certificate-body h3 {
+		font-size: 20px;
+		margin: 10px 0;
+	}
+
+	.certificate-body h4 {
+		font-size: 18px;
+		margin: 10px 0;
+	}
+}
+
+
+/* Define breakpoints */
+@media only screen and (max-width: 768px) {
+
+	/* Small screens */
+	.main {
+		width: 90%;
+		height: auto;
+	}
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+
+	/* Medium screens */
+	.main {
+		width: 80%;
+		height: auto;
+	}
+}
+
+@media only screen and (min-width: 1025px) {
+
+	/* Large screens */
+	.main {
+		width: 900px;
+		height: 700px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.main {
+		border-radius: 0;
+		box-shadow: none;
+	}
+}
+
+/* Styles */
 body {
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 ;
+	margin: 0;
 	padding: 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
+	background: linear-gradient(to bottom, #E4E5E6, #00416A);
 }
 
-.main{
-	width: 900px;
-	height: 700px;
+.scanner-window {
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+}
+
+.main {
 	background: red;
 	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/cover;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
-}
-
-
-
-/* button{
-	width: 60%;
-	height: 40px;
-	margin: 10px auto;
-	justify-content: center;
-	display: block;
-	color: #fff;
-	background: #573b8a;
-	font-size: 1em;
-	font-weight: bold;
-	margin-top: 20px;
-	outline: none;
-	border: none;
-	border-radius: 5px;
-	transition: .2s ease-in;
-	cursor: pointer;
-} */
-
-select {
-	text-align: center;
 }
 
 .center {
@@ -57,23 +160,26 @@ select {
 	flex-direction: column;
 	align-items: center;
 	gap: 20px;
-
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  .dropdown:hover .dropdown-menu {
-    display: block;
-  }
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+
+select {
+	text-align: center;
+}

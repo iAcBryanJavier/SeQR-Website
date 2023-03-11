@@ -42,7 +42,7 @@ export class ExportButtonComponent implements OnInit {
 downloadFile(data: any, filename = 'data') {
   let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
   let csvData = this.ConvertToCSV(data, arrHeader);
-  console.log(csvData)
+  // console.log(csvData)
   let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
   let dwldLink = document.createElement("a");
   let url = URL.createObjectURL(blob);
@@ -59,7 +59,7 @@ downloadFile(data: any, filename = 'data') {
 }
 
 ConvertToCSV(objArray: any, headerList: any) {
-  console.log(objArray);
+  // console.log(objArray);
 
   let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
   let str = '';

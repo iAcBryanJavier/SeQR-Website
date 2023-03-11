@@ -46,7 +46,7 @@ export class ScanLandingComponent  {
     const selected = this.selectedValue.nativeElement.value;
     const device = this.availableDevices.find(x => x.deviceId === selected);
     this.currentDevice = device || undefined ;
-   
+
   }
 
 
@@ -61,7 +61,7 @@ export class ScanLandingComponent  {
       hasPermission: this.hasPermission,
     };
 
-    
+
   }
-  
+
 }

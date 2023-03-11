@@ -36,7 +36,8 @@ export class ImportCsvButtonComponent implements OnInit {
   public isMinting: boolean = false;
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
-  public ipfsUrlPrefix: string = 'https://gateway.pinata.cloud/ipfs/';
+  public ipfsUrlPrefix: string = environment.pinatacloud.gateway;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public myAngularxQrCode: string = "";
   qrCodeDownloadLink: SafeUrl = "";
   filename: string = "";
@@ -47,7 +48,7 @@ export class ImportCsvButtonComponent implements OnInit {
   txnHash: any;
   progressBarValue: number = 0;
   progressBarMsg: string = '';
-  
+
   blobUrls: Blob[] = [];
 
   ngOnInit(): void {
@@ -107,7 +108,7 @@ export class ImportCsvButtonComponent implements OnInit {
   //       })
   //     index++;
   //   });
-  
+
   //   zip.generateAsync({type: 'blob'})
   //   .then(content =>{
   //     saveAs(content, `${this.txnHash}.zip`);
@@ -178,7 +179,7 @@ export class ImportCsvButtonComponent implements OnInit {
             txnObj.setIndex(ctr);
             this.txnObjList.push(JSON.stringify(txnObj));
 
-            item.txnHash = ipfsHash;
+            item.txnHash = JSON.stringify(txnObj);
             item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
             this.saveStudent(item);
             ctr++;
@@ -245,7 +246,7 @@ export class ImportCsvButtonComponent implements OnInit {
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
     try{
-      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
+      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
 
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();

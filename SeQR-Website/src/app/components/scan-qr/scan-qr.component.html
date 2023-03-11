@@ -1,36 +1,38 @@
-<app-navbar></app-navbar>
-
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>Slide Navbar</title>
+  <head>
   <link rel="stylesheet" type="text/css" href="scan-qr.component.css">
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+  rel="stylesheet">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
+
+<div *ngIf="isLoggedIn">
+  <app-navbar></app-navbar>
+</div>
 
 <body>
 
   <div class="center">
 
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
         Dropdown button
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
-        <a class="dropdown-item" routerLink="/dashboard">Dashboard</a>
-        <!-- dapat dito, kapag logged in na yung user, kita niya is dashboard. Kapag hindi, kita niya is login as choices. Not sure how to implement huhuhuhu-->
+        <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
       </div>
+      <button type="button" class="btn btn-primary" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'On' : 'Off'}}</button>
     </div>
-    
+
 
     <div class="main">
 
@@ -43,26 +45,24 @@
         </select>
 
         <zxing-scanner class="scanner-window" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
-          [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)"
+          [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)" [enable]="scannerStatus"
           (camerasFound)="onCamerasFound($event)"></zxing-scanner>
-
-
-        <!-- <section class="results" *ngIf="qrResultString">
-            <div>
-              <small>Result</small>
-              <strong>{{ qrResultString }}</strong>
-            </div>
-            <button (click)="clearResult()">&times;</button>
-          </section> -->
-
       </div>
-
     </div>
-
   </div>
-
-  <!-- <read-qr-component></read-qr-component> -->
-
 </body>
 
-</html>
+<div class="certificate" *ngIf="isLoading">
+  <div class="certificate-header">
+    <h1>Certificate of Completion</h1>
+  </div>
+  <div class="certificate-body">
+    <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+    <p>This is to certify that</p>
+    <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
+    <p>has successfully completed the course on</p>
+    <h3>{{ipfsData.course}}</h3>
+    <p>SO Number: </p>
+    <h4>{{ipfsData.soNumber}}</h4>
+  </div>
+</div>

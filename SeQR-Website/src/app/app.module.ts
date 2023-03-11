@@ -35,7 +35,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { FilterPipe } from './filter.pipe';
 import { RegisterComponent } from './components/register/register.component';
 import { LandingComponent } from './components/landing/landing.component';
-import { ScanLandingComponent } from './components/scan-landing/scan-landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
@@ -46,6 +45,11 @@ import { NgChartsModule } from 'ng2-charts';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { ProgressbarComponent } from './components/progressbar/progressbar.component';
+import { DiplomaComponent } from './components/diploma/diploma.component';
+import { DiplomaTemplateComponent } from './components/diploma-template/diploma-template.component';
+import { SpinnersComponent } from './components/spinners/spinners.component';
+import { DeleteButtonComponent } from './delete-button/delete-button.component';
+import { ModalPopupComponent } from './modal-popup/modal-popup.component';
 
 @NgModule({
   declarations: [
@@ -64,14 +68,18 @@ import { ProgressbarComponent } from './components/progressbar/progressbar.compo
     RegisterComponent,
     ReadQrComponentComponent,
     LandingComponent,
-    ScanLandingComponent,
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
     ExportButtonChangeLogsComponent,
     EditFormComponent,
     PagenotfoundComponent,
-    ProgressbarComponent
+    ProgressbarComponent,
+    DiplomaComponent,
+    DiplomaTemplateComponent,
+    SpinnersComponent,
+    DeleteButtonComponent,
+    ModalPopupComponent
   ],
   imports: [
     BrowserModule,

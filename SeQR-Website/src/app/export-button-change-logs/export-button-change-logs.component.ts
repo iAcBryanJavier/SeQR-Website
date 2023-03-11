@@ -19,8 +19,8 @@ export class ExportButtonChangeLogsComponent implements OnInit {
     this.logs.getInfoLogs().subscribe(items => {
       this.items = items;
       var jsonLogsData = JSON.parse(JSON.stringify(this.items));
-      console.log(jsonLogsData);
-      console.log("STUDENT ARRAY: ", this.items, "\n JSON DATA: ", jsonLogsData);
+      // console.log(jsonLogsData);
+      // console.log("STUDENT ARRAY: ", this.items, "\n JSON DATA: ", jsonLogsData);
     
       this.logsData = jsonLogsData;
     

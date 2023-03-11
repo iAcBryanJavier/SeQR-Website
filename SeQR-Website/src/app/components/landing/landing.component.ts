@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
   }
 
   scanClick() {
-    this.router.navigateByUrl('/landing-scan')
+    this.router.navigateByUrl('/scan-qr')
   }
 
 }

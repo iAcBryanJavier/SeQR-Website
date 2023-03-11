@@ -3,35 +3,35 @@
 
   <head>
   <link rel="stylesheet" type="text/css" href="read-qr-component.component.css">
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" 
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
   rel="stylesheet">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  
+
 </head>
 
+
+<div *ngIf="isLoggedIn">
+  <app-navbar></app-navbar>
+</div>
+
 <body>
-
   <div class="center">
-
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Dropdown button
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" routerLink="/landing-scan">Scan QR</a>
+        <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
-        <a class="dropdown-item" routerLink="/login">Login</a>
-        
+        <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
+
       </div>
     </div>
-
     <div class="main">
-
       <div class="hide-component upload-qr">
-            
         <button class="buttonRead">
           <input #imageInput
                 type="file"
@@ -40,12 +40,34 @@
         </button>
         <br>
         <img class="no-click " unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
+        <app-spinners [isLoading]="isLoading" [msg]="progressBarMsg"></app-spinners>
     </div>
-
     </div>
-
   </div>
-
 </body>
-
 </html>
+<!-- 
+<app-diploma
+  [ipfsLink]="ipfsLink"
+  [index]="ipfsIndex"
+  [txnHash]="txnHash"
+  (isLoadingEvent)="receiveLoadingValue($event)"
+  (progressBarMsgEvent)="receiveProgressBarMsg($event)"
+  (progressBarValueEvent)="receiveProgressBarValue($event)">
+</app-diploma> -->
+
+
+<div class="certificate" *ngIf="isLoading">
+  <div class="certificate-header">
+    <h1>Certificate of Completion</h1>
+  </div>
+  <div class="certificate-body">
+    <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+    <p>This is to certify that</p>
+    <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
+    <p>has successfully completed the course on</p>
+    <h3>{{ipfsData.course}}</h3>
+    <p>SO Number: </p>
+    <h4>{{ipfsData.soNumber}}</h4>
+  </div>
+</div>

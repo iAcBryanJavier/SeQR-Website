@@ -9,10 +9,12 @@ import { ethers } from 'ethers';
 import contract from '../../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { MetamaskService } from 'src/app/services/metamask.service';
 
 @Component({
   selector: 'app-add-student',
@@ -20,7 +22,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./add-student.component.css']
 })
 export class AddStudentComponent implements OnInit {
-  public ipfsUrlPrefix: string  = "https://gateway.pinata.cloud/ipfs/";
+  public ipfsUrlPrefix: string  = environment.pinatacloud.gateway;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = "";
   public qrCodeDownloadLink: SafeUrl = "";
@@ -35,7 +38,7 @@ export class AddStudentComponent implements OnInit {
   public students:  any = [];
   public filename: string = "";
   public blobUrl!: Blob;
-
+  public isDuplicate: any;
   readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
   public contractABI = contract.abi;
   public nfts: any = [];
@@ -44,7 +47,7 @@ export class AddStudentComponent implements OnInit {
   encryptFunction = new Encryption();
   public progressBarValue: number = 0;
   public progressBarMsg: string = "";
-  // form group for add stduent form to db 
+  // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.required),
     middlename: new FormControl(''),
@@ -59,7 +62,8 @@ export class AddStudentComponent implements OnInit {
 
   // NEED TO IMPORT DOM SANITZER
   constructor(private db: DatabaseService, private sanitizer: DomSanitizer
-    , private modalService: NgbModal) {}
+    , private modalService: NgbModal, private MetamaskService: MetamaskService) {}
+
 
   onChangeURL(url?: SafeUrl, content?: any) {
     if (this.myAngularxQrCode != "") {
@@ -68,7 +72,7 @@ export class AddStudentComponent implements OnInit {
        this.progressBarValue = 100;
 
       // Opens the modal and puts the qr code inside the content
-      this.modalService.open(content, { centered: true });
+      this.modalService.open(content, { size: 'xl' });
       console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
@@ -95,25 +99,17 @@ export class AddStudentComponent implements OnInit {
     }
   }
 
-  
+
 
   ngOnInit(): void {
-    this.checkIfMetamaskInstalled();
+    this.MetamaskService.checkIfMetamaskInstalled();
     // this.fetchNFTs();
 
     this.db.getCourses().subscribe(i => {
       this.courses = i;
-      console.log(this.courses);
+      // console.log(this.courses);
     });
 
-  }
-
-  private checkIfMetamaskInstalled(): boolean {
-    if (typeof (window as any).ethereum !== 'undefined') {
-      this.ethereum = (window as any).ethereum;
-      return true;
-    }
-    return false;
   }
 
   async pinFileToPinata(studentIdData: any, soNumberData: any) {
@@ -139,54 +135,99 @@ export class AddStudentComponent implements OnInit {
   });
   }
 
+
   async onSubmit(content: any) {
-    if (this.studentForm.valid) {
-      this.isMinting = true;
+    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) =>{
+      this.ethereum = (window as any).ethereum;
+      return res;
+    })
 
+    // console.log(metamaskConnection);
+
+    if(metamaskConnection){
+
+    
+    this.isMinting = true;
+
+    this.progressBarMsg = "Checking for Duplicate Records";
+    this.progressBarValue = 25;
+     
+
+    interval(1000);
+   const dupeCounter = await this.db.checkAddDuplicate(
+     this.studentForm.controls['studentId'].value,
+      this.studentForm.controls['course'].value,
+      this.studentForm.controls['soNumber'].value
+    ).then((res: any) => {
+      return res;
+    });
+
+   
+    if (this.studentForm.valid  &&  dupeCounter.dupeCount < 1) {
+     
       // progress bar checkpoint
-      this.progressBarMsg = "Uploading Files to IPFS";
-      this.progressBarValue = 50;
+    this.progressBarMsg = "Uploading Files to IPFS";
+    this.progressBarValue = 50;
 
-      const ipfsHash = await this.uploadToIPFS(
-        this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-        .then((res) => {
-          return res;
-        });
+    const ipfsHash = await this.uploadToIPFS(
+      this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+      .then((res) => {
+        return res;
+      });
 
-      // progress bar checkpoint
-      this.progressBarMsg = "Creating Blockchain Transaction";
-      this.progressBarValue = 75;
+    // progress bar checkpoint
+    this.progressBarMsg = "Creating Blockchain Transaction";
+    this.progressBarValue = 75;
 
-       this.txnHash = await this.createTransaction(ipfsHash)
-        .then((res) => {
-          return res;
-        })
-
-      this.hasSubmit = true;
-
-      if(this.studentForm.controls['studentId'].value && this.txnHash){
-        this.filename = this.studentForm.controls['studentId'].value;
-        this.myAngularxQrCode = this.txnHash;
-      }
-
-      this.studentForm.setValue({
-        studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-        dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-        txnHash: this.txnHash
+     this.txnHash = await this.createTransaction(ipfsHash)
+      .then((res) => {
+        return res;
       })
 
-      this.db.addStudent(this.studentForm.value);
+
+ 
+
+    this.hasSubmit = true;
+
+    // if(this.studentForm.controls['studentId'].value && this.txnHash){
+    //   this.filename = this.studentForm.controls['studentId'].value;
+    //   this.myAngularxQrCode = this.txnHash;
+    // }
+
+    this.studentForm.setValue({
+      studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+      firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+      middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+      lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+      course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+      sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+      soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+      dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+      txnHash:  this.txnHash
+    })
+
+    this.db.addStudent(this.studentForm.value);
+    this.studentForm.reset();
+    this.hasSubmit = false;
+    this.progressBarValue = 0;
+    this.progressBarMsg = '';
+    } else {
+  
+      const modalRef = this.modalService.open(ModalPopupComponent);
+      modalRef.componentInstance.message = dupeCounter.dupeMessage;
       this.studentForm.reset();
-      this.hasSubmit = false;
+    this.hasSubmit = false;
+    this.progressBarMsg = '';
+    this.progressBarValue = 0;
     }
+  }else{
+    const modalRef = this.modalService.open(ModalPopupComponent);
+    modalRef.componentInstance.message = "No Metamask connection found!";
   }
+  }
+
+  
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
     let responseValue: string = '';
@@ -222,7 +263,7 @@ export class AddStudentComponent implements OnInit {
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
     try{
-      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash));
+      const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
 
       console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
