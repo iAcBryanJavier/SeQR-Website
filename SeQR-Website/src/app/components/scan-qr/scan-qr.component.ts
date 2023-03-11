@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { IpfsStudent } from 'src/app/interfaces/IpfsStudent';
 import { Observable } from 'rxjs';
+import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
 
 @Component({
   selector: 'app-scan-qr',
@@ -30,6 +31,7 @@ export class ScanQrComponent {
   hasPermission!: boolean;
   qrResultString!: string;
   isLoading: boolean = false;
+  isLoadingSpinner: boolean = false;
   progressBarMsg: string = '';
   ipfsData: IpfsStudent = {
     studentId: '',
@@ -76,6 +78,7 @@ export class ScanQrComponent {
       const resultParsed = JSON.parse(resultString);
       this.fetchStudentDiploma(resultParsed.txnHash, resultParsed.index);
       this.isLoading = true;
+      this.progressBarMsg = 'Loading Student Diploma'
     } catch (err) {
       this.fetchStudentDiploma(resultString, -1);
       this.isLoading = true;
@@ -103,9 +106,20 @@ export class ScanQrComponent {
     };
   }
 
+  isUndefined(ipfsData: any): boolean{
+    if(ipfsData == undefined){
+      this.refresh();
+      const ref = this.modalService.open(ModalPopupComponent);
+      ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
+      throw('SeQR Database Error: check qr code');
+    }else{
+      return true;
+    }
+  }
+
   refresh() {
     this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
-      this.router.navigate(['read-qr']);
+      this.router.navigate(['scan-qr']);
     });
   }
 

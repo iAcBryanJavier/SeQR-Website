@@ -137,97 +137,94 @@ export class AddStudentComponent implements OnInit {
 
 
   async onSubmit(content: any) {
-    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) =>{
+    const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) => {
       this.ethereum = (window as any).ethereum;
       return res;
     })
 
     // console.log(metamaskConnection);
 
-    if(metamaskConnection){
+    if (metamaskConnection) {
 
-    
-    this.isMinting = true;
 
-    this.progressBarMsg = "Checking for Duplicate Records";
-    this.progressBarValue = 25;
-     
+      this.isMinting = true;
 
-    interval(1000);
-   const dupeCounter = await this.db.checkAddDuplicate(
-     this.studentForm.controls['studentId'].value,
-      this.studentForm.controls['course'].value,
-      this.studentForm.controls['soNumber'].value
-    ).then((res: any) => {
-      return res;
-    });
+      this.progressBarMsg = "Checking for Duplicate Records";
+      this.progressBarValue = 25;
 
-   
-    if (this.studentForm.valid  &&  dupeCounter.dupeCount < 1) {
-     
-      // progress bar checkpoint
-    this.progressBarMsg = "Uploading Files to IPFS";
-    this.progressBarValue = 50;
 
-    const ipfsHash = await this.uploadToIPFS(
-      this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-      this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
-      .then((res) => {
+      interval(1000);
+      const dupeCounter = await this.db.checkAddDuplicate(
+        this.studentForm.controls['studentId'].value,
+        this.studentForm.controls['course'].value,
+        this.studentForm.controls['soNumber'].value
+      ).then((res: any) => {
         return res;
       });
 
-    // progress bar checkpoint
-    this.progressBarMsg = "Creating Blockchain Transaction";
-    this.progressBarValue = 75;
 
-     this.txnHash = await this.createTransaction(ipfsHash)
-      .then((res) => {
-        return res;
-      })
+      if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
 
+        // progress bar checkpoint
+        this.progressBarMsg = "Uploading Files to IPFS";
+        this.progressBarValue = 50;
 
- 
+        const ipfsHash = await this.uploadToIPFS(
+          this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+          .then((res) => {
+            return res;
+          });
 
-    this.hasSubmit = true;
+        // progress bar checkpoint
+        this.progressBarMsg = "Creating Blockchain Transaction";
+        this.progressBarValue = 75;
 
-    // if(this.studentForm.controls['studentId'].value && this.txnHash){
-    //   this.filename = this.studentForm.controls['studentId'].value;
-    //   this.myAngularxQrCode = this.txnHash;
-    // }
+        this.txnHash = await this.createTransaction(ipfsHash)
+          .then((res) => {
+            return res;
+          })
 
-    this.studentForm.setValue({
-      studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-      firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-      middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-      lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-      course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-      sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-      soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
-      dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-      txnHash:  this.txnHash
-    })
+        this.hasSubmit = true;
 
-    this.db.addStudent(this.studentForm.value);
-    this.studentForm.reset();
-    this.hasSubmit = false;
-    this.progressBarValue = 0;
-    this.progressBarMsg = '';
+        // if(this.studentForm.controls['studentId'].value && this.txnHash){
+        //   this.filename = this.studentForm.controls['studentId'].value;
+        //   this.myAngularxQrCode = this.txnHash;
+        // }
+
+        this.studentForm.setValue({
+          studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
+          firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
+          middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
+          lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
+          course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
+          sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
+          soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+          dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+          txnHash: this.txnHash
+        })
+
+        this.db.addStudent(this.studentForm.value);
+        this.studentForm.reset();
+        this.hasSubmit = false;
+        this.progressBarValue = 0;
+        this.progressBarMsg = '';
+      } else {
+
+        const modalRef = this.modalService.open(ModalPopupComponent);
+        modalRef.componentInstance.message = dupeCounter.dupeMessage;
+        this.studentForm.reset();
+        this.hasSubmit = false;
+        this.progressBarMsg = '';
+        this.progressBarValue = 0;
+      }
     } else {
-  
       const modalRef = this.modalService.open(ModalPopupComponent);
-      modalRef.componentInstance.message = dupeCounter.dupeMessage;
-      this.studentForm.reset();
-    this.hasSubmit = false;
-    this.progressBarMsg = '';
-    this.progressBarValue = 0;
+      modalRef.componentInstance.message = "No Metamask connection found!";
     }
-  }else{
-    const modalRef = this.modalService.open(ModalPopupComponent);
-    modalRef.componentInstance.message = "No Metamask connection found!";
-  }
   }
 
-  
+
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
     let responseValue: string = '';

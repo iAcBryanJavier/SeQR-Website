@@ -33,20 +33,34 @@
     <div class="main">
       <div class="hide-component upload-qr">
         <button class="buttonRead">
-          <input #imageInput
-                type="file"
-                accept="image/*"
-                (change)="processFile(imageInput)">
+          <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
         </button>
         <br>
-        <img class="no-click " unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
-        <app-spinners [isLoading]="isLoading" [msg]="progressBarMsg"></app-spinners>
-    </div>
+        <img class="no-click" unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
+      </div>
+
+      <div class="certificate" *ngIf="isDiplomaLoading && isUndefined(ipfsData)">
+        <div class="certificate-header">
+          <h1>Certificate of Completion</h1>
+        </div>
+        <div class="certificate-body">
+          <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+          <p>This is to certify that</p>
+          <h2>{{ipfsData.lastname ?? ''}}, {{ipfsData.firstname ?? ''}} {{ipfsData.middlename ?? ''}}</h2>
+          <p>has successfully completed the course on</p>
+          <h3>{{ipfsData.course ?? ''}}</h3>
+          <p>SO Number: </p>
+          <h4>{{ipfsData.soNumber ?? ''}}</h4>
+        </div>
+      </div>
     </div>
   </div>
+
+
+  <app-spinners [isLoading]="isLoadingSpinner" [msg]="progressBarMsg"></app-spinners>
 </body>
 </html>
-<!-- 
+<!--
 <app-diploma
   [ipfsLink]="ipfsLink"
   [index]="ipfsIndex"
@@ -57,17 +71,3 @@
 </app-diploma> -->
 
 
-<div class="certificate" *ngIf="isLoading">
-  <div class="certificate-header">
-    <h1>Certificate of Completion</h1>
-  </div>
-  <div class="certificate-body">
-    <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
-    <p>This is to certify that</p>
-    <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
-    <p>has successfully completed the course on</p>
-    <h3>{{ipfsData.course}}</h3>
-    <p>SO Number: </p>
-    <h4>{{ipfsData.soNumber}}</h4>
-  </div>
-</div>
