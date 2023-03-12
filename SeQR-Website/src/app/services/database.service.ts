@@ -153,9 +153,12 @@ export class DatabaseService {
               .map((item) => {
                 const data = item.payload.val();
                 if (data) {
+                
                   if (
                     this.encryptFunction.decryptData(data.soNumber) === soNumber
                   ) {
+
+               
                     result.dupeMessage = 'This Diploma number already exists!';
                     result.dupeCount++;
                   } else if (
@@ -166,6 +169,7 @@ export class DatabaseService {
                     result.dupeMessage =
                       'This Student already has a diploma record with the same degree!';
                     result.dupeCount++;
+                  
                   }
                 }
                 return data;

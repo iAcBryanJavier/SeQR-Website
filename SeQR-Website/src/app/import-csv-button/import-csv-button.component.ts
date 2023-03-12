@@ -141,31 +141,32 @@ export class ImportCsvButtonComponent implements OnInit {
         for (let i = 0; i < jsonData.length - 1; ++i) {
 
 
-          if (Object.values(jsonData[i]).every((val) => val === "")) {
-            continue; // Skip this row if it's completely empty
-          }
+          // if (Object.values(jsonData[i]).every((val) => val === "")) {
+          //   continue; // Skip this row if it's completely empty
+          // }
           const dupeCounter = await this.db.checkAddDuplicate(
-            this.encryptionFunc.encryptData(jsonData[i].studentId),
-            this.encryptionFunc.encryptData(jsonData[i].studentCourse),
-            this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber)
+            jsonData[i].studentId,
+            jsonData[i].course,
+           jsonData[i].soNumber
            ).then((res: any) => {
              return res;
            });
        
-          
-          if(dupeCounter < 1){
+          console.log(dupeCounter.dupeCount);
+          if(dupeCounter.dupeCount < 1){
+            console.log(jsonData[i].studentId);
             this.studentData = {
-              firstname: this.encryptionFunc.encryptData(jsonData[i].firstName),
-              middlename: this.encryptionFunc.encryptData(jsonData[i].middleName),
-              lastname: this.encryptionFunc.encryptData(jsonData[i].lastName),
-              course: this.encryptionFunc.encryptData(jsonData[i].studentCourse),
+              firstname: this.encryptionFunc.encryptData(jsonData[i].firstname),
+              middlename: this.encryptionFunc.encryptData(jsonData[i].middlename),
+              lastname: this.encryptionFunc.encryptData(jsonData[i].lastname),
+              course: this.encryptionFunc.encryptData(jsonData[i].course),
               studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
-              sex: this.encryptionFunc.encryptData(jsonData[i].studentGender),
-              soNumber: this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber),
+              sex: this.encryptionFunc.encryptData(jsonData[i].sex),
+              soNumber: this.encryptionFunc.encryptData(jsonData[i].soNumber),
               txnHash: '',
               dataImg: ''
             }
-            console.log(this.studentData.firstname);
+  
             this.studentList.push(this.studentData);
           }else{
             continue;
@@ -209,8 +210,7 @@ export class ImportCsvButtonComponent implements OnInit {
               item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
               this.saveStudent(item);
               ctr++;
-            const modalRef = this.modalService.open(ModalPopupComponent);
-              modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';})
+           })
               this.isMinting = false;
               this.isMintingEvent.emit(this.isMinting);
             if(ctr > 0){
