@@ -175,6 +175,9 @@ export class ImportCsvButtonComponent implements OnInit {
         if(this.studentList.length < 1){
           const modalRef = this.modalService.open(ModalPopupComponent);
           modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';
+          this.isMinting = false;
+          this.isMintingEvent.emit(this.isMinting);
+          
         }else{
           console.log(JSON.stringify(this.studentList));
           let ctr = 0;
@@ -208,12 +211,18 @@ export class ImportCsvButtonComponent implements OnInit {
               ctr++;
             const modalRef = this.modalService.open(ModalPopupComponent);
               modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';})
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
             if(ctr > 0){
               const modalRef = this.modalService.open(ModalPopupComponent);
               modalRef.componentInstance.message = 'Added student record(s)!';
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
             }else{
               const modalRef = this.modalService.open(ModalPopupComponent);
               modalRef.componentInstance.message = 'Added student record(s)! Some students were skipped due to being a duplicate';
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
             }
             
           }

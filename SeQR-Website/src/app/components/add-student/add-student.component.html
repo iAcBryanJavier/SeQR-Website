@@ -75,12 +75,6 @@
 
           <div class="button">
             <button type="submit" class="btn-form btn-primary mb-3">SUBMIT AND MINT</button>
-           <app-progressbar 
-            [isMinting]="isMinting"
-            [progressBarValue]="progressBarValue"
-            [progressBarMsg]="progressBarMsg">
-          </app-progressbar>
-           
           </div>
 
           <div class="qr-middle">
@@ -89,6 +83,7 @@
           </div>
       </form>
   </div>
+  <app-spinners [isLoading]="isMinting" [msg]="progressBarMsg"></app-spinners>
 </body>
 
 <ng-template #content let-modal>
