@@ -37,37 +37,6 @@ export class DataAnalysisComponent implements OnInit {
   public selectedCourse: string = '';
   public courseStudentNum: number = 0;
 
-  //genders
-  public BSEMC_male: number = 0;
-  public BSEMC_female: number = 0;
-
-  public BSIT_male: number = 0;
-  public BSIT_female: number = 0;
-
-  public BSCS_male: number = 0;
-  public BSCS_female: number = 0;
-
-  public BSANIMATION_male: number =  0; 
-  public BSANIMATION_female: number =  0; 
-
-  public BSMAD_male: number =  0; 
-  public BSMAD_female: number =  0; 
- 
-  public BSFD_male: number =  0; 
-  public BSFD_female: number =  0; 
-
-  public BSFILIM_male: number =  0; 
-  public BSFILM_female: number =  0; 
- 
-  public BAMUSIC_male: number =  0; 
-  public BAMUSIC_female: number =  0; 
-
-  public BSPSYCH_male: number =  0; 
-  public BSPSYCH_female: number =  0; 
-
-  public BSACCT_male: number =  0; 
-  public BSACCT_female: number =  0; 
-
   public barChartLegend = true;
   public barChartPlugins = [];
 
