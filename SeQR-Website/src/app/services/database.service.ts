@@ -54,6 +54,24 @@ export class DatabaseService {
       });
   }
 
+  addBatchStudent(student: any) {
+    const ref = this.afs.list('students');
+    ref
+      .push(student)
+      .then(() => {
+        this.logs.info(
+          'User: ' +
+            localStorage.getItem('idUserEmail') +
+            ' added a student record'
+        );
+    
+      })
+      .catch(() => {
+        window.alert('An error occured, please try again.');
+        throw 'Add Student Failed';
+      });
+  }
+
   updateStudent(student: any, x: any, y: any, z: any) {
     // console.log(x,"-",y,"-",z);
     // console.log(student.studentId,"-",student.course,"-",student.soNumber);
