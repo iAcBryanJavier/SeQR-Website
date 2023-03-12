@@ -19,6 +19,9 @@ input {
 img {
   margin: 10px auto;
   vertical-align: middle !important;
+}
+
+.scanned-qr{
   display: none;
 }
 

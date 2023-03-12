@@ -36,7 +36,7 @@
           <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
         </button>
         <br>
-        <img class="no-click" unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
+        <img class="no-click scanned-qr" unselectable="on" id="img" [src]="url" height="auto" width="400px" vertical-align="center">
       </div>
 
       <div class="certificate" *ngIf="isDiplomaLoading && isUndefined(ipfsData)">
@@ -44,7 +44,7 @@
           <h1>Certificate of Completion</h1>
         </div>
         <div class="certificate-body">
-          <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+          <img src="../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
           <p>This is to certify that</p>
           <h2>{{ipfsData.lastname ?? ''}}, {{ipfsData.firstname ?? ''}} {{ipfsData.middlename ?? ''}}</h2>
           <p>has successfully completed the course on</p>

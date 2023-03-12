@@ -13,6 +13,8 @@ import { environment } from 'src/environments/environment';
 import web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { Router } from '@angular/router';
+import { RefreshComponentService } from './refresh-component.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +33,9 @@ export class DatabaseService {
     private logs: LoggingService,
     private goerliService: GoerliEtherscanService,
     private pinataService: PinataService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
+    private refreshService: RefreshComponentService
   ) {}
 
   //add student
@@ -792,14 +796,23 @@ export class DatabaseService {
 
   getStudentDiplomaFromBlockchain(
     txnHash: string,
-    index: number
+    index: number,
+    componentRoute: string
   ): Observable<any> {
     const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txnHash}&apikey=${environment.goerli_etherscan.apiKey}`;
     try {
       if (index == -1) {
         return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
           switchMap((item: any) => {
-            let ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+            let ipfsLink: any;
+            try {
+              ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+            } catch (error) {
+              const ref = this.modalService.open(ModalPopupComponent);
+              ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
+              this.refreshService.refresh(componentRoute)
+              throw('IPFS Link Error: ' + error)
+            }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
                 return this.getSearchStudent(
@@ -812,7 +825,15 @@ export class DatabaseService {
       } else {
         return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
           switchMap((item: any) => {
-            let ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+            let ipfsLink: any;
+            try {
+              ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+            } catch (error) {
+              const ref = this.modalService.open(ModalPopupComponent);
+              ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
+              this.refreshService.refresh(componentRoute);
+              throw('IPFS Link Error: ' + error)
+            }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
                 return this.getSearchStudent(

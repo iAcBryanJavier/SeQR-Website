@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { IpfsStudent } from 'src/app/interfaces/IpfsStudent';
 import { Observable } from 'rxjs';
 import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { RefreshComponentService } from 'src/app/services/refresh-component.service';
 
 @Component({
   selector: 'app-scan-qr',
@@ -17,6 +18,7 @@ import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
 })
 export class ScanQrComponent {
   @ViewChild('selectedValue') selectedValue!: ElementRef;
+  componentRoute: string = 'scan-qr';
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo | undefined;
   formatsEnabled: BarcodeFormat[] = [
@@ -26,7 +28,9 @@ export class ScanQrComponent {
     BarcodeFormat.QR_CODE,
   ];
 
-  scannerStatus: boolean = true;
+  scannerStatus: boolean = false;
+  showMainContent: string = 'display: none';
+  buttonStyle: string = 'btn btn-success';
   hasDevices!: boolean;
   hasPermission!: boolean;
   qrResultString!: string;
@@ -42,7 +46,7 @@ export class ScanQrComponent {
     course: '',
   };
   studentObservable!: Observable<any>;
-
+ 
   idUserEmail: string | null = localStorage.getItem('idUserEmail');
 
   isLoggedIn!: boolean;
@@ -51,7 +55,8 @@ export class ScanQrComponent {
     private db: DatabaseService,
     private modalService: NgbModal,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private refreshService: RefreshComponentService
   ) {
     this.isLoggedIn = authService.checkLogin();
   }
@@ -70,6 +75,7 @@ export class ScanQrComponent {
   }
 
   onCodeResult(resultString: string) {
+    this.isLoadingSpinner = true;
     this.toggleScannerStatus();
     this.scannerStatus = false;
     // this.isLoading = true;
@@ -77,16 +83,23 @@ export class ScanQrComponent {
     try {
       const resultParsed = JSON.parse(resultString);
       this.fetchStudentDiploma(resultParsed.txnHash, resultParsed.index);
-      this.isLoading = true;
       this.progressBarMsg = 'Loading Student Diploma'
     } catch (err) {
       this.fetchStudentDiploma(resultString, -1);
-      this.isLoading = true;
+      this.progressBarMsg = 'Loading Student Diploma'
     }
   }
 
   toggleScannerStatus(): void {
     this.scannerStatus = !this.scannerStatus;
+    if(this.scannerStatus){
+      this.showMainContent = 'display: block';
+      this.buttonStyle = 'btn btn-danger'
+      this.isLoading = false;
+    }else{
+      this.showMainContent = 'display: none';
+      this.buttonStyle = 'btn btn-success'
+    }
   }
 
   onDeviceSelectChange() {
@@ -96,6 +109,7 @@ export class ScanQrComponent {
   }
 
   onHasPermission(has: boolean) {
+
     this.hasPermission = has;
   }
 
@@ -108,29 +122,26 @@ export class ScanQrComponent {
 
   isUndefined(ipfsData: any): boolean{
     if(ipfsData == undefined){
-      this.refresh();
+      this.refreshService.refresh(this.componentRoute);
       const ref = this.modalService.open(ModalPopupComponent);
       ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
       throw('SeQR Database Error: check qr code');
     }else{
+      this.isLoadingSpinner = false;
       return true;
     }
-  }
-
-  refresh() {
-    this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
-      this.router.navigate(['scan-qr']);
-    });
   }
 
   fetchStudentDiploma(txnHash: string, index: number) {
     try {
       this.studentObservable = this.db.getStudentDiplomaFromBlockchain(
         txnHash,
-        index
+        index,
+        this.componentRoute
       );
       this.studentObservable.subscribe((item) => {
         this.ipfsData = item[0];
+        this.isLoading = true;
       });
     } catch (err) {
       console.log(err);

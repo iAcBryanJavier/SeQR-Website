@@ -30,13 +30,26 @@
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
         <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
       </div>
-      <button type="button" class="btn btn-primary" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'On' : 'Off'}}</button>
+      <button type="button" [className]="buttonStyle" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'Turn Off' : 'Turn On'}}</button>
 
     </div>
 
-    <app-spinners [isLoading]="isLoading" [msg]="progressBarMsg"></app-spinners>
+    <div class="certificate" *ngIf="isLoading && isUndefined(ipfsData)">
+      <div class="certificate-header">
+        <h1>Certificate of Completion</h1>
+      </div>
+      <div class="certificate-body">
+        <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+        <p>This is to certify that</p>
+        <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
+        <p>has successfully completed the course on</p>
+        <h3>{{ipfsData.course}}</h3>
+        <p>SO Number: </p>
+        <h4>{{ipfsData.soNumber}}</h4>
+      </div>
+    </div>
 
-    <div class="main">
+    <div class="main" [style]="showMainContent">
 
       <div class="scanner-shell" [hidden]="!hasDevices">
         <select #selectedValue (change)="onDeviceSelectChange()">
@@ -48,24 +61,11 @@
         <zxing-scanner class="scanner-window" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
           [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)" [enable]="scannerStatus"
           (camerasFound)="onCamerasFound($event)"></zxing-scanner>
-
-          <div class="certificate" *ngIf="isLoading && isUndefined(ipfsData)">
-            <div class="certificate-header">
-              <h1>Certificate of Completion</h1>
-            </div>
-            <div class="certificate-body">
-              <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
-              <p>This is to certify that</p>
-              <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
-              <p>has successfully completed the course on</p>
-              <h3>{{ipfsData.course}}</h3>
-              <p>SO Number: </p>
-              <h4>{{ipfsData.soNumber}}</h4>
-            </div>
-          </div>
+          
       </div>
     </div>
   </div>
+  <app-spinners [isLoading]="isLoadingSpinner" [msg]="progressBarMsg"></app-spinners>
 </body>
 
 
