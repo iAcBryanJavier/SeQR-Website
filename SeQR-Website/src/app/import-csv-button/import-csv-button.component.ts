@@ -168,10 +168,10 @@ export class ImportCsvButtonComponent implements OnInit {
             }
   
             this.studentList.push(this.studentData);
-          }else{
+          } else {
             continue;
           }
-          }
+        }
        
         if(this.studentList.length < 1){
           const modalRef = this.modalService.open(ModalPopupComponent);
