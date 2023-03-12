@@ -145,8 +145,6 @@ export class AddStudentComponent implements OnInit {
     // console.log(metamaskConnection);
 
     if (metamaskConnection) {
-
-
       this.isMinting = true;
 
       this.progressBarMsg = "Checking for Duplicate Records";
@@ -218,6 +216,7 @@ export class AddStudentComponent implements OnInit {
         this.progressBarMsg = '';
         this.progressBarValue = 0;
       }
+      this.isMinting = false
     } else {
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "No Metamask connection found!";
