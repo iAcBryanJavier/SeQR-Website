@@ -1,7 +1,9 @@
-.csv-btn {
-    opacity: 0;
+.csv-btn{
+  position: absolute;
+  left: 6%;
+  opacity: 0;
+  cursor: pointer;
 }
-
 input {
   content: none;
   opacity: 0;
