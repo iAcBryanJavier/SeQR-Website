@@ -82,6 +82,13 @@ button{
 button:hover{
 	background: #00416A;
 }
+
+button:disabled {
+	background-color: gray;
+	color: white;
+	cursor: not-allowed;
+}
+
 .contactSupport{
 	height: 460px;
 	background: #eee;

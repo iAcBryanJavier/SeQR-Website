@@ -28,7 +28,7 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
-        <a class="dropdown-item" routerLink="/dashboard">{{idUserEmail ? "Dashboard": "Login"}}</a>
+        <a class="dropdown-item" [routerLink]="idUserEmail ? '/dashboard' : '/login'">{{idUserEmail ? 'Dashboard' : 'Login'}}</a>
       </div>
       <button type="button" [className]="buttonStyle" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'Turn Off' : 'Turn On'}}</button>
 

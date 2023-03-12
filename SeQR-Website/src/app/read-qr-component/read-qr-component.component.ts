@@ -15,15 +15,15 @@ import { RefreshComponentService } from '../services/refresh-component.service';
 @Component({
   selector: 'app-read-qr',
   templateUrl: './read-qr-component.component.html',
-  styleUrls: ['./read-qr-component.component.css']
+  styleUrls: ['./read-qr-component.component.css'],
 })
-export class ReadQrComponentComponent  {
+export class ReadQrComponentComponent {
   // declare GetQrData: string;
   @ViewChild('content') content!: any;
   componentRoute: string = 'read-qr';
   result!: any;
-  url: string|null|ArrayBuffer = '';
-  idUserEmail: string | null = localStorage.getItem("idUserEmail");
+  url: string | null | ArrayBuffer = '';
+  idUserEmail: string | null = localStorage.getItem('idUserEmail');
   ipfsLink: string = '';
   txnHash: string = '';
   ipfsIndex!: number;
@@ -37,28 +37,30 @@ export class ReadQrComponentComponent  {
     lastname: '',
     studentId: '',
     soNumber: '',
-    course: ''
+    course: '',
   };
   isLoggedIn!: boolean;
 
-  constructor(private modalService: NgbModal, private db: DatabaseService, private router: Router, private refreshService: RefreshComponentService) {
-
-    // this.isLoggedIn  = authService.checkLogin();
-    // this.myScriptElement = document.createElement("script");
-    // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
-    // document.body.appendChild(this.myScriptElement);
+  constructor(
+    private modalService: NgbModal,
+    private db: DatabaseService,
+    private router: Router,
+    private refreshService: RefreshComponentService,
+    private authService: AuthService
+  ) {
+    this.isLoggedIn = authService.checkLogin();
   }
 
   ngOnInit(): void {
     this.db.setStudentList();
-   }
+  }
 
   decodeOrCode(): void {
-    this.progressBarMsg = 'Loading Student Diploma'
+    this.progressBarMsg = 'Loading Student Diploma';
     const codeReader = new BrowserMultiFormatReader();
     codeReader
-      .decodeFromImageElement("img")
-      .then(result => {
+      .decodeFromImageElement('img')
+      .then((result) => {
         console.log(result);
         try {
           const resultParsed = JSON.parse(result.toString());
@@ -66,26 +68,39 @@ export class ReadQrComponentComponent  {
           this.txnHash = resultParsed.txnHash;
           this.ipfsIndex = resultParsed.index;
 
-          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex, this.componentRoute).subscribe(item =>{
+          this.db
+            .getStudentDiplomaFromBlockchain(
+              this.txnHash,
+              this.ipfsIndex,
+              this.componentRoute
+            )
+            .subscribe((item) => {
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
-            })
+            });
         } catch (error) {
           this.txnHash = result.toString();
           this.ipfsIndex = -1;
 
-          this.db.getStudentDiplomaFromBlockchain(this.txnHash, this.ipfsIndex, this.componentRoute).subscribe(item =>{
+          this.db
+            .getStudentDiplomaFromBlockchain(
+              this.txnHash,
+              this.ipfsIndex,
+              this.componentRoute
+            )
+            .subscribe((item) => {
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
-            })
+            });
         }
       })
       .catch((err) => {
         const ref = this.modalService.open(ModalPopupComponent);
-        ref.componentInstance.message = 'Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code';
+        ref.componentInstance.message =
+          'Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code';
         this.refreshService.refresh(this.componentRoute);
         throw (
-          "Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code. More Info: " +
+          'Upload QR Error: Invalid QR Upload, Check if the image is a proper image file or a proper QR Code. More Info: ' +
           err
         );
       });
@@ -106,37 +121,38 @@ export class ReadQrComponentComponent  {
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
-      reader.onload = (event:Event) => {
-        let fileReader = event.target as FileReader
+      reader.onload = (event: Event) => {
+        let fileReader = event.target as FileReader;
         this.url = fileReader.result;
         console.log(file);
         this.decodeOrCode();
-      }
+      };
     } catch (error) {
       this.refreshService.refresh(this.componentRoute);
-      throw('Reader Error: ' + error);
+      throw 'Reader Error: ' + error;
     }
   }
 
-  receiveLoadingValue(loadingValue: any){
+  receiveLoadingValue(loadingValue: any) {
     this.isDiplomaLoading = loadingValue;
   }
 
-  receiveProgressBarMsg(msg: any){
+  receiveProgressBarMsg(msg: any) {
     this.progressBarMsg = msg;
   }
 
-  receiveProgressBarValue(progressBarValue: any){
+  receiveProgressBarValue(progressBarValue: any) {
     this.progressBarValue = progressBarValue;
   }
 
-  isUndefined(ipfsData: any): boolean{
-    if(ipfsData == undefined){
+  isUndefined(ipfsData: any): boolean {
+    if (ipfsData == undefined) {
       this.refreshService.refresh(this.componentRoute);
       const ref = this.modalService.open(ModalPopupComponent);
-      ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
-      throw('SeQR Database Error: check qr code');
-    }else{
+      ref.componentInstance.message =
+        'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
+      throw 'SeQR Database Error: check qr code';
+    } else {
       this.isLoadingSpinner = false;
       return true;
     }
