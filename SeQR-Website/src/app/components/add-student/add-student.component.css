@@ -110,6 +110,7 @@ form .card-details .card-input {
     font-size: 20px;
 }
 
+
 .card-details .card-input input {
     height: 30px;
     width: 60%;
@@ -188,31 +189,35 @@ select option {
 
 
 .csv-file {
-    max-width: 200px;
-    position: relative;
-    overflow: hidden;
+    width: 30%;
+    height: 30px;
     margin: 10px auto;
+    justify-content: center;
     display: block;
     color: black;
-	background: #C1CCD3;
-    font-size: 1em;
+    background: #C1CCD3;
+    font-size: 1rem;
     font-weight: bold;
     margin-top: 20px;
+    outline: none;
+    border: none;
     border-radius: 5px;
+    transition: .2s ease-in;
     cursor: pointer;
+    margin-top: 20px;
+}
+
+.csv-file:hover {
+    background: #00416A;
+    color: white;
+    transform: scale(1.08);
+    cursor: pointer;
+
 }
 
 input:required {
     box-shadow:none;
   }
-
-.csv-btn {
-    position: absolute;
-    font-size: 50px;
-    opacity: 0;
-    right: 0;
-    top: 0;
-}
 
 .qr-middle {
   visibility: hidden;
@@ -248,8 +253,12 @@ input:required {
         width:100%;
     }
 
-    .container form .card-details{
-   
+    .btn-form {
+        width: 80%;
+    }
+
+    .csv-file {
+        width: 80%;
     }
 
     button {

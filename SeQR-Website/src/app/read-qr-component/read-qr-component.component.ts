@@ -36,12 +36,9 @@ export class ReadQrComponentComponent  {
 
   isLoggedIn!: boolean;
 
-  constructor(private modalService: NgbModal, private db: DatabaseService) {
+  constructor(private modalService: NgbModal, private db: DatabaseService,  private authService: AuthService) {
 
-    // this.isLoggedIn  = authService.checkLogin();
-    // this.myScriptElement = document.createElement("script");
-    // this.myScriptElement.src = "https://unpkg.com/@zxing/library@latest";
-    // document.body.appendChild(this.myScriptElement);
+    this.isLoggedIn = authService.checkLogin();
   }
 
   ngOnInit(): void {

@@ -43,11 +43,6 @@ h1 {
     z-index: 1;
 }
 
-.nav-custom-col-blue{
-    background: linear-gradient(to right, #2C3E50      , #000000);
-    
-}
-
 .nav-link {
     color: white;
     font-family: 'Roboto', sans-serif;
