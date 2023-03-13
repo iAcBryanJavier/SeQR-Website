@@ -10,8 +10,6 @@ import { ethers } from 'ethers';
 import contract from '../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
-import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Student } from '../interfaces/Student';
 import { EditFormService } from '../services/edit-form.service';
@@ -34,9 +32,7 @@ export class EditFormComponent implements OnInit {
   passedCourse!: any;
   passedStudent!: Student;
   public ipfsUrlPrefix: string = environment.pinatacloud.gateway;
-  public ipfsQuery: string =
-    environment.pinatacloud.gatewayTokenQuery +
-    environment.pinatacloud.gatewayToken;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = '';
   public qrCodeDownloadLink: SafeUrl = '';
@@ -221,35 +217,49 @@ export class EditFormComponent implements OnInit {
       });
 
     if (metamaskConnection) {
-      if (this.studentForm.valid) {
-        this.isMinting = true;
-        this.progressMsg = 'Uploading Data to IPFS';
-        const ipfsHash = await this.uploadToIPFS(
-          this.encryptFunction.encryptData(
-            this.studentForm.controls['studentId'].value
-          ),
-          this.encryptFunction.encryptData(
-            this.studentForm.controls['soNumber'].value
-          )
-        ).then((res) => {
-          return res;
-        });
 
-        this.progressMsg = 'Creating Blockchain Transaction';
-        const txnHash = await this.createTransaction(ipfsHash).then((res) => {
-          return res;
-        });
+      // const dupeCounter = await this.db.checkEditDuplicate(
+      //   this.dupStudentId,
+      //   this.dupStudentCourse,
+      //   this.dupSoNumber,
+      //   // this.studentForm.controls['firstname'].value,
+      //   // this.studentForm.controls['middlename'].value,
+      //   // this.studentForm.controls['lastname'].value,
+      //   // this.studentForm.controls['sex'].value,
+       
+      // ).then((res: any) => {
+      //   return res;
+      // });
+
+      if (this.studentForm.valid ) {
+        // this.isMinting = true;
+        // this.progressMsg = 'Uploading Data to IPFS';
+        // const ipfsHash = await this.uploadToIPFS(
+        //   this.encryptFunction.encryptData(
+        //     this.studentForm.controls['studentId'].value
+        //   ),
+        //   this.encryptFunction.encryptData(
+        //     this.studentForm.controls['soNumber'].value
+        //   )
+        // ).then((res) => {
+        //   return res;
+        // });
+
+        // this.progressMsg = 'Creating Blockchain Transaction';
+        // const txnHash = await this.createTransaction(ipfsHash).then((res) => {
+        //   return res;
+        // });
 
         this.hasSubmit = true;
         // if(this.studentForm.controls['studentId'].value && txnHash){
-        if (this.studentForm.controls['studentId'].value && txnHash) {
+        if (this.studentForm.controls['studentId'].value && this.passedStudent.txnHash) {
           this.filename = this.studentForm.controls['studentId'].value;
-          this.myAngularxQrCode = txnHash;
+          this.myAngularxQrCode = this.passedStudent.txnHash;
         }
 
         this.studentForm.setValue({
-          studentId: this.encryptFunction.encryptData(
-            this.studentForm.controls['studentId'].value
+          studentId: this.encryptFunction.decryptData(
+            this.dupStudentId
           ),
           firstname: this.encryptFunction.encryptData(
             this.studentForm.controls['firstname'].value
@@ -260,17 +270,17 @@ export class EditFormComponent implements OnInit {
           lastname: this.encryptFunction.encryptData(
             this.studentForm.controls['lastname'].value
           ),
-          course: this.encryptFunction.encryptData(
-            this.studentForm.controls['course'].value
+          course: this.encryptFunction.decryptData(
+            this.dupStudentCourse
           ),
           sex: this.encryptFunction.encryptData(
             this.studentForm.controls['sex'].value
           ),
-          soNumber: this.encryptFunction.encryptData(
-            this.studentForm.controls['soNumber'].value
+          soNumber: this.encryptFunction.decryptData(
+            this.dupSoNumber
           ),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-          txnHash: txnHash,
+          txnHash: this.passedStudent.txnHash,
         });
         console.log(this.dupStudentId);
         this.db.updateStudent(

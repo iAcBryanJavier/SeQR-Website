@@ -155,7 +155,12 @@ export class AddStudentComponent implements OnInit {
       const dupeCounter = await this.db.checkAddDuplicate(
         this.studentForm.controls['studentId'].value,
         this.studentForm.controls['course'].value,
-        this.studentForm.controls['soNumber'].value
+        this.studentForm.controls['soNumber'].value,
+        this.studentForm.controls['firstname'].value,
+        this.studentForm.controls['middlename'].value,
+        this.studentForm.controls['lastname'].value,
+        this.studentForm.controls['sex'].value,
+       
       ).then((res: any) => {
         return res;
       });
@@ -211,7 +216,7 @@ export class AddStudentComponent implements OnInit {
 
         const modalRef = this.modalService.open(ModalPopupComponent);
         modalRef.componentInstance.message = dupeCounter.dupeMessage;
-        this.studentForm.reset();
+        // this.studentForm.reset();
         this.hasSubmit = false;
         this.progressBarMsg = '';
         this.progressBarValue = 0;
