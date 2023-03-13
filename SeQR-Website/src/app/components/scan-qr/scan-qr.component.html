@@ -32,23 +32,23 @@
       </div>
     </div>
 
-    <div class="certificate" *ngIf="isLoading && isUndefined(ipfsData)">
-      <div class="certificate-header">
-        <h1>Certificate of Completion</h1>
-      </div>
-      <div class="certificate-body">
-        <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
-        <p>This is to certify that</p>
-        <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
-        <p>has successfully completed the course on</p>
-        <h3>{{ipfsData.course}}</h3>
-        <p>SO Number: </p>
-        <h4>{{ipfsData.soNumber}}</h4>
-      </div>
-    </div>
-
     <div class="main">
       <button type="button" [className]="buttonStyle" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'Turn Off Camera' : 'Click Me To Start Scanning!'}}</button>
+
+      <div class="certificate" *ngIf="isLoading && isUndefined(ipfsData)">
+        <div class="certificate-header">
+          <h1>Certificate of Completion</h1>
+        </div>
+        <div class="certificate-body">
+          <img src="../../../assets/img/iacademy-logo.png" alt="Certificate Image" class="certificate-image">
+          <p>This is to certify that</p>
+          <h2>{{ipfsData.lastname}}, {{ipfsData.firstname}} {{ipfsData.middlename}}</h2>
+          <p>has successfully completed the course on</p>
+          <h3>{{ipfsData.course}}</h3>
+          <p>SO Number: </p>
+          <h4>{{ipfsData.soNumber}}</h4>
+        </div>
+      </div>
 
       <div class="scanner-shell" [style]="showMainContent" [hidden]="!hasDevices">
         <select #selectedValue (change)="onDeviceSelectChange()">
