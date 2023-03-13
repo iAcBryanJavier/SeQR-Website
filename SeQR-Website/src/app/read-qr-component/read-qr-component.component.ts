@@ -91,7 +91,7 @@ export class ReadQrComponentComponent {
             )
             .subscribe((item) => {
               console.log();
-              this.ipfsData = item.filter((value: any) => {return value.txnHash == this.txnHash})[0];
+              this.ipfsData = item[0];
               this.isDiplomaLoading = true;
             });
         }
