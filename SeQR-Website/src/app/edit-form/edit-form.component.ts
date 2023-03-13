@@ -10,8 +10,6 @@ import { ethers } from 'ethers';
 import contract from '../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
-import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Student } from '../interfaces/Student';
 import { EditFormService } from '../services/edit-form.service';
@@ -34,9 +32,7 @@ export class EditFormComponent implements OnInit {
   passedCourse!: any;
   passedStudent!: Student;
   public ipfsUrlPrefix: string = environment.pinatacloud.gateway;
-  public ipfsQuery: string =
-    environment.pinatacloud.gatewayTokenQuery +
-    environment.pinatacloud.gatewayToken;
+  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = '';
   public qrCodeDownloadLink: SafeUrl = '';
@@ -66,15 +62,15 @@ export class EditFormComponent implements OnInit {
 
   // form group for add stduent form to db
   studentForm = new FormGroup({
-    firstname: new FormControl('', Validators.required),
+    firstname: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     middlename: new FormControl(''),
-    lastname: new FormControl('', Validators.required),
-    course: new FormControl('', Validators.required),
-    studentId: new FormControl('', Validators.required),
-    sex: new FormControl('', Validators.required),
+    lastname: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    course: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    studentId: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    sex: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     soNumber: new FormControl('', Validators.required),
     dataImg: new FormControl(''),
-    txnHash: new FormControl(''),
+    txnHash: new FormControl('')
   });
 
   constructor(
@@ -111,6 +107,15 @@ export class EditFormComponent implements OnInit {
       this.router.navigate(['/dashboard']);
     }
   }
+
+  noSpacesValidator(control: FormControl): {[key: string]: any} | null {
+    const value = control.value;
+    if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
+      return {'blankSpaces': true};
+    }
+    return null;
+  }
+
 
   ngOnInit(): void {
     // this.fetchNFTs();
@@ -221,35 +226,49 @@ export class EditFormComponent implements OnInit {
       });
 
     if (metamaskConnection) {
-      if (this.studentForm.valid) {
-        this.isMinting = true;
-        this.progressMsg = 'Uploading Data to IPFS';
-        const ipfsHash = await this.uploadToIPFS(
-          this.encryptFunction.encryptData(
-            this.studentForm.controls['studentId'].value
-          ),
-          this.encryptFunction.encryptData(
-            this.studentForm.controls['soNumber'].value
-          )
-        ).then((res) => {
-          return res;
-        });
 
-        this.progressMsg = 'Creating Blockchain Transaction';
-        const txnHash = await this.createTransaction(ipfsHash).then((res) => {
-          return res;
-        });
+      // const dupeCounter = await this.db.checkEditDuplicate(
+      //   this.dupStudentId,
+      //   this.dupStudentCourse,
+      //   this.dupSoNumber,
+      //   // this.studentForm.controls['firstname'].value,
+      //   // this.studentForm.controls['middlename'].value,
+      //   // this.studentForm.controls['lastname'].value,
+      //   // this.studentForm.controls['sex'].value,
+       
+      // ).then((res: any) => {
+      //   return res;
+      // });
+
+      if (this.studentForm.valid ) {
+        // this.isMinting = true;
+        // this.progressMsg = 'Uploading Data to IPFS';
+        // const ipfsHash = await this.uploadToIPFS(
+        //   this.encryptFunction.encryptData(
+        //     this.studentForm.controls['studentId'].value
+        //   ),
+        //   this.encryptFunction.encryptData(
+        //     this.studentForm.controls['soNumber'].value
+        //   )
+        // ).then((res) => {
+        //   return res;
+        // });
+
+        // this.progressMsg = 'Creating Blockchain Transaction';
+        // const txnHash = await this.createTransaction(ipfsHash).then((res) => {
+        //   return res;
+        // });
 
         this.hasSubmit = true;
         // if(this.studentForm.controls['studentId'].value && txnHash){
-        if (this.studentForm.controls['studentId'].value && txnHash) {
+        if (this.studentForm.controls['studentId'].value && this.passedStudent.txnHash) {
           this.filename = this.studentForm.controls['studentId'].value;
-          this.myAngularxQrCode = txnHash;
+          this.myAngularxQrCode = this.passedStudent.txnHash;
         }
 
         this.studentForm.setValue({
-          studentId: this.encryptFunction.encryptData(
-            this.studentForm.controls['studentId'].value
+          studentId: this.encryptFunction.decryptData(
+            this.dupStudentId
           ),
           firstname: this.encryptFunction.encryptData(
             this.studentForm.controls['firstname'].value
@@ -260,17 +279,17 @@ export class EditFormComponent implements OnInit {
           lastname: this.encryptFunction.encryptData(
             this.studentForm.controls['lastname'].value
           ),
-          course: this.encryptFunction.encryptData(
-            this.studentForm.controls['course'].value
+          course: this.encryptFunction.decryptData(
+            this.dupStudentCourse
           ),
           sex: this.encryptFunction.encryptData(
             this.studentForm.controls['sex'].value
           ),
-          soNumber: this.encryptFunction.encryptData(
-            this.studentForm.controls['soNumber'].value
+          soNumber: this.encryptFunction.decryptData(
+            this.dupSoNumber
           ),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-          txnHash: txnHash,
+          txnHash: this.passedStudent.txnHash,
         });
         console.log(this.dupStudentId);
         this.db.updateStudent(
@@ -284,7 +303,7 @@ export class EditFormComponent implements OnInit {
       } else {
         const modalRef = this.ModalService.open(ModalPopupComponent);
         modalRef.componentInstance.message =
-          'Entry is invalid, check the form.';
+          'Please double check the fields. Spaces are not allowed.';
       }
     } else {
       const modalRef = this.ModalService.open(ModalPopupComponent);

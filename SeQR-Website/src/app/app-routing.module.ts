@@ -11,7 +11,6 @@ import { AuthGuard } from './router-guard/auth.guard';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { RegisterComponent } from './components/register/register.component';
-import { LandingComponent } from './components/landing/landing.component';
 import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
@@ -19,8 +18,7 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/landing', pathMatch: 'full'},
-  { path: 'landing', component: LandingComponent}, 
+  { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'add-student', component: AddStudentComponent, canActivate: [AuthGuard] },

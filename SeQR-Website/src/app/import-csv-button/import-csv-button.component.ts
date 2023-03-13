@@ -147,7 +147,11 @@ export class ImportCsvButtonComponent implements OnInit {
           const dupeCounter = await this.db.checkAddDuplicate(
             jsonData[i].studentId,
             jsonData[i].course,
-           jsonData[i].soNumber
+           jsonData[i].soNumber,
+           jsonData[i].firstname,
+           jsonData[i].middlename,
+           jsonData[i].lastname,
+           jsonData[i].sex
            ).then((res: any) => {
              return res;
            });
