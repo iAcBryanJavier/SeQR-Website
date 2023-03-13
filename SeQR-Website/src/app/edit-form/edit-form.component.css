@@ -13,7 +13,7 @@ background: linear-gradient(to bottom, #E4E5E6   , #00416A);
   justify-content: center;
   align-items: center;
   padding: 10px;
-  padding-bottom: 80px;
+  height: 100vh;
 }
 
 .container {
