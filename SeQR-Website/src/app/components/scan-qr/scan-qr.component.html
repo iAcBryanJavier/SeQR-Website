@@ -23,15 +23,13 @@
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        Dropdown button
+        Scan QR Code
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" routerLink="/scan-qr">Scan QR</a>
         <a class="dropdown-item" routerLink="/read-qr">Upload QR</a>
         <a class="dropdown-item" [routerLink]="idUserEmail ? '/dashboard' : '/login'">{{idUserEmail ? 'Dashboard' : 'Login'}}</a>
       </div>
-      <button type="button" [className]="buttonStyle" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'Turn Off' : 'Turn On'}}</button>
-
     </div>
 
     <div class="certificate" *ngIf="isLoading && isUndefined(ipfsData)">
@@ -49,9 +47,10 @@
       </div>
     </div>
 
-    <div class="main" [style]="showMainContent">
+    <div class="main">
+      <button type="button" [className]="buttonStyle" (click)="this.toggleScannerStatus()">{{scannerStatus === true ? 'Turn Off Camera' : 'Click Me To Start Scanning!'}}</button>
 
-      <div class="scanner-shell" [hidden]="!hasDevices">
+      <div class="scanner-shell" [style]="showMainContent" [hidden]="!hasDevices">
         <select #selectedValue (change)="onDeviceSelectChange()">
           <option [value]=" " [selected]="!currentDevice">No Device Selected</option>
           <option *ngFor="let device of availableDevices" [value]="device.deviceId"
@@ -61,7 +60,7 @@
         <zxing-scanner class="scanner-window" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
           [formats]="formatsEnabled" (permissionResponse)="onHasPermission($event)" [enable]="scannerStatus"
           (camerasFound)="onCamerasFound($event)"></zxing-scanner>
-          
+
       </div>
     </div>
   </div>
