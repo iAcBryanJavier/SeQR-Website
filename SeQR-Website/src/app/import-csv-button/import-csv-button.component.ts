@@ -15,6 +15,7 @@ import { TxnObject } from '../models/txn-object';
 import JSZip, { file } from 'jszip';
 import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RefreshComponentService } from '../services/refresh-component.service';
 
 @Component({
   selector: 'import-csv-button',
@@ -57,7 +58,8 @@ export class ImportCsvButtonComponent implements OnInit {
     this.checkIfMetamaskInstalled();
   }
 
-  constructor(private modalService: NgbModal,private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
+
+  constructor(   private refreshService: RefreshComponentService, private modalService: NgbModal,private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
 
   onChangeURL(url?: SafeUrl, index?: number) {
     if (this.txnObjList.length != 0 && this.changeUrlCtr < this.txnObjList.length) {
@@ -228,7 +230,7 @@ export class ImportCsvButtonComponent implements OnInit {
               this.isMinting = false;
               this.isMintingEvent.emit(this.isMinting);
             }
-            
+            this.refreshService.refresh('add-student');
           }
         };
         }
