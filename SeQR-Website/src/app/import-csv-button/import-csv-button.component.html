@@ -10,18 +10,3 @@
 
 <!-- <input class="csv-btn" type="file" name="File Upload" id="csvFileUpload" (change)="storeStudent()"
     accept=".json" /> -->
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">SeQR QR Code Created! </h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <qrcode [allowEmptyString]="true" [qrdata]="myAngularxQrCode" [alt]="filename" [width]="150"
-      [errorCorrectionLevel]="'M'"></qrcode>
-    <a [href]="qrCodeDownloadLink" [download]="this.myAngularxQrCode">Download QR</a>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
-  </div>
-</ng-template>

@@ -13,7 +13,7 @@ body{
 	font-family: 'Roboto', sans-serif;
 	background: linear-gradient(to bottom, #E4E5E6, #00416A);
     color: black;
-	padding-top: 25px;
+	padding-top: 25px;	
 }
 
 .container {
@@ -30,10 +30,9 @@ body{
 
 .chart {
 	padding: 1rem;
-	color: white;
-	border: 1px solid #f49131;
+	border: 2px solid black;
 	border-radius: 1rem;
-	background: #251c35;
+	background: white;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
 	width: 100%;
 	max-width: 450px;
@@ -62,3 +61,5 @@ canvas {
 		border-radius: 0.5rem;
 	}
 }
+
+

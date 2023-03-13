@@ -13,6 +13,8 @@ import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { TxnObject } from '../models/txn-object';
 import JSZip, { file } from 'jszip';
+import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'import-csv-button',
@@ -55,7 +57,7 @@ export class ImportCsvButtonComponent implements OnInit {
     this.checkIfMetamaskInstalled();
   }
 
-  constructor(private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
+  constructor(private modalService: NgbModal,private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
 
   onChangeURL(url?: SafeUrl, index?: number) {
     if (this.txnObjList.length != 0 && this.changeUrlCtr < this.txnObjList.length) {
@@ -137,62 +139,103 @@ export class ImportCsvButtonComponent implements OnInit {
         console.log(parseCSV(reader.result as string));
 
         for (let i = 0; i < jsonData.length - 1; ++i) {
-          //  INSERT ENCRYPTED DATA TO MODEL HERE
-          this.studentData = {
-            firstname: this.encryptionFunc.encryptData(jsonData[i].firstName),
-            middlename: this.encryptionFunc.encryptData(jsonData[i].middleName),
-            lastname: this.encryptionFunc.encryptData(jsonData[i].lastName),
-            course: this.encryptionFunc.encryptData(jsonData[i].studentCourse),
-            studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
-            sex: this.encryptionFunc.encryptData(jsonData[i].studentGender),
-            soNumber: this.encryptionFunc.encryptData(jsonData[i].studentDiplomaNumber),
-            txnHash: '',
-            dataImg: ''
+
+
+          // if (Object.values(jsonData[i]).every((val) => val === "")) {
+          //   continue; // Skip this row if it's completely empty
+          // }
+          const dupeCounter = await this.db.checkAddDuplicate(
+            jsonData[i].studentId,
+            jsonData[i].course,
+           jsonData[i].soNumber
+           ).then((res: any) => {
+             return res;
+           });
+       
+          console.log(dupeCounter.dupeCount);
+          if(dupeCounter.dupeCount < 1){
+            console.log(jsonData[i].studentId);
+            this.studentData = {
+              firstname: this.encryptionFunc.encryptData(jsonData[i].firstname),
+              middlename: this.encryptionFunc.encryptData(jsonData[i].middlename),
+              lastname: this.encryptionFunc.encryptData(jsonData[i].lastname),
+              course: this.encryptionFunc.encryptData(jsonData[i].course),
+              studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
+              sex: this.encryptionFunc.encryptData(jsonData[i].sex),
+              soNumber: this.encryptionFunc.encryptData(jsonData[i].soNumber),
+              txnHash: '',
+              dataImg: ''
+            }
+  
+            this.studentList.push(this.studentData);
+          } else {
+            continue;
           }
-          console.log(this.studentData.firstname);
-          this.studentList.push(this.studentData);
         }
-
-        console.log(JSON.stringify(this.studentList));
-        let ctr = 0;
-
-         // progress bar checkpoint
-        this.progressBarMsg = "Uploading Files to IPFS";
-        this.progressBarValue = 50;
-        this.progressBarMsgEvent.emit(this.progressBarMsg);
-        this.progressBarValueEvent.emit(this.progressBarValue);
-
-        const ipfsHash = await this.uploadToIPFS(this.studentList);
-
-        // progress bar checkpoint
-        this.progressBarMsg = "Creating Blockchain Transaction";
-        this.progressBarValue = 75;
-        this.progressBarMsgEvent.emit(this.progressBarMsg);
-        this.progressBarValueEvent.emit(this.progressBarValue);
-
-        this.txnHash = await this.createTransaction(ipfsHash);
-
-        if(this.txnHash){
-          this.studentList.forEach(item =>{
-            const txnObj = new TxnObject();
-            txnObj.setTxnHash(this.txnHash);
-            txnObj.setIndex(ctr);
-            this.txnObjList.push(JSON.stringify(txnObj));
-
-            item.txnHash = JSON.stringify(txnObj);
-            item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
-            this.saveStudent(item);
-            ctr++;
-          })
+       
+        if(this.studentList.length < 1){
+          const modalRef = this.modalService.open(ModalPopupComponent);
+          modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';
+          this.isMinting = false;
+          this.isMintingEvent.emit(this.isMinting);
+          
+        }else{
+          console.log(JSON.stringify(this.studentList));
+          let ctr = 0;
+  
+           // progress bar checkpoint
+          this.progressBarMsg = "Uploading Files to IPFS";
+          this.progressBarValue = 50;
+          this.progressBarMsgEvent.emit(this.progressBarMsg);
+          this.progressBarValueEvent.emit(this.progressBarValue);
+  
+          const ipfsHash = await this.uploadToIPFS(this.studentList);
+  
+          // progress bar checkpoint
+          this.progressBarMsg = "Creating Blockchain Transaction";
+          this.progressBarValue = 75;
+          this.progressBarMsgEvent.emit(this.progressBarMsg);
+          this.progressBarValueEvent.emit(this.progressBarValue);
+  
+          this.txnHash = await this.createTransaction(ipfsHash);
+  
+          if(this.txnHash){
+            this.studentList.forEach(item =>{
+              const txnObj = new TxnObject();
+              txnObj.setTxnHash(this.txnHash);
+              txnObj.setIndex(ctr);
+              this.txnObjList.push(JSON.stringify(txnObj));
+  
+              item.txnHash = JSON.stringify(txnObj);
+              item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
+              this.saveStudent(item);
+              ctr++;
+           })
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
+            if(ctr > 0){
+              const modalRef = this.modalService.open(ModalPopupComponent);
+              modalRef.componentInstance.message = 'Added student record(s)!';
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
+            }else{
+              const modalRef = this.modalService.open(ModalPopupComponent);
+              modalRef.componentInstance.message = 'Added student record(s)! Some students were skipped due to being a duplicate';
+              this.isMinting = false;
+              this.isMintingEvent.emit(this.isMinting);
+            }
+            
+          }
+        };
         }
-      };
+      
     } else {
       console.error("No file selected");
     }
   }
 
   saveStudent(studentInformation: Student): void {
-    this.db.addStudent(studentInformation);
+    this.db.addBatchStudent(studentInformation);
   }
 
   private checkIfMetamaskInstalled(): boolean {

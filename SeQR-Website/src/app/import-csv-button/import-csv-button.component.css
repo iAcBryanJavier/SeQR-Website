@@ -1,12 +1,12 @@
-input {
-    margin: 8px 0 8px 0;
+.csv-btn{
+  position: absolute;
+  left: 6%;
+  opacity: 0;
+  cursor: pointer;
 }
-.csv-btn {
-    position: absolute;
-    font-size: 50px;
-    opacity: 0;
-    right: 0;
-    top: 0;
+input {
+  content: none;
+  opacity: 0;
 }
 
 .qrcode{
