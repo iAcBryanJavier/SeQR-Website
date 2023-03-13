@@ -158,10 +158,10 @@ export class AddStudentComponent implements OnInit {
     if (metamaskConnection) {
 
 
-      // this.isMinting = true;
+      this.isMinting = true;
 
-      // this.progressBarMsg = "Checking for Duplicate Records";
-      // this.progressBarValue = 25;
+      this.progressBarMsg = "Checking for Duplicate Records";
+      this.progressBarValue = 25;
 
       interval(1000);
       const dupeCounter = await this.db.checkAddDuplicate(
@@ -230,10 +230,17 @@ export class AddStudentComponent implements OnInit {
 
         if (this.spaceship == false) {
           modalRef.componentInstance.message = "Please check your input fields. "
+
+          this.isMinting = false;
+          this.progressBarMsg = "";
+          this.progressBarValue = 0;
         }
         
         else {
           modalRef.componentInstance.message = dupeCounter.dupeMessage;
+          this.isMinting = false;
+          this.progressBarMsg = "";
+          this.progressBarValue = 0;
         }
        
         // this.studentForm.reset();
