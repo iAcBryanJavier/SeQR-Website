@@ -29,18 +29,18 @@ body{
 .card-details :nth-child(3).card-box .details::before {
    content: none;
 }
-    
-  
+
+
 .card-details .card-box .details::before {
     content: '*';
-    color: red; 
-    margin-right: 0.2em; 
+    color: red;
+    margin-right: 0.2em;
 }
 
 .circal-form .circal-title::before {
     content: '*';
-    color: red; 
-    margin-right: 0.2em; 
+    color: red;
+    margin-right: 0.2em;
 }
 
 .container .heading{
@@ -282,9 +282,9 @@ input:required {
     html {
       zoom: 95%;
     }
-  
+
     .card {
       zoom: 80%
     }
-  
+
   }
