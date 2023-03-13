@@ -47,14 +47,16 @@ export class AddStudentComponent implements OnInit {
   encryptFunction = new Encryption();
   public progressBarValue: number = 0;
   public progressBarMsg: string = "";
+  public spaceship: boolean = false;
+
   // form group for add stduent form to db
   studentForm = new FormGroup({
-    firstname: new FormControl('', Validators.required),
+    firstname: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     middlename: new FormControl(''),
-    lastname: new FormControl('', Validators.required),
-    course: new FormControl('', Validators.required),
-    studentId: new FormControl('', Validators.required),
-    sex: new FormControl('', Validators.required),
+    lastname: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    course: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    studentId: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    sex: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     soNumber: new FormControl('', Validators.required),
     dataImg: new FormControl(''),
     txnHash: new FormControl('')
@@ -97,6 +99,15 @@ export class AddStudentComponent implements OnInit {
         }
       }
     }
+  }
+
+  noSpacesValidator(control: FormControl): {[key: string]: any} | null {
+    const value = control.value;
+    if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
+      
+      return {'blankSpaces': true};
+    }
+    return null;
   }
 
 
@@ -145,22 +156,28 @@ export class AddStudentComponent implements OnInit {
     // console.log(metamaskConnection);
 
     if (metamaskConnection) {
+
+
       this.isMinting = true;
 
       this.progressBarMsg = "Checking for Duplicate Records";
       this.progressBarValue = 25;
 
-
       interval(1000);
       const dupeCounter = await this.db.checkAddDuplicate(
-        this.studentForm.controls['studentId'].value,
-        this.studentForm.controls['course'].value,
-        this.studentForm.controls['soNumber'].value
+        this.studentForm.controls['studentId'].value!.trim(),
+        this.studentForm.controls['course'].value!.trim(),
+        this.studentForm.controls['soNumber'].value!.trim(),
+        this.studentForm.controls['firstname'].value!.trim(),
+        this.studentForm.controls['middlename'].value!.trim(),
+        this.studentForm.controls['lastname'].value!.trim(),
+        this.studentForm.controls['sex'].value
+        
       ).then((res: any) => {
         return res;
       });
 
-
+      console.log(this.studentForm.controls['soNumber'])
       if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
 
         // progress bar checkpoint
@@ -168,8 +185,8 @@ export class AddStudentComponent implements OnInit {
         this.progressBarValue = 50;
 
         const ipfsHash = await this.uploadToIPFS(
-          this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value))
+          this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value?.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()))
           .then((res) => {
             return res;
           });
@@ -191,13 +208,13 @@ export class AddStudentComponent implements OnInit {
         // }
 
         this.studentForm.setValue({
-          studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value),
-          firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value),
-          middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value),
-          lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value),
-          course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value),
-          sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value),
-          soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value),
+          studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value?.trim()),
+          firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value?.trim()),
+          middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value?.trim()),
+          lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value?.trim()),
+          course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value?.trim()),
+          sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value?.trim()),
+          soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
           txnHash: this.txnHash
         })
@@ -205,18 +222,26 @@ export class AddStudentComponent implements OnInit {
         this.db.addStudent(this.studentForm.value);
         this.studentForm.reset();
         this.hasSubmit = false;
+        this.isMinting = false;
         this.progressBarValue = 0;
         this.progressBarMsg = '';
+
       } else {
 
         const modalRef = this.modalService.open(ModalPopupComponent);
-        modalRef.componentInstance.message = dupeCounter.dupeMessage;
-        this.studentForm.reset();
+
+
+          modalRef.componentInstance.message = dupeCounter.dupeMessage + " Please check your input fields.";
+          this.isMinting = false;
+          this.progressBarMsg = "";
+          this.progressBarValue = 0;
+
+       
+        // this.studentForm.reset();
         this.hasSubmit = false;
         this.progressBarMsg = '';
         this.progressBarValue = 0;
       }
-      this.isMinting = false
     } else {
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "No Metamask connection found!";
@@ -227,7 +252,7 @@ export class AddStudentComponent implements OnInit {
 
   async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
     let responseValue: string = '';
-    const body = {
+  const body = {
       studentId: studentIdData,
       qrCode: this.blobDataUrl,
       soNumber: soNumberData

@@ -34,7 +34,6 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { FilterPipe } from './filter.pipe';
 import { RegisterComponent } from './components/register/register.component';
-import { LandingComponent } from './components/landing/landing.component';
 import { ImportCsvButtonComponent } from './import-csv-button/import-csv-button.component';
 import { ExportButtonComponent } from './components/export-button/export-button.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
@@ -67,7 +66,6 @@ import { ModalPopupComponent } from './modal-popup/modal-popup.component';
     FilterPipe,
     RegisterComponent,
     ReadQrComponentComponent,
-    LandingComponent,
     ImportCsvButtonComponent,
     ExportButtonComponent,
     DataAnalysisComponent,
