@@ -228,20 +228,12 @@ export class AddStudentComponent implements OnInit {
 
         const modalRef = this.modalService.open(ModalPopupComponent);
 
-        if (this.spaceship == false) {
-          modalRef.componentInstance.message = "Please check your input fields. "
 
+          modalRef.componentInstance.message = dupeCounter.dupeMessage + "Please check your inpput fields.";
           this.isMinting = false;
           this.progressBarMsg = "";
           this.progressBarValue = 0;
-        }
-        
-        else {
-          modalRef.componentInstance.message = dupeCounter.dupeMessage;
-          this.isMinting = false;
-          this.progressBarMsg = "";
-          this.progressBarValue = 0;
-        }
+
        
         // this.studentForm.reset();
         this.hasSubmit = false;
