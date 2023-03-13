@@ -5,6 +5,10 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+html, body {
+    height: 100%;
+}
+
 
 body{
 	background: linear-gradient(to bottom, #E4E5E6   , #00416A);
@@ -274,17 +278,5 @@ input:required {
         width: 0;
     }
 
-
-
 }
 
-@media (-webkit-device-pixel-ratio: 1.25) {
-    html {
-      zoom: 95%;
-    }
-
-    .card {
-      zoom: 80%
-    }
-
-  }
