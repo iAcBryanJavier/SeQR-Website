@@ -75,6 +75,7 @@ export class ReadQrComponentComponent {
               this.componentRoute
             )
             .subscribe((item) => {
+              console.log(item);
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
             });
@@ -89,6 +90,7 @@ export class ReadQrComponentComponent {
               this.componentRoute
             )
             .subscribe((item) => {
+              console.log();
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
             });
