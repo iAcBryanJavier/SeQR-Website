@@ -68,7 +68,7 @@ export class DatabaseService {
             localStorage.getItem('idUserEmail') +
             ' added a student record'
         );
-    
+
       })
       .catch(() => {
         window.alert('An error occured, please try again.');
@@ -153,12 +153,12 @@ export class DatabaseService {
               .map((item) => {
                 const data = item.payload.val();
                 if (data) {
-                
+
                   if (
                     this.encryptFunction.decryptData(data.soNumber) === soNumber
                   ) {
 
-               
+
                     result.dupeMessage = 'This Diploma number already exists!';
                     result.dupeCount++;
                   } else if (
@@ -169,7 +169,7 @@ export class DatabaseService {
                     result.dupeMessage =
                       'This Student already has a diploma record with the same degree!';
                     result.dupeCount++;
-                  
+
                   }
                 }
                 return data;
@@ -806,12 +806,12 @@ export class DatabaseService {
     );
   }
 
-  getStudentFromIpfs(ipfsLink: string): Observable<any> {
-    return this.http.get(ipfsLink).pipe(
-      switchMap((user: any) => {
-        return this.getSearchStudent(
-          this.encryptFunction.decryptData(user.studentId)
-        );
+  blockchainSearchStudentFromDatabase(studentId: string, soNumber: string): Observable<any[]> {
+    return this.studentList.pipe(
+      map((students: any[]) => {
+        return students.filter((student: any) => {
+          return (student.studentId == studentId && student.soNumber == soNumber);
+        });
       })
     );
   }
@@ -837,8 +837,9 @@ export class DatabaseService {
             }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
-                return this.getSearchStudent(
-                  this.encryptFunction.decryptData(user.studentId)
+                return this.blockchainSearchStudentFromDatabase(
+                  this.encryptFunction.decryptData(user.studentId),
+                  this.encryptFunction.decryptData(user.soNumber)
                 );
               })
             );
@@ -858,8 +859,9 @@ export class DatabaseService {
             }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
-                return this.getSearchStudent(
-                  this.encryptFunction.decryptData(user[index].studentId)
+                return this.blockchainSearchStudentFromDatabase(
+                  this.encryptFunction.decryptData(user[index].studentId),
+                  this.encryptFunction.decryptData(user[index].soNumber)
                 );
               })
             );
@@ -869,16 +871,6 @@ export class DatabaseService {
     } catch (error) {
       throw('Get student from blockchain error: ' + error);
     }
-  }
-
-  getStudentFromIpfsByIndex(ipfsLink: string, index: number): Observable<any> {
-    return this.http.get(ipfsLink).pipe(
-      switchMap((user: any) => {
-        return this.getSearchStudent(
-          this.encryptFunction.decryptData(user[index].studentId)
-        );
-      })
-    );
   }
 
   deleteStudentRecord(recordKey: any) {
