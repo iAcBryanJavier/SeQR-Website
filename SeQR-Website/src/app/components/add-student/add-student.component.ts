@@ -47,6 +47,8 @@ export class AddStudentComponent implements OnInit {
   encryptFunction = new Encryption();
   public progressBarValue: number = 0;
   public progressBarMsg: string = "";
+  public spaceship: boolean = false;
+
   // form group for add stduent form to db
   studentForm = new FormGroup({
     firstname: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
@@ -102,6 +104,7 @@ export class AddStudentComponent implements OnInit {
   noSpacesValidator(control: FormControl): {[key: string]: any} | null {
     const value = control.value;
     if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
+      
       return {'blankSpaces': true};
     }
     return null;
@@ -155,27 +158,26 @@ export class AddStudentComponent implements OnInit {
     if (metamaskConnection) {
 
 
-      this.isMinting = true;
+      // this.isMinting = true;
 
-      this.progressBarMsg = "Checking for Duplicate Records";
-      this.progressBarValue = 25;
-
+      // this.progressBarMsg = "Checking for Duplicate Records";
+      // this.progressBarValue = 25;
 
       interval(1000);
       const dupeCounter = await this.db.checkAddDuplicate(
-        this.studentForm.controls['studentId'].value,
-        this.studentForm.controls['course'].value,
-        this.studentForm.controls['soNumber'].value,
-        this.studentForm.controls['firstname'].value,
-        this.studentForm.controls['middlename'].value,
-        this.studentForm.controls['lastname'].value,
-        this.studentForm.controls['sex'].value,
-       
+        this.studentForm.controls['studentId'].value!.trim(),
+        this.studentForm.controls['course'].value!.trim(),
+        this.studentForm.controls['soNumber'].value!.trim(),
+        this.studentForm.controls['firstname'].value!.trim(),
+        this.studentForm.controls['middlename'].value!.trim(),
+        this.studentForm.controls['lastname'].value!.trim(),
+        this.studentForm.controls['sex'].value
+        
       ).then((res: any) => {
         return res;
       });
 
-
+      console.log(this.studentForm.controls['soNumber'])
       if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
 
         // progress bar checkpoint
@@ -207,12 +209,12 @@ export class AddStudentComponent implements OnInit {
 
         this.studentForm.setValue({
           studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value?.trim()),
-        firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value?.trim()),
-        middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value?.trim()),
-        lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value?.trim()),
-        course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value?.trim()),
-        sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value?.trim()),
-        soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()),
+          firstname: this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value?.trim()),
+          middlename: this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value?.trim()),
+          lastname: this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value?.trim()),
+          course: this.encryptFunction.encryptData(this.studentForm.controls['course'].value?.trim()),
+          sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value?.trim()),
+          soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
           txnHash: this.txnHash
         })
@@ -225,7 +227,14 @@ export class AddStudentComponent implements OnInit {
       } else {
 
         const modalRef = this.modalService.open(ModalPopupComponent);
-        modalRef.componentInstance.message = "Please check for mistakes in the fields. <b>Spaces</b> are not allowed. ";
+
+        if (this.spaceship == false) {
+          modalRef.componentInstance.message = "Please check your input fields. "
+        }
+        
+        else {
+          modalRef.componentInstance.message = dupeCounter.dupeMessage;
+        }
        
         // this.studentForm.reset();
         this.hasSubmit = false;
