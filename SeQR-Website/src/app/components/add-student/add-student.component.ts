@@ -170,7 +170,7 @@ export class AddStudentComponent implements OnInit {
         this.studentForm.controls['middlename'].value,
         this.studentForm.controls['lastname'].value,
         this.studentForm.controls['sex'].value,
-
+       
       ).then((res: any) => {
         return res;
       });
@@ -226,6 +226,8 @@ export class AddStudentComponent implements OnInit {
 
         const modalRef = this.modalService.open(ModalPopupComponent);
         modalRef.componentInstance.message = "Please check for mistakes in the fields. <b>Spaces</b> are not allowed. ";
+       
+        // this.studentForm.reset();
         this.hasSubmit = false;
         this.progressBarMsg = '';
         this.progressBarValue = 0;
