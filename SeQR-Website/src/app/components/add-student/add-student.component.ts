@@ -229,7 +229,7 @@ export class AddStudentComponent implements OnInit {
         const modalRef = this.modalService.open(ModalPopupComponent);
 
 
-          modalRef.componentInstance.message = dupeCounter.dupeMessage + "Please check your inpput fields.";
+          modalRef.componentInstance.message = dupeCounter.dupeMessage + " Please check your input fields.";
           this.isMinting = false;
           this.progressBarMsg = "";
           this.progressBarValue = 0;
