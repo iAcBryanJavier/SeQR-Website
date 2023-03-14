@@ -77,41 +77,41 @@ export class DatabaseService {
   }
 
   updateStudent(student: any, x: any, y: any, z: any) {
-    const ref = this.afs.list('students').query.ref;
-    const updatedStudent = {
-      firstname: student.firstname,
-      middlename: student.middlename,
-      lastname: student.lastname,
-      sex: student.sex
-    };
-    const studentsToUpdate = ref.orderByChild('studentId').equalTo(x)
-      .once('value')
-      .then((snapshot) => {
-        const students: any[] | PromiseLike<any[]> = [];
-        snapshot.forEach((childSnapshot) => {
-          const key = childSnapshot.key;
-          const student = childSnapshot.val();
-          students.push({ key, ...student });
-        });
-        return students;
-      });
-    studentsToUpdate.then((students: any[]) => {
-      if (students.length > 0) {
-        students.forEach((student) => {
-          ref.child(student.key).update(updatedStudent)
-            .then(() => {
-              this.logs.info(
-                'User: ' +
-                  localStorage.getItem('idUserEmail') +
-                  ' updated a student record'
-              );
-            })
-            .catch(() => {
-              window.alert('An error occurred, please try again.');
-              throw 'Update Student Failed';
-            });
-        });
-        window.alert(students.length + ' student records updated successfully!');
+ // console.log(x,"-",y,"-",z);
+    // console.log(student.studentId,"-",student.course,"-",student.soNumber);
+    const ref = this.afs.list('students');
+    const studentToUpdate = ref.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          key: c.payload.key,
+          ...(c.payload.val() as any),
+        }))
+      ),
+      map((students) =>
+        students.find(
+          (s) => s.studentId === x && s.course === y && s.soNumber === z
+        )
+      ),
+      take(1)
+    );
+    studentToUpdate.subscribe((foundStudent) => {
+      if (foundStudent) {
+        ref.remove;
+        console.log(foundStudent);
+        ref
+          .update(foundStudent.key, student)
+          .then(() => {
+            window.alert('Student record updated successfully!');
+            this.logs.info(
+              'User: ' +
+                localStorage.getItem('idUserEmail') +
+                ' updated a student record'
+            );
+          })
+          .catch(() => {
+            window.alert('An error occurred, please try again.');
+            throw 'Update Student Failed';
+          });
       } else {
         window.alert('No student records found.');
       }
@@ -231,8 +231,24 @@ export class DatabaseService {
               .map((item) => {
                 const data = item.payload.val();
                 if (data) {
+                
+                  if (
+                    this.encryptFunction.decryptData(data.soNumber) === soNumber
+                  ) {
 
-
+               
+                    result.dupeMessage = 'This Diploma number already exists!';
+                    result.dupeCount++;
+                  } else if (
+                    this.encryptFunction.decryptData(data.course) === course &&
+                    this.encryptFunction.decryptData(data.studentId) ===
+                      studentId
+                  ) {
+                    result.dupeMessage =
+                      'This Student already has a diploma record with the same degree!';
+                    result.dupeCount++;
+                  
+                  }
                 }
                 return data;
               })

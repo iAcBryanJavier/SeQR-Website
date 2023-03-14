@@ -67,14 +67,14 @@ export class AddStudentComponent implements OnInit {
     , private modalService: NgbModal, private MetamaskService: MetamaskService) {}
 
 
-  onChangeURL(url?: SafeUrl, content?: any) {
+  onChangeURL(url?: SafeUrl) {
     if (this.myAngularxQrCode != "") {
        // progress bar checkpoint
        this.progressBarMsg = "Minting Complete! Creating QR Code.";
        this.progressBarValue = 100;
 
       // Opens the modal and puts the qr code inside the content
-      this.modalService.open(content, { size: 'xl' });
+    
       console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
@@ -147,7 +147,7 @@ export class AddStudentComponent implements OnInit {
   }
 
 
-  async onSubmit(content: any) {
+  async onSubmit() {
     const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) => {
       this.ethereum = (window as any).ethereum;
       return res;
@@ -208,10 +208,10 @@ export class AddStudentComponent implements OnInit {
 
         this.hasSubmit = true;
 
-        // if(this.studentForm.controls['studentId'].value && this.txnHash){
-        //   this.filename = this.studentForm.controls['studentId'].value;
-        //   this.myAngularxQrCode = this.txnHash;
-        // }
+        if(this.studentForm.controls['studentId'].value && this.txnHash){
+          this.filename = this.studentForm.controls['studentId'].value;
+          this.myAngularxQrCode = this.txnHash;
+        }
 
         this.studentForm.setValue({
           studentId: this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value?.trim()),
@@ -323,6 +323,64 @@ export class AddStudentComponent implements OnInit {
   receiverProgressBarMsg(data: any){
     this.progressBarMsg = data;
   }
+
+
+  ConvertToCSV(objArray: any, headerList: any) {
+    // console.log(objArray);
+  
+    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+    let row = 'no,';
+  
+    let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash","END"];
+  
+    for (let index in newHeaders) {
+      row += newHeaders[index] + ',';
+    }
+    row = row.slice(0, -1);
+    str += row + '\r\n';
+    for (let i = 0; i < newHeaders.length; i++) {
+      let line = (i + 1) + '';
+      for (let index in headerList) {
+        let head = headerList[index];
+  
+        line += ',';
+      }
+      str += line + '\r\n';
+    }
+    return str;
+  }
+
+  exportCsv() {
+
+      const csvHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "END"];
+      const csvRows: any[] = [];
+      const filename = "upload_template.csv";
+      
+      // Add any rows of data here, if necessary
+      // For example:
+      // csvRows.push(["CS101", "John", "Doe", "M", "123456789", "1234"]);
+    
+      // Create the CSV content by combining the headers and rows
+      const csvContent = csvHeaders.join(",") + "\n" + csvRows.join("\n");
+    
+      // Create a blob with the CSV content and set it as the download URL
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+    
+      // Create a link element and simulate a click on it to trigger the download
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    
+    
+  }
+  
+  
 
   // private async fetchNFTs(): Promise<any> {
   //   const provider = new ethers.providers.Web3Provider(this.ethereum);

@@ -51,7 +51,7 @@ export class ImportCsvButtonComponent implements OnInit {
   txnHash: any;
   progressBarValue: number = 0;
   progressBarMsg: string = '';
-
+  cssCounter: number = 0;
   blobUrls: Blob[] = [];
 
   ngOnInit(): void {
@@ -175,6 +175,7 @@ export class ImportCsvButtonComponent implements OnInit {
   
             this.studentList.push(this.studentData);
           } else {
+            this.cssCounter++
             continue;
           }
         }
@@ -185,7 +186,7 @@ export class ImportCsvButtonComponent implements OnInit {
           this.isMinting = false;
           this.isMintingEvent.emit(this.isMinting);
           
-        }else{
+        }else if(this.cssCounter < 1){
           console.log(JSON.stringify(this.studentList));
           let ctr = 0;
   
@@ -232,6 +233,11 @@ export class ImportCsvButtonComponent implements OnInit {
             }
             this.refreshService.refresh('add-student');
           }
+        }else{
+          const modalRef = this.modalService.open(ModalPopupComponent);
+          modalRef.componentInstance.message = 'Upload Failed, there were duplicate entries';
+          this.isMinting = false;
+          this.isMintingEvent.emit(this.isMinting);
         };
         }
       
@@ -259,11 +265,21 @@ export class ImportCsvButtonComponent implements OnInit {
     this.studentList.forEach(item =>{
       const body = {
         studentId: '',
-        soNumber: ''
+        soNumber: '',
+        firstname: '',
+        middlename: '',
+        lastname: '',
+        sex: '',
+        course: '',
       };
 
       body.studentId = item.studentId ?? 'no value';
       body.soNumber = item.soNumber ?? 'no value';
+      body.firstname = item.firstname ?? 'no value';
+      body.middlename = item.middlename ?? 'no value';
+      body.lastname = item.lastname ?? 'no value';
+      body.sex = item.sex ?? 'no value';
+      body.course = item.course ?? 'no value';
       bodyList.push(body)
     })
 

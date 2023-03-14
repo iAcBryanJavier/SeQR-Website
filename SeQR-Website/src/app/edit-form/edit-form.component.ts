@@ -10,6 +10,8 @@ import { ethers } from 'ethers';
 import contract from '../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Student } from '../interfaces/Student';
 import { EditFormService } from '../services/edit-form.service';
@@ -32,7 +34,9 @@ export class EditFormComponent implements OnInit {
   passedCourse!: any;
   passedStudent!: Student;
   public ipfsUrlPrefix: string = environment.pinatacloud.gateway;
-  public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
+  public ipfsQuery: string =
+    environment.pinatacloud.gatewayTokenQuery +
+    environment.pinatacloud.gatewayToken;
   public ipfsHash: any;
   public myAngularxQrCode: string = '';
   public qrCodeDownloadLink: SafeUrl = '';
@@ -108,19 +112,21 @@ export class EditFormComponent implements OnInit {
     }
   }
 
-  noSpacesValidator(control: FormControl): {[key: string]: any} | null {
-    const value = control.value;
-    if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
-      return {'blankSpaces': true};
-    }
-    return null;
-  }
 
 
   ngOnInit(): void {
     // this.fetchNFTs();
   }
   // NEED TO IMPORT DOM SANITZER
+
+  noSpacesValidator(control: FormControl): {[key: string]: any} | null {
+    const value = control.value;
+    if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
+      
+      return {'blankSpaces': true};
+    }
+    return null;
+  }
 
   isButtonTrue(gender: string): boolean {
     // Check if the passedStudent object exists and has a valid sex property
@@ -193,30 +199,7 @@ export class EditFormComponent implements OnInit {
   //   return false;
   // }
 
-  async pinFileToPinata(studentIdData: any, soNumberData: any) {
-    var responseValue;
-    const body = {
-      studentId: studentIdData,
-      qrCode: this.blobDataUrl,
-      soNumber: soNumberData,
-    };
-    const options: PinataPinOptions = {
-      pinataMetadata: {
-        name: 'Student Data',
-      },
-    };
 
-    this.pinata
-      .pinJSONToIPFS(body, options)
-      .then((result) => {
-        //handle results here
-        this.createTransaction(result.IpfsHash);
-      })
-      .catch((err) => {
-        throw 'Pinata pinJSONtoIPFS Failed';
-        responseValue = 'failed';
-      });
-  }
 
   async onSubmit() {
     const metamaskConnection =
@@ -225,50 +208,49 @@ export class EditFormComponent implements OnInit {
         return res;
       });
 
+      const dupeCounter = await this.db.checkEditDuplicate(
+        this.studentForm.controls['studentId'].value!.trim(),
+        this.studentForm.controls['course'].value!.trim(),
+        this.studentForm.controls['soNumber'].value!.trim(),
+  
+        
+      ).then((res: any) => {
+        return res;
+      });
+
     if (metamaskConnection) {
+      if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
+        this.isMinting = true;
+        this.progressMsg = 'Uploading Data to IPFS';
 
-      // const dupeCounter = await this.db.checkEditDuplicate(
-      //   this.dupStudentId,
-      //   this.dupStudentCourse,
-      //   this.dupSoNumber,
-      //   // this.studentForm.controls['firstname'].value,
-      //   // this.studentForm.controls['middlename'].value,
-      //   // this.studentForm.controls['lastname'].value,
-      //   // this.studentForm.controls['sex'].value,
-       
-      // ).then((res: any) => {
-      //   return res;
-      // });
 
-      if (this.studentForm.valid ) {
-        // this.isMinting = true;
-        // this.progressMsg = 'Uploading Data to IPFS';
-        // const ipfsHash = await this.uploadToIPFS(
-        //   this.encryptFunction.encryptData(
-        //     this.studentForm.controls['studentId'].value
-        //   ),
-        //   this.encryptFunction.encryptData(
-        //     this.studentForm.controls['soNumber'].value
-        //   )
-        // ).then((res) => {
-        //   return res;
-        // });
+        const ipfsHash = await this.uploadToIPFS(
+             this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['sex'].value!),
+          this.encryptFunction.encryptData(this.studentForm.controls['course'].value!.trim()),
+          ).then((res) => {
+          return res;
+        });
 
-        // this.progressMsg = 'Creating Blockchain Transaction';
-        // const txnHash = await this.createTransaction(ipfsHash).then((res) => {
-        //   return res;
-        // });
+        this.progressMsg = 'Creating Blockchain Transaction';
+        const txnHash = await this.createTransaction(ipfsHash).then((res) => {
+          return res;
+        });
 
         this.hasSubmit = true;
         // if(this.studentForm.controls['studentId'].value && txnHash){
-        if (this.studentForm.controls['studentId'].value && this.passedStudent.txnHash) {
+        if (this.studentForm.controls['studentId'].value && txnHash) {
           this.filename = this.studentForm.controls['studentId'].value;
-          this.myAngularxQrCode = this.passedStudent.txnHash;
+          this.myAngularxQrCode = txnHash;
         }
 
         this.studentForm.setValue({
-          studentId: this.encryptFunction.decryptData(
-            this.dupStudentId
+          studentId: this.encryptFunction.encryptData(
+            this.studentForm.controls['studentId'].value
           ),
           firstname: this.encryptFunction.encryptData(
             this.studentForm.controls['firstname'].value
@@ -279,17 +261,17 @@ export class EditFormComponent implements OnInit {
           lastname: this.encryptFunction.encryptData(
             this.studentForm.controls['lastname'].value
           ),
-          course: this.encryptFunction.decryptData(
-            this.dupStudentCourse
+          course: this.encryptFunction.encryptData(
+            this.studentForm.controls['course'].value
           ),
           sex: this.encryptFunction.encryptData(
             this.studentForm.controls['sex'].value
           ),
-          soNumber: this.encryptFunction.decryptData(
-            this.dupSoNumber
+          soNumber: this.encryptFunction.encryptData(
+            this.studentForm.controls['soNumber'].value
           ),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
-          txnHash: this.passedStudent.txnHash,
+          txnHash: txnHash,
         });
         console.log(this.dupStudentId);
         this.db.updateStudent(
@@ -302,8 +284,8 @@ export class EditFormComponent implements OnInit {
         this.backClick();
       } else {
         const modalRef = this.ModalService.open(ModalPopupComponent);
-        modalRef.componentInstance.message =
-          'Please double check the fields. Spaces are not allowed.';
+        modalRef.componentInstance.message = dupeCounter.dupeMessage + 'Please check your fields.';
+          
       }
     } else {
       const modalRef = this.ModalService.open(ModalPopupComponent);
@@ -312,15 +294,19 @@ export class EditFormComponent implements OnInit {
     this.isMinting = false;
   }
 
-  async uploadToIPFS(
-    studentIdData: string,
-    soNumberData: string
-  ): Promise<string> {
+
+  async uploadToIPFS(studentIdData: string, soNumberData: string, firstnameData: string, middleNameData: string, lastnameData : string, sexData: string, courseData: string): Promise<string>{
     let responseValue: string = '';
-    const body = {
-      studentId: studentIdData,
-      qrCode: this.blobDataUrl,
-      soNumber: soNumberData,
+  const body = {
+    studentId: studentIdData,
+    qrCode: this.blobDataUrl,
+    soNumber: soNumberData,
+    firstname: firstnameData,
+    middlename: middleNameData,
+    lastname: lastnameData,
+    sex: sexData,
+    course: courseData,
+    
     };
     const options: PinataPinOptions = {
       pinataMetadata: {

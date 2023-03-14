@@ -5,13 +5,16 @@ import { Encryption } from 'src/app/models/encryption';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditFormService } from 'src/app/services/edit-form.service';
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-edit-student',
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css'],
 })
 export class EditStudentComponent implements OnInit {
+viewTxcClick(txnHash: string|null) {
+ window.open('https://goerli.etherscan.io/tx/' + txnHash);
+}
   @ViewChild('selectedValue') selectedValue!: ElementRef;
   courses!: any;
   searchQuery: string = '';
