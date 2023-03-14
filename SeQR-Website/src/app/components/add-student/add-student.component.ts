@@ -185,8 +185,14 @@ export class AddStudentComponent implements OnInit {
         this.progressBarValue = 50;
 
         const ipfsHash = await this.uploadToIPFS(
-          this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value?.trim()),
-          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()))
+          this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['sex'].value!),
+          this.encryptFunction.encryptData(this.studentForm.controls['course'].value!.trim()),
+          )
           .then((res) => {
             return res;
           });
@@ -250,12 +256,18 @@ export class AddStudentComponent implements OnInit {
 
 
 
-  async uploadToIPFS(studentIdData: string, soNumberData: string): Promise<string>{
+  async uploadToIPFS(studentIdData: string, soNumberData: string, firstnameData: string, middleNameData: string, lastnameData : string, sexData: string, courseData: string): Promise<string>{
     let responseValue: string = '';
   const body = {
       studentId: studentIdData,
       qrCode: this.blobDataUrl,
-      soNumber: soNumberData
+      soNumber: soNumberData,
+      firstname: firstnameData,
+      middlename: middleNameData,
+      lastname: lastnameData,
+      sex: sexData,
+      course: courseData,
+      
     };
     const options: PinataPinOptions = {
       pinataMetadata: {
