@@ -117,9 +117,9 @@ export class DatabaseService {
       }
     });
   }
-  
-  
-  
+
+
+
 
   // getStudentCount(): Promise<number> {
   //   let count = 0;
@@ -144,7 +144,7 @@ export class DatabaseService {
     middlename: string | null,
     lastname: string | null,
     sex: string | null,
-    
+
   ): Promise<any> {
     const result = {
       dupeCount: 0,
@@ -168,7 +168,7 @@ export class DatabaseService {
                     this.encryptFunction.decryptData(data.soNumber).trim() === soNumber
                   ) {
 
-                    
+
                     result.dupeMessage = 'This Diploma number already exists!';
                     result.dupeCount++;
                   }else if( this.encryptFunction.decryptData(data.course).trim() === course?.trim() &&
@@ -177,13 +177,13 @@ export class DatabaseService {
                     console.log(this.encryptFunction.decryptData(data.course) , course)
                     console.log(typeof(this.encryptFunction.decryptData(data.course)) , typeof(course))
                     console.log((this.encryptFunction.decryptData(data.course) === course));
-  
+
                     console.log(this.encryptFunction.decryptData(data.studentId) , studentId)
                     console.log(typeof(this.encryptFunction.decryptData(data.studentId)) , typeof(studentId))
                     console.log((this.encryptFunction.decryptData(data.studentId) === studentId));
                     result.dupeMessage ='This Student already has a diploma record with the same degree!';
                     result.dupeCount++;
-                    
+
 
                   }else if( this.encryptFunction.decryptData(data.studentId) === studentId &&
                   (this.encryptFunction.decryptData(data.firstname) !== firstname ||
@@ -191,7 +191,7 @@ export class DatabaseService {
                   this.encryptFunction.decryptData(data.lastname) !== lastname ||
                   this.encryptFunction.decryptData(data.sex) !== sex)){
                     result.dupeMessage ="It seems that you are trying to add an existing student for a secondary degree/diploma, if so, Please try to match existing the record details except for the new <b>course</b> and new <b>diploma number</b>";
-                    
+
                     result.dupeCount++;
 
                   }else{
@@ -231,8 +231,8 @@ export class DatabaseService {
               .map((item) => {
                 const data = item.payload.val();
                 if (data) {
-                  
-              
+
+
                 }
                 return data;
               })
@@ -820,14 +820,34 @@ export class DatabaseService {
     );
   }
 
-  blockchainSearchStudentFromDatabase(studentId: string, soNumber: string): Observable<any[]> {
-    return this.studentList.pipe(
-      map((students: any[]) => {
-        return students.filter((student: any) => {
-          return (student.studentId == studentId && student.soNumber == soNumber);
-        });
-      })
-    );
+  blockchainSearchStudentFromDatabase(studentId: string,
+    soNumber: string,
+    firstname: string,
+    middlename: string,
+    lastname: string,
+    sex: string,
+    course: string
+    ): Observable<any[]> {
+
+    try {
+      return this.studentList.pipe(
+        map((students: any[]) => {
+          return students.filter((student: any) => {
+            return (student.studentId == studentId
+              && student.soNumber == soNumber
+              && student.firstname == firstname
+              && student.middlename == middlename
+              && student.lastname == lastname
+              && student.sex == sex
+              && student.course == course);
+          });
+        })
+      );
+    } catch (error) {
+      const ref = this.modalService.open(ModalPopupComponent);
+      ref.componentInstance.message = error;
+      throw('Search Student From Database Error: ' + error);
+    }
   }
 
   getStudentDiplomaFromBlockchain(
@@ -843,6 +863,7 @@ export class DatabaseService {
             let ipfsLink: any;
             try {
               ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+
             } catch (error) {
               const ref = this.modalService.open(ModalPopupComponent);
               ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
@@ -851,10 +872,23 @@ export class DatabaseService {
             }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
-                return this.blockchainSearchStudentFromDatabase(
-                  this.encryptFunction.decryptData(user.studentId),
-                  this.encryptFunction.decryptData(user.soNumber)
-                );
+                try {
+                  return this.blockchainSearchStudentFromDatabase(
+                    this.encryptFunction.decryptData(user.studentId),
+                    this.encryptFunction.decryptData(user.soNumber),
+                    this.encryptFunction.decryptData(user.firstname),
+                    this.encryptFunction.decryptData(user.middlename),
+                    this.encryptFunction.decryptData(user.lastname),
+                    this.encryptFunction.decryptData(user.sex),
+                    this.encryptFunction.decryptData(user.course)
+                  );
+                } catch (error) {
+                  const ref = this.modalService.open(ModalPopupComponent);
+                  ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
+                  this.refreshService.refresh(componentRoute)
+                  throw('Search Student From Database Error: ' + error);
+                }
+
               })
             );
           })
@@ -869,14 +903,27 @@ export class DatabaseService {
               const ref = this.modalService.open(ModalPopupComponent);
               ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
               this.refreshService.refresh(componentRoute);
-              throw('IPFS Link Error: ' + error)
+              throw('IPFS Link Error: ' + error);
             }
             return this.http.get(ipfsLink.toString()).pipe(
               switchMap((user: any) => {
-                return this.blockchainSearchStudentFromDatabase(
-                  this.encryptFunction.decryptData(user[index].studentId),
-                  this.encryptFunction.decryptData(user[index].soNumber)
-                );
+                try {
+                  return this.blockchainSearchStudentFromDatabase(
+                    this.encryptFunction.decryptData(user[index].studentId),
+                    this.encryptFunction.decryptData(user[index].soNumber),
+                    this.encryptFunction.decryptData(user[index].firstname),
+                    this.encryptFunction.decryptData(user[index].middlename),
+                    this.encryptFunction.decryptData(user[index].lastname),
+                    this.encryptFunction.decryptData(user[index].sex),
+                    this.encryptFunction.decryptData(user[index].course)
+                  );
+                } catch (error) {
+                  const ref = this.modalService.open(ModalPopupComponent);
+                  ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
+                  this.refreshService.refresh(componentRoute)
+                  throw('Search Student From Database Error: ' + error);
+                }
+
               })
             );
           })
