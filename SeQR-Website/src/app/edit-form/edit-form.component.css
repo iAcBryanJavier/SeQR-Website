@@ -7,23 +7,27 @@ font-family: 'Roboto', sans-serif;
 
 
 body{
-background: linear-gradient(to bottom, #E4E5E6   , #00416A);
-  color: black;
+  font-family: 'Jost', sans-serif;
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 10px;
-  height: 100vh;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to bottom, #E4E5E6 , #00416A);
+  color: black;
+  padding-top: 25px;
 }
 
 .container {
-  max-width: 1200px;
-  width: 100%;
+  margin-top: 10px;
+  max-width: 80%;
   padding: 25px 30px;
   border-radius: 25px;
   background: linear-gradient(to bottom, #E4E5E6   , #00416A);
-  overflow: hidden;
+  overflow: auto;
   box-shadow: 5px 20px 50px black;
+
 }
 
 .container .heading{

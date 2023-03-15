@@ -177,7 +177,7 @@ export class AddStudentComponent implements OnInit {
         return res;
       });
 
-      console.log(this.studentForm.controls['soNumber'])
+  
       if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
 
         // progress bar checkpoint

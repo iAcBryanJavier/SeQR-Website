@@ -207,7 +207,7 @@ export class EditFormComponent implements OnInit {
         this.ethereum = (window as any).ethereum;
         return res;
       });
-      console.log(this.passedStudent.key!, "KEY HERE");
+   
       const dupeCounter = await this.db.checkEditDuplicate(
         this.studentForm.controls['studentId'].value!.trim(),
         this.studentForm.controls['course'].value!.trim(),
