@@ -76,7 +76,7 @@ export class DatabaseService {
       });
   }
 
-  updateStudent(student: any, x: any, y: any, z: any) {
+  updateStudent(student: any, x: any, y: any, z: any, studentKey: any) {
  // console.log(x,"-",y,"-",z);
     // console.log(student.studentId,"-",student.course,"-",student.soNumber);
     const ref = this.afs.list('students');
@@ -89,7 +89,7 @@ export class DatabaseService {
       ),
       map((students) =>
         students.find(
-          (s) => s.studentId === x && s.course === y && s.soNumber === z
+          (s) => s.key === studentKey
         )
       ),
       take(1)
@@ -214,7 +214,8 @@ export class DatabaseService {
   async checkEditDuplicate(
     studentId: string | null,
     course: string | null,
-    soNumber: string | null
+    soNumber: string | null,
+    studentKey: string | null
   ): Promise<any> {
     const result = {
       dupeCount: 0,
@@ -231,8 +232,13 @@ export class DatabaseService {
               .map((item) => {
                 const data = item.payload.val();
                 if (data) {
-                
-                  if (
+                  console.log(item.payload.key);
+                  console.log(studentKey);
+                  if(item.payload.key === studentKey){
+
+            
+                  }
+                  else if (
                     this.encryptFunction.decryptData(data.soNumber) === soNumber
                   ) {
 
