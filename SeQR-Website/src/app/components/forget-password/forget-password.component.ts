@@ -77,13 +77,12 @@ export class ForgetPasswordComponent implements OnInit {
         this.email = user.email
       } else {
         this.email = "false";
-        console.log('user is not signed in');
       }
     })
   }
 
   async updatePassword() {
-  
+
     if(this.forgetPasswordForm.valid){
 
       if (this.email != "false") {
@@ -93,11 +92,11 @@ export class ForgetPasswordComponent implements OnInit {
           alert("Password has been updated!");
           this.logout();
         } catch (error) {
-         
+
           alert("Wrong password");
         }
       }else{
-        
+
       }
     }
     }

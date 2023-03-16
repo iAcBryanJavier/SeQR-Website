@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
       alert("Passwords do not match"); // display an error message
     } else {
       //submit the form
-      console.log(this.registerForm.value)
       this.auth.register(this.registerForm.controls['email'].value,
         this.registerForm.controls['password'].value,
         this.registerForm.controls['schoolName'].value)

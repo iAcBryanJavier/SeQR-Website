@@ -67,10 +67,6 @@ export class DiplomaComponent implements OnInit, OnChanges {
     }
   }
 
-  decryptData(ipfs: any) {
-    console.log(ipfs);
-  }
-
   refresh() {
     this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
       this.router.navigate(['read-qr']);

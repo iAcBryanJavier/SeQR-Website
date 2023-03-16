@@ -33,7 +33,6 @@ export class ManageAccountComponent implements OnInit {
         });
       } else {
         // User is signed out
-        console.log('user is not signed in');
       }
     })
   }
@@ -46,7 +45,7 @@ export class ManageAccountComponent implements OnInit {
         this.email = user.email;
       } else {
         // User is signed out
-        console.log('user is not signed in');
+
       }
     })
   }

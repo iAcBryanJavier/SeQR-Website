@@ -53,8 +53,7 @@ export class EditFormComponent implements OnInit {
   public blobUrl!: Blob;
   public setSex!: any;
 
-  readonly CONTRACT_ADDRESS: string =
-    '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
+  readonly CONTRACT_ADDRESS: string = environment.solidityContract.contractAddress;
   public contractABI = contract.abi;
   public nfts: any = [];
   public courses!: string[];
@@ -122,7 +121,7 @@ export class EditFormComponent implements OnInit {
   noSpacesValidator(control: FormControl): {[key: string]: any} | null {
     const value = control.value;
     if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
-      
+
       return {'blankSpaces': true};
     }
     return null;
@@ -158,7 +157,7 @@ export class EditFormComponent implements OnInit {
 
   onChangeURL(url?: SafeUrl) {
     if (this.myAngularxQrCode != '') {
-      console.log(url);
+
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
         this.qrCodeDownloadLink = url;
@@ -177,29 +176,12 @@ export class EditFormComponent implements OnInit {
               // Upload files to Firebase Storage
               const storage = getStorage();
               const storageRef = ref(storage, `qr-codes/${this.filename}.png`);
-              uploadBytes(storageRef, blobData).then((snapshot) => {
-                console.log(snapshot);
-              });
+              uploadBytes(storageRef, blobData).then((snapshot) => {});
             });
         }
       }
-      //produces BLOB URI/URL, browser locally stored data
-      console.log(this.qrCodeDownloadLink);
     }
-    // TODO: remove this method
   }
-
-  // TODO: TO REMOVE
-
-  // private checkIfMetamaskInstalled(): boolean {
-  //   if (typeof (window as any).ethereum !== 'undefined') {
-  //     this.ethereum = (window as any).ethereum;
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-
 
   async onSubmit() {
     const metamaskConnection =
@@ -207,13 +189,13 @@ export class EditFormComponent implements OnInit {
         this.ethereum = (window as any).ethereum;
         return res;
       });
-   
+
       const dupeCounter = await this.db.checkEditDuplicate(
         this.studentForm.controls['studentId'].value!.trim(),
         this.studentForm.controls['course'].value!.trim(),
         this.studentForm.controls['soNumber'].value!.trim(),
         this.passedStudent.key!
-        
+
       ).then((res: any) => {
         return res;
       });
@@ -273,7 +255,6 @@ export class EditFormComponent implements OnInit {
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
           txnHash: txnHash,
         });
-        console.log(this.dupStudentId);
         this.db.updateStudent(
           this.studentForm.value,
           this.dupStudentId,
@@ -286,7 +267,7 @@ export class EditFormComponent implements OnInit {
       } else {
         const modalRef = this.ModalService.open(ModalPopupComponent);
         modalRef.componentInstance.message = dupeCounter.dupeMessage + 'Please check your fields.';
-          
+
       }
     } else {
       const modalRef = this.ModalService.open(ModalPopupComponent);
@@ -307,7 +288,7 @@ export class EditFormComponent implements OnInit {
     lastname: lastnameData,
     sex: sexData,
     course: courseData,
-    
+
     };
     const options: PinataPinOptions = {
       pinataMetadata: {
@@ -323,7 +304,6 @@ export class EditFormComponent implements OnInit {
       .catch((err) => {
         //handle error here
         responseValue = 'failed';
-        console.log(err);
       });
     return responseValue;
   }
@@ -346,17 +326,16 @@ export class EditFormComponent implements OnInit {
       const createTxn = await contract['create'](
         this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery
       );
-
-      console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
-      console.log('Created student record!', createTxn.hash);
-      window.alert('Created student record! ' + createTxn.hash);
+      const ref = this.ModalService.open(ModalPopupComponent);
+      ref.componentInstance.message = 'Student Successfully Edited!';
       this.isMinting = false;
-
       return createTxn.hash;
+
     } catch (err: any) {
       console.error(err.message);
-      window.alert('Minting Failed' + err.message);
+      const ref = this.ModalService.open(ModalPopupComponent);
+      ref.componentInstance.message = 'Error editing student, please try again!';
       this.myAngularxQrCode = '';
       this.isMinting = false;
     }

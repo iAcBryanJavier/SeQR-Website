@@ -34,7 +34,6 @@ export class DashboardComponent implements OnInit {
         });
       } else {
         // User is signed out
-        console.log('user is not signed in');
       }
     })
   }
@@ -47,7 +46,6 @@ export class DashboardComponent implements OnInit {
         this.email = user.email
       } else {
         // User is signed out
-        console.log('user is not signed in');
       }
     })
   }

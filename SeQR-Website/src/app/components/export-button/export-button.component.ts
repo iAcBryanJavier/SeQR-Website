@@ -15,20 +15,16 @@ export class ExportButtonComponent implements OnInit {
   studentData!: string[];
   encryptFunction = new Encryption;
   jsonStudentData!: JSON;
-  constructor(private db: DatabaseService) { 
+  constructor(private db: DatabaseService) {
   }
 
   ngOnInit(): void {
     this.db.getStudent().subscribe(items =>{
       for (let item of items) {
-      
+
       }
       this.studentData = this.items = items;
      this.jsonStudentData = JSON.parse(JSON.stringify(this.studentData));
-    //  console.log("STUDENT ARRAY: ", this.studentData, "\n JSON DATA: ", jsonStudentData);
-   
-    
-      
     });
   }
 
@@ -42,7 +38,6 @@ export class ExportButtonComponent implements OnInit {
 downloadFile(data: any, filename = 'data') {
   let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
   let csvData = this.ConvertToCSV(data, arrHeader);
-  // console.log(csvData)
   let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
   let dwldLink = document.createElement("a");
   let url = URL.createObjectURL(blob);
@@ -59,8 +54,6 @@ downloadFile(data: any, filename = 'data') {
 }
 
 ConvertToCSV(objArray: any, headerList: any) {
-  // console.log(objArray);
-
   let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
   let row = 'no,';
@@ -99,5 +92,5 @@ strRep(data: any) {
     return data;
   }
 }
- 
+
 }

@@ -33,6 +33,9 @@ export const environment = {
   goerli_etherscan:{
     apiKey: '375SZYKA558DGXRVV74AQ9BHDT9HB6GK4S'
   },
+  solidityContract:{
+    contractAddress: '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a'
+  },
 
   production: true
 };

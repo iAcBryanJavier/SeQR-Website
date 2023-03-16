@@ -40,8 +40,8 @@ export class AuthService {
                 localStorage.setItem('idUserEmail', "Guest Account");
                 this.logging.info(("User login: "+ localStorage.getItem('idUserEmail')));
               }
-              
-            
+
+
               localStorage.getItem('idToken');
               this.router.navigateByUrl('dashboard');
           });
@@ -49,19 +49,19 @@ export class AuthService {
           this.logging.error("Login Failed, reason: might be forms related.", err);
           const modalRef = this.modalService.open(ModalPopupComponent);
           modalRef.componentInstance.message = "The email or password is incorrect";
-       
+
           this.router.navigateByUrl('/login');
-          
+
       });
     }else{
-       
+
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "Metamask not detected, please install metamask before logging in. If you're on mobile, Metamask is not yet supported on the browser. Please switch to a Computer Device.";
       setTimeout(() => {
         window.open('https://metamask.io', '_blank', 'noopener,noreferrer');
       }, 1500);
 
-      
+
     }
   }
 
@@ -108,12 +108,11 @@ export class AuthService {
         });
       } else {
         // User is signed out
-        console.log('user is not signed in');
       }
     })
   }
-  
-  
+
+
    resetPassword(email: any){
 
     return this.fireAuth.sendPasswordResetEmail(email).then(() => {
@@ -123,7 +122,7 @@ export class AuthService {
     .catch((error) => {
       const modalRef = this.modalService.open(ModalPopupComponent);
       modalRef.componentInstance.message = "There is no user record corresponding to this identifier. The user may not have existed or has been deleted. " ;
-  
+
     });
   }
 

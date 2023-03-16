@@ -39,7 +39,7 @@ export class AddStudentComponent implements OnInit {
   public filename: string = "";
   public blobUrl!: Blob;
   public isDuplicate: any;
-  readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
+  readonly CONTRACT_ADDRESS: string = environment.solidityContract.contractAddress;
   public contractABI = contract.abi;
   public nfts: any = [];
   public courses: any = [];
@@ -74,8 +74,7 @@ export class AddStudentComponent implements OnInit {
        this.progressBarValue = 100;
 
       // Opens the modal and puts the qr code inside the content
-    
-      console.log(url);
+
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
         this.qrCodeDownloadLink = url;
@@ -93,7 +92,6 @@ export class AddStudentComponent implements OnInit {
               const storage = getStorage();
               const storageRef = ref(storage, `qr-codes/${this.filename}.png`);
               uploadBytes(storageRef, blobData).then((snapshot) => {
-                console.log(snapshot);
               })
             });
         }
@@ -104,7 +102,7 @@ export class AddStudentComponent implements OnInit {
   noSpacesValidator(control: FormControl): {[key: string]: any} | null {
     const value = control.value;
     if (!value || /^\s+$/.test(value)) { // check if value is empty or just whitespace
-      
+
       return {'blankSpaces': true};
     }
     return null;
@@ -118,7 +116,6 @@ export class AddStudentComponent implements OnInit {
 
     this.db.getCourses().subscribe(i => {
       this.courses = i;
-      // console.log(this.courses);
     });
 
   }
@@ -153,8 +150,6 @@ export class AddStudentComponent implements OnInit {
       return res;
     })
 
-    // console.log(metamaskConnection);
-
     if (metamaskConnection) {
 
 
@@ -172,12 +167,12 @@ export class AddStudentComponent implements OnInit {
         this.studentForm.controls['middlename'].value!.trim(),
         this.studentForm.controls['lastname'].value!.trim(),
         this.studentForm.controls['sex'].value
-        
+
       ).then((res: any) => {
         return res;
       });
 
-  
+
       if (this.studentForm.valid && dupeCounter.dupeCount < 1) {
 
         // progress bar checkpoint
@@ -242,7 +237,7 @@ export class AddStudentComponent implements OnInit {
           this.progressBarMsg = "";
           this.progressBarValue = 0;
 
-       
+
         // this.studentForm.reset();
         this.hasSubmit = false;
         this.progressBarMsg = '';
@@ -267,7 +262,7 @@ export class AddStudentComponent implements OnInit {
       lastname: lastnameData,
       sex: sexData,
       course: courseData,
-      
+
     };
     const options: PinataPinOptions = {
       pinataMetadata: {
@@ -280,7 +275,6 @@ export class AddStudentComponent implements OnInit {
     }).catch((err) => {
       //handle error here
       responseValue = 'failed';
-      console.log(err);
     });
     return responseValue;
   }
@@ -297,10 +291,7 @@ export class AddStudentComponent implements OnInit {
 
     try{
       const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
-
-      console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
-      console.log('Created student record!', createTxn.hash);
 
       return createTxn.hash;
     }catch(err: any){
@@ -312,7 +303,6 @@ export class AddStudentComponent implements OnInit {
   }
 
   receiveIsMinting(data: any){
-    console.log(data)
     this.isMinting = data;
   }
 
@@ -326,14 +316,12 @@ export class AddStudentComponent implements OnInit {
 
 
   ConvertToCSV(objArray: any, headerList: any) {
-    // console.log(objArray);
-  
     let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     let str = '';
     let row = 'no,';
-  
+
     let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash","END"];
-  
+
     for (let index in newHeaders) {
       row += newHeaders[index] + ',';
     }
@@ -343,7 +331,7 @@ export class AddStudentComponent implements OnInit {
       let line = (i + 1) + '';
       for (let index in headerList) {
         let head = headerList[index];
-  
+
         line += ',';
       }
       str += line + '\r\n';
@@ -356,18 +344,18 @@ export class AddStudentComponent implements OnInit {
       const csvHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "END"];
       const csvRows: any[] = [];
       const filename = "upload_template.csv";
-      
+
       // Add any rows of data here, if necessary
       // For example:
       // csvRows.push(["CS101", "John", "Doe", "M", "123456789", "1234"]);
-    
+
       // Create the CSV content by combining the headers and rows
       const csvContent = csvHeaders.join(",") + "\n" + csvRows.join("\n");
-    
+
       // Create a blob with the CSV content and set it as the download URL
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-    
+
       // Create a link element and simulate a click on it to trigger the download
       const link = document.createElement("a");
       link.setAttribute("href", url);
@@ -376,23 +364,5 @@ export class AddStudentComponent implements OnInit {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    
-    
   }
-  
-  
-
-  // private async fetchNFTs(): Promise<any> {
-  //   const provider = new ethers.providers.Web3Provider(this.ethereum);
-  //   const signer = provider.getSigner();
-  //   const studentContract = new ethers.Contract(
-  //     this.CONTRACT_ADDRESS,
-  //     this.contractABI,
-  //     signer
-  //   );
-
-  //   const students = await studentContract['getStudents']();
-  //   console.log('Retrieved student...', students);
-  //   this.nfts = students;
-  // }
 }

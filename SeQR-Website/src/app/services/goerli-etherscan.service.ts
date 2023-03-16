@@ -12,10 +12,8 @@ export class GoerliEtherscanService {
   constructor(private httpService: HttpClient) { }
 
   getTransactionByHash(txn: string): Observable<any>{
-    const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txn}&apikey=${environment.goerli_etherscan.apiKey}`
-
-    console.log(this.BASE_URL + TRANSACTION_BY_HASH_QUERY);
-    return this.httpService.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY)
+    const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txn}&apikey=${environment.goerli_etherscan.apiKey}`;
+    return this.httpService.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY);
   }
 
 }

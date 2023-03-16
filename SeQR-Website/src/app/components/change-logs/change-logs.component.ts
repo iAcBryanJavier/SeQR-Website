@@ -25,11 +25,11 @@ export class ChangeLogsComponent implements OnInit {
   pageCounting!: number;
   next_button = "Next";
   logList!: Observable<any[]>
-  constructor(private logs: LoggingService ) { 
+  constructor(private logs: LoggingService ) {
     this.logs.setLogHistory();
     this.logList = this.logs.getInfoLogs();
     this.setTableItems(this.logList);
-    
+
 	}
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class ChangeLogsComponent implements OnInit {
   }
   onInput(event: any) {
     if (event.target.value.length > 0) {
-  
+
     }
   }
 
@@ -48,7 +48,7 @@ export class ChangeLogsComponent implements OnInit {
 
   setTableItems(list: Observable <any[]>){
 		list.subscribe(items =>{
-			
+
       this.items = items.reverse();
       this.listItem = this.getPageItems(this.currentPage);
      this.pageCount = this.getPages();
@@ -64,7 +64,7 @@ export class ChangeLogsComponent implements OnInit {
     var pageNumber: number = +selected;
     this.setPage(pageNumber);
     this.currentPage = pageNumber;
-    
+
   }
 
  setPageAdd(page: number): void {
@@ -80,7 +80,6 @@ setPageMinus(page: number): void {
 setPage(page: number): void {
   this.currentPage = page;
   this.listItem = this.getPageItems(this.currentPage);
-  console.log(this.currentPage);
 }
 
 
@@ -90,13 +89,6 @@ setPage(page: number): void {
 
   getPages(): number {
     const pageCount = Math.ceil(this.items.length / 10);
-  
-    // console.log(pageCount);
-    // if(this.currentPage == pageCount){
-    //   this.next_button = "";
-    // }else{
-
-    // }
     return pageCount;
   }
   public range(count: number): number[] {

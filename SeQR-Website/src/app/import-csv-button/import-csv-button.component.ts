@@ -37,7 +37,7 @@ export class ImportCsvButtonComponent implements OnInit {
   public pinata = new PinataClient(environment.pinatacloud.apiKey, environment.pinatacloud.apiSecret);
   public ethereum: any;
   public isMinting: boolean = false;
-  readonly CONTRACT_ADDRESS: string = '0x8594bc603F61635Ef94D17Cc2502cb5bcdE6AF0a';
+  readonly CONTRACT_ADDRESS: string = environment.solidityContract.contractAddress;
   public contractABI = contract.abi;
   public ipfsUrlPrefix: string = environment.pinatacloud.gateway;
   public ipfsQuery: string = environment.pinatacloud.gatewayTokenQuery + environment.pinatacloud.gatewayToken;
@@ -63,7 +63,6 @@ export class ImportCsvButtonComponent implements OnInit {
 
   onChangeURL(url?: SafeUrl, index?: number) {
     if (this.txnObjList.length != 0 && this.changeUrlCtr < this.txnObjList.length) {
-      console.log(url);
       if (url) {
         // Changes whenever this.myAngularxQrCode changes
         this.qrCodeDownloadLink = url;
@@ -79,9 +78,7 @@ export class ImportCsvButtonComponent implements OnInit {
               // Upload files to Firebase Storage
               const storage = getStorage();
               const storageRef = ref(storage, `qr-codes/${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
-              uploadBytes(storageRef, blobData).then((snapshot) => {
-                console.log(snapshot);
-              })
+              uploadBytes(storageRef, blobData).then((snapshot) => {})
             });
             this.changeUrlCtr++
 
@@ -95,29 +92,8 @@ export class ImportCsvButtonComponent implements OnInit {
             }
         }
       }
-      //produces BLOB URI/URL, browser locally stored data
-      console.log(this.qrCodeDownloadLink);
     }
   }
-
-  // async downloadZip(){
-  //   let index = 0;
-  //   const zip = new JSZip();
-  //   console.log(this.blobUrls)
-  //   this.blobUrls.forEach(item =>{
-  //     fetch(item.toString())
-  //       .then(response => response.blob())
-  //       .then( blob => {
-  //         zip.file(`test${index}.png`, blob, {binary: true});
-  //       })
-  //     index++;
-  //   });
-
-  //   zip.generateAsync({type: 'blob'})
-  //   .then(content =>{
-  //     saveAs(content, `${this.txnHash}.zip`);
-  //   })
-  // }
 
   fileChangeListener(event: Event) {
     this.txnObjList.forEach(() =>{
@@ -126,19 +102,15 @@ export class ImportCsvButtonComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files) { // CHECKS IF FILES IS NULL
       this.isMinting = true;
-      console.log(this.isMinting)
       this.isMintingEvent.emit(this.isMinting);
 
       this.changeUrlCtr = 0;
-      console.log(this.txnObjList.length)
-      console.log(this.changeUrlCtr);
       const file = input.files[0]
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = async () => { // GETS CALLED WHEN THE FILE IS READ
         const jsonData = JSON.parse(parseCSV(reader.result as string));
         this.encryptionFunc = new Encryption();
-        console.log(parseCSV(reader.result as string));
 
         for (let i = 0; i < jsonData.length - 1; ++i) {
 
@@ -157,10 +129,8 @@ export class ImportCsvButtonComponent implements OnInit {
            ).then((res: any) => {
              return res;
            });
-       
-          console.log(dupeCounter.dupeCount);
+
           if(dupeCounter.dupeCount < 1){
-            console.log(jsonData[i].studentId);
             this.studentData = {
               firstname: this.encryptionFunc.encryptData(jsonData[i].firstname),
               middlename: this.encryptionFunc.encryptData(jsonData[i].middlename),
@@ -172,47 +142,46 @@ export class ImportCsvButtonComponent implements OnInit {
               txnHash: '',
               dataImg: ''
             }
-  
+
             this.studentList.push(this.studentData);
           } else {
             this.cssCounter++
             continue;
           }
         }
-       
+
         if(this.studentList.length < 1){
           const modalRef = this.modalService.open(ModalPopupComponent);
           modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';
           this.isMinting = false;
           this.isMintingEvent.emit(this.isMinting);
-          
+
         }else if(this.cssCounter < 1){
-          console.log(JSON.stringify(this.studentList));
           let ctr = 0;
-  
+
            // progress bar checkpoint
           this.progressBarMsg = "Uploading Files to IPFS";
           this.progressBarValue = 50;
           this.progressBarMsgEvent.emit(this.progressBarMsg);
           this.progressBarValueEvent.emit(this.progressBarValue);
-  
+
           const ipfsHash = await this.uploadToIPFS(this.studentList);
-  
+
           // progress bar checkpoint
           this.progressBarMsg = "Creating Blockchain Transaction";
           this.progressBarValue = 75;
           this.progressBarMsgEvent.emit(this.progressBarMsg);
           this.progressBarValueEvent.emit(this.progressBarValue);
-  
+
           this.txnHash = await this.createTransaction(ipfsHash);
-  
+
           if(this.txnHash){
             this.studentList.forEach(item =>{
               const txnObj = new TxnObject();
               txnObj.setTxnHash(this.txnHash);
               txnObj.setIndex(ctr);
               this.txnObjList.push(JSON.stringify(txnObj));
-  
+
               item.txnHash = JSON.stringify(txnObj);
               item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
               this.saveStudent(item);
@@ -240,7 +209,7 @@ export class ImportCsvButtonComponent implements OnInit {
           this.isMintingEvent.emit(this.isMinting);
         };
         }
-      
+
     } else {
       console.error("No file selected");
     }
@@ -294,7 +263,6 @@ export class ImportCsvButtonComponent implements OnInit {
     }).catch((err) => {
       //handle error here
       responseValue = 'failed';
-      console.log(err);
     });
     return responseValue;
   }
@@ -312,10 +280,7 @@ export class ImportCsvButtonComponent implements OnInit {
 
     try{
       const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
-
-      console.log('Create transaction started...', createTxn.hash);
       await createTxn.wait();
-      console.log('Created student record!', createTxn.hash);
 
       return createTxn.hash;
     }catch(err: any){

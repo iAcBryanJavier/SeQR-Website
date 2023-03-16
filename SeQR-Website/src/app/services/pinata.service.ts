@@ -72,13 +72,12 @@ export class PinataService {
           try {
             ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
           } catch (err) {
-            console.log(err);
             ipfsLink = '';
           }
           return this.http.get(ipfsLink.toString()).pipe(
             switchMap((user: any) => {
               return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
-              
+
             })
           );
         })
@@ -95,7 +94,7 @@ export class PinataService {
           return this.http.get(ipfsLink.toString()).pipe(
             switchMap((user: any) => {
               return this.getSearchStudent(this.encryptFunction.decryptData(user.studentId));
-                       
+
             })
           );
         })

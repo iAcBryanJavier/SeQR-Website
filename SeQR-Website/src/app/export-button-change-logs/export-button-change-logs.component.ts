@@ -12,27 +12,24 @@ export class ExportButtonChangeLogsComponent implements OnInit {
   items!: Log[];
   logsData!: string[];
 
-  constructor(private logs: LoggingService) { 
+  constructor(private logs: LoggingService) {
   }
 
   ngOnInit(): void {
     this.logs.getInfoLogs().subscribe(items => {
       this.items = items;
       var jsonLogsData = JSON.parse(JSON.stringify(this.items));
-      // console.log(jsonLogsData);
-      // console.log("STUDENT ARRAY: ", this.items, "\n JSON DATA: ", jsonLogsData);
-    
       this.logsData = jsonLogsData;
-    
+
     });
   }
 
   getInfoData(): void{
 
       this.exportCsv(this.logsData);
- 
+
   }
-  
+
 
   exportCsv(data_to_export: any[]) {
     this.downloadFile(data_to_export);
@@ -41,7 +38,6 @@ export class ExportButtonChangeLogsComponent implements OnInit {
   downloadFile(data: any[], filename = 'data') {
     let arrHeader = ["LogDate", "LogLevel", "Message"];
     let csvData = this.ConvertToCSV(data, arrHeader);
-    console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(blob);

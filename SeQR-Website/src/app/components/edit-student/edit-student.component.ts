@@ -37,7 +37,6 @@ viewTxcClick(txnHash: string|null) {
 
     this.students.getCourses().subscribe((i) => {
       this.courses = i;
-      // console.log("THIS", this.passedCourse);
     });
   }
 

@@ -61,10 +61,8 @@ export class ReadQrComponentComponent {
     codeReader
       .decodeFromImageElement('img')
       .then((result) => {
-        console.log(result);
         try {
           const resultParsed = JSON.parse(result.toString());
-          console.log(typeof resultParsed);
           this.txnHash = resultParsed.txnHash;
           this.ipfsIndex = resultParsed.index;
 
@@ -75,7 +73,6 @@ export class ReadQrComponentComponent {
               this.componentRoute
             )
             .subscribe((item) => {
-              console.log(item);
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
             });
@@ -90,7 +87,6 @@ export class ReadQrComponentComponent {
               this.componentRoute
             )
             .subscribe((item) => {
-              console.log();
               this.ipfsData = item[0];
               this.isDiplomaLoading = true;
             });
@@ -126,7 +122,6 @@ export class ReadQrComponentComponent {
       reader.onload = (event: Event) => {
         let fileReader = event.target as FileReader;
         this.url = fileReader.result;
-        console.log(file);
         this.decodeOrCode();
       };
     } catch (error) {
