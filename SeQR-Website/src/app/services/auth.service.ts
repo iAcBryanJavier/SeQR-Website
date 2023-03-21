@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LoggingService } from './logging.service';
 import * as firebase from 'firebase/compat';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { ModalPopupComponent } from '../components/modal-popup/modal-popup.component';
 import { MetamaskService } from './metamask.service';
 import { interval } from 'rxjs';
 @Injectable({

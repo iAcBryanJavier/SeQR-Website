@@ -10,6 +10,10 @@ body{
 	padding-top: 25px;
 }
 
+.hidden-component{
+	display: none;
+}
+
 .td-word-wrap{ 
     /* overflow-wrap: break-word !important; */
      word-break: break-all !important; 

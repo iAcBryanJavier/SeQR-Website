@@ -13,7 +13,7 @@ import { interval, Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { ModalPopupComponent } from 'src/app/components/modal-popup/modal-popup.component';
 import { MetamaskService } from 'src/app/services/metamask.service';
 
 @Component({

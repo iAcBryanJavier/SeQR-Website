@@ -7,16 +7,16 @@ import { SafeUrl } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { getBootstrapBaseClassPlacement } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { ethers } from 'ethers';
-import contract from '../contracts/Student.json';
+import contract from '../../contracts/Student.json';
 import PinataClient, { PinataPinOptions, PinataPinResponse } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { Student } from '../interfaces/Student';
-import { EditFormService } from '../services/edit-form.service';
-import { MetamaskService } from '../services/metamask.service';
-import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { Student } from '../../interfaces/Student';
+import { EditFormService } from '../../services/edit-form.service';
+import { MetamaskService } from '../../services/metamask.service';
+import { ModalPopupComponent } from '../../components/modal-popup/modal-popup.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

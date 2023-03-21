@@ -9,7 +9,7 @@ import { PinataService } from './pinata.service';
 import { environment } from 'src/environments/environment';
 import web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { ModalPopupComponent } from 'src/app/components/modal-popup/modal-popup.component';
 import { Router } from '@angular/router';
 import { RefreshComponentService } from './refresh-component.service';
 

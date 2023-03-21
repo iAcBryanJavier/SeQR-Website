@@ -1,21 +1,21 @@
 import { Component, EventEmitter, OnInit, Output, SecurityContext } from '@angular/core';
 
-import { Encryption } from '../models/encryption';
-import { StudentCsvService } from '../services/student-csv.service';
-import { Student } from '../interfaces/Student';
-import { DatabaseService } from '../services/database.service';
+import { Encryption } from '../../models/encryption';
+import { StudentCsvService } from '../../services/student-csv.service';
+import { Student } from '../../interfaces/Student';
+import { DatabaseService } from '../../services/database.service';
 import PinataClient, { PinataPinOptions } from '@pinata/sdk';
 import { environment } from 'src/environments/environment';
 import { ethers } from 'ethers';
-import contract from '../contracts/Student.json';
+import contract from '../../contracts/Student.json';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import FileSaver, { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { TxnObject } from '../models/txn-object';
+import { TxnObject } from '../../models/txn-object';
 import JSZip, { file } from 'jszip';
-import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
+import { ModalPopupComponent } from '../../components/modal-popup/modal-popup.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RefreshComponentService } from '../services/refresh-component.service';
+import { RefreshComponentService } from '../../services/refresh-component.service';
 
 @Component({
   selector: 'import-csv-button',

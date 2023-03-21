@@ -11,11 +11,11 @@ import { AuthGuard } from './router-guard/auth.guard';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ReadQrComponentComponent } from './read-qr-component/read-qr-component.component';
-import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
+import { ReadQrComponentComponent } from './components/read-qr-component/read-qr-component.component';
+import { DataAnalysisComponent } from './components/data-analysis/data-analysis.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
-import { EditFormComponent } from './edit-form/edit-form.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { EditFormComponent } from '../app/components/edit-form/edit-form.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},

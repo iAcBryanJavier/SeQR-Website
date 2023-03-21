@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { BrowserMultiFormatReader } from '@zxing/browser';
-import { GoerliEtherscanService } from '../services/goerli-etherscan.service';
+import { GoerliEtherscanService } from '../../services/goerli-etherscan.service';
 import web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from "src/app/services/auth.service";
-import { DatabaseService } from '../services/database.service';
-import { IpfsStudent } from '../interfaces/IpfsStudent';
+import { DatabaseService } from '../../services/database.service';
+import { IpfsStudent } from '../../interfaces/IpfsStudent';
 import { Router } from '@angular/router';
 import { ModalPopupComponent } from '../modal-popup/modal-popup.component';
-import { DiplomaTemplateComponent } from '../components/diploma-template/diploma-template.component';
-import { RefreshComponentService } from '../services/refresh-component.service';
+import { DiplomaTemplateComponent } from '../diploma-template/diploma-template.component';
+import { RefreshComponentService } from '../../services/refresh-component.service';
 
 
 @Component({

@@ -6,19 +6,20 @@ import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditFormService } from 'src/app/services/edit-form.service';
 import { environment } from 'src/environments/environment';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 @Component({
   selector: 'app-edit-student',
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css'],
 })
 export class EditStudentComponent implements OnInit {
-viewTxcClick(txnHash: string|null) {
- window.open('https://goerli.etherscan.io/tx/' + txnHash);
-}
+
   @ViewChild('selectedValue') selectedValue!: ElementRef;
   courses!: any;
   searchQuery: string = '';
   items!: Student[];
+  fillListItem!: Student[];
   listItem!: Student[];
   currentPage = 1;
   pageCount!: number;
@@ -41,7 +42,14 @@ viewTxcClick(txnHash: string|null) {
   }
 
   ngOnInit(): void {}
-
+  exportStudentPDF() {
+  const doc = new jsPDF();
+  autoTable(doc, {html: '#export-table'} );
+  doc.save('table.pdf');
+    }
+    viewTxcClick(txnHash: string|null) {
+     window.open('https://goerli.etherscan.io/tx/' + txnHash);
+    }
   onSearchInputChange(event: any) {
     this.setTableItems(this.getSearch(event));
     this.setPage(1);
@@ -50,9 +58,14 @@ viewTxcClick(txnHash: string|null) {
   setTableItems(list: Observable<any[]>) {
     list.subscribe((items) => {
       this.items = items.reverse();
+      this.fillListItem = this.items;
       this.listItem = this.getPageItems(this.currentPage);
       this.pageCount = this.getPages();
     });
+  }
+
+  setInvisibleTableItems(list:Observable<any>){
+
   }
 
   getPageItems(page: number): Student[] {

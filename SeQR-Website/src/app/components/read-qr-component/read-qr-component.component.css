@@ -82,11 +82,11 @@ body {
   padding: 20px;
   text-align: center;
   position: relative;
-  border-image: url("../../assets/img/certificate-background.jpg") 20 round;
+  border-image: url("../../../assets/img/certificate-background.jpg") 20 round;
   border-width: 20px;
   border-style: solid;
   background-color: white;
-  background-image: url("../../assets/img/certificate.jpg");
+  background-image: url("../../../assets/img/certificate.jpg");
 }
 
 .certificate-header {

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { IpfsStudent } from 'src/app/interfaces/IpfsStudent';
 import { Observable } from 'rxjs';
-import { ModalPopupComponent } from 'src/app/modal-popup/modal-popup.component';
+import { ModalPopupComponent } from 'src/app/components/modal-popup/modal-popup.component';
 import { RefreshComponentService } from 'src/app/services/refresh-component.service';
 
 @Component({
