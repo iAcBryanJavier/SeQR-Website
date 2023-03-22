@@ -2,6 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoggingService } from 'src/app/services/logging.service';
 import { Log } from 'src/app/interfaces/Logs';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { Student } from 'src/app/interfaces/Student';
 // interface Country {
 // 	name: string;
 // 	flag: string;
@@ -21,6 +24,7 @@ export class ChangeLogsComponent implements OnInit {
   items!: Log[];
 	listItem!: Log[];
   currentPage = 1;
+  fillListItem!: Log[];
   pageCount!: number;
   pageCounting!: number;
   next_button = "Next";
@@ -41,6 +45,7 @@ export class ChangeLogsComponent implements OnInit {
     }
   }
 
+  
   onSearchInputChange(event: any) {
    this.setTableItems(this.getSearch(event));
    this.setPage(1);
@@ -50,9 +55,16 @@ export class ChangeLogsComponent implements OnInit {
 		list.subscribe(items =>{
 
       this.items = items.reverse();
+      this.fillListItem = this.items;
       this.listItem = this.getPageItems(this.currentPage);
      this.pageCount = this.getPages();
     });
+  }
+
+  exportLogsPDF(){
+    const doc = new jsPDF();
+    autoTable(doc, {html: '#export-table'} );
+    doc.save('table.pdf');
   }
   getPageItems(page: number): Log[] {
     const startIndex = (page - 1) * 10;

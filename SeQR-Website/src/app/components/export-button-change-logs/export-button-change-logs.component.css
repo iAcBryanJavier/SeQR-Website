@@ -1,21 +1,26 @@
-.export-file {
-  width:160px;
-  margin: 1px auto;
-  justify-content: center;
-  color: #fff;
-  background: #243b55 ;
-  font-size: 1em;
-  font-weight: bold;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  transition: .2s ease-in;
-  cursor: pointer;
-  margin-bottom: 20px;
-  margin-top: 20px;
+button{
+	margin: 1px auto;
+	margin-right: 1em;
+	justify-content: center;
+	color: #fff;
+	background: #243b55 ;
+	font-size: 1em;
+	font-weight: bold;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+
+button:disabled {
+	background-color:lightblue;
+	cursor: not-allowed;
 }
 
 button:hover{
-  transform: scale(1.08);
-  cursor: pointer; 
+	background:  #4F97A3;
+    color: black;
+    transform: scale(1.08);
+    cursor: pointer; 
 }

@@ -16,6 +16,10 @@ body{
     word-break: break-all !important; 
 }
 
+.hidden-component{
+	display:none;
+}
+
 
 button{
 	margin: 1px auto;

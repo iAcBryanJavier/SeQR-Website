@@ -13,7 +13,11 @@
           <input id="search-input" type="search" class="form-control" placeholder="Search anything..." 
                  [ngModel]="searchQuery" (ngModelChange)="onSearchInputChange($event)">
         </div>
+
+        <br                                                    >
         <app-export-button-change-logs></app-export-button-change-logs>
+        <button class="btn btn-wo-ib btn-lg btn-primary" (click)='exportLogsPDF()'>Export PDF</button>
+
       </div>
 
     <div class="row">
@@ -68,6 +72,39 @@
         </button>
       </div>
     </div>
+
+    <div class="table-responsive-sm hidden-component">
+      <table class="table table-bordered table-striped" id="export-table">
+        <thead>
+          <tr>
+            <th scope="col">Time & Date</th>
+            <th scope="col">Type</th>
+            <th scope="col">Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of fillListItem; index as i">
+            <td>
+              {{ item.LogDate }}
+            </td>
+            <td>
+              {{ item.LogLevel }}
+            </td>
+            <td class="td-word-wrap">
+              <p>
+                {{ item.Message }}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PAGINATION -->
+
+    </div>
+
+
+
     </div>
    </div>
    </body>
