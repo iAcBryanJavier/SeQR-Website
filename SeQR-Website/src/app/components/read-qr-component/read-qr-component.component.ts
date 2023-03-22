@@ -68,6 +68,7 @@ export class ReadQrComponentComponent {
 
           this.db
             .getStudentDiplomaFromBlockchain(
+              result,
               this.txnHash,
               this.ipfsIndex,
               this.componentRoute
@@ -82,6 +83,7 @@ export class ReadQrComponentComponent {
 
           this.db
             .getStudentDiplomaFromBlockchain(
+              result,
               this.txnHash,
               this.ipfsIndex,
               this.componentRoute

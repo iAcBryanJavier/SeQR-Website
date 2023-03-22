@@ -733,7 +733,8 @@ export class DatabaseService {
 
   blockchainSearchStudentFromDatabase(studentId: string,
     soNumber: string,
-    course: string
+    course: string,
+    txnHash: string
     ): Observable<any[]> {
 
     try {
@@ -742,7 +743,8 @@ export class DatabaseService {
           return students.filter((student: any) => {
             return (student.studentId == studentId
               && student.soNumber == soNumber
-              && student.course == course);
+              && student.course == course)
+              && student.txnHash == txnHash;
           });
         })
       );
@@ -754,6 +756,7 @@ export class DatabaseService {
   }
 
   getStudentDiplomaFromBlockchain(
+    qrTxnHashValue: any,
     txnHash: string,
     index: number,
     componentRoute: string
@@ -779,7 +782,8 @@ export class DatabaseService {
                   return this.blockchainSearchStudentFromDatabase(
                     this.encryptFunction.decryptData(user.studentId),
                     this.encryptFunction.decryptData(user.soNumber),
-                    this.encryptFunction.decryptData(user.course)
+                    this.encryptFunction.decryptData(user.course),
+                    qrTxnHashValue
                   );
                 } catch (error) {
                   const ref = this.modalService.open(ModalPopupComponent);
@@ -810,7 +814,8 @@ export class DatabaseService {
                   return this.blockchainSearchStudentFromDatabase(
                     this.encryptFunction.decryptData(user[index].studentId),
                     this.encryptFunction.decryptData(user[index].soNumber),
-                    this.encryptFunction.decryptData(user.course)
+                    this.encryptFunction.decryptData(user[index].course),
+                    qrTxnHashValue
                   );
                 } catch (error) {
                   const ref = this.modalService.open(ModalPopupComponent);

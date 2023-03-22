@@ -82,10 +82,10 @@ export class ScanQrComponent {
     // this.progressBarMsg = 'Loading Student Diploma...'
     try {
       const resultParsed = JSON.parse(resultString);
-      this.fetchStudentDiploma(resultParsed.txnHash, resultParsed.index);
+      this.fetchStudentDiploma(resultString, resultParsed.txnHash, resultParsed.index);
       this.progressBarMsg = 'Loading Student Diploma'
     } catch (err) {
-      this.fetchStudentDiploma(resultString, -1);
+      this.fetchStudentDiploma(resultString ,resultString, -1);
       this.progressBarMsg = 'Loading Student Diploma'
     }
   }
@@ -132,9 +132,10 @@ export class ScanQrComponent {
     }
   }
 
-  fetchStudentDiploma(txnHash: string, index: number) {
+  fetchStudentDiploma(resultString: string, txnHash: string, index: number) {
     try {
       this.studentObservable = this.db.getStudentDiplomaFromBlockchain(
+        resultString,
         txnHash,
         index,
         this.componentRoute
