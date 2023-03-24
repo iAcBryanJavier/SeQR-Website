@@ -121,11 +121,11 @@ export class ImportCsvButtonComponent implements OnInit {
           const dupeCounter = await this.db.checkAddDuplicate(
             jsonData[i].studentId,
             jsonData[i].course,
-           jsonData[i].soNumber,
-           jsonData[i].firstname,
-           jsonData[i].middlename,
-           jsonData[i].lastname,
-           jsonData[i].sex
+            jsonData[i].soNumber,
+            jsonData[i].firstname,
+            jsonData[i].middlename,
+            jsonData[i].lastname,
+            jsonData[i].sex
            ).then((res: any) => {
              return res;
            });
@@ -139,6 +139,8 @@ export class ImportCsvButtonComponent implements OnInit {
               studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
               sex: this.encryptionFunc.encryptData(jsonData[i].sex),
               soNumber: this.encryptionFunc.encryptData(jsonData[i].soNumber),
+              schoolYear: this.encryptionFunc.encryptData(jsonData[i].schoolYear),
+              term: this.encryptionFunc.encryptData(jsonData[i].term),
               txnHash: '',
               dataImg: ''
             }
@@ -235,19 +237,12 @@ export class ImportCsvButtonComponent implements OnInit {
       const body = {
         studentId: '',
         soNumber: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
-        sex: '',
         course: '',
+        
       };
 
       body.studentId = item.studentId ?? 'no value';
       body.soNumber = item.soNumber ?? 'no value';
-      body.firstname = item.firstname ?? 'no value';
-      body.middlename = item.middlename ?? 'no value';
-      body.lastname = item.lastname ?? 'no value';
-      body.sex = item.sex ?? 'no value';
       body.course = item.course ?? 'no value';
       bodyList.push(body)
     })

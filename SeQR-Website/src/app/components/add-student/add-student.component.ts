@@ -58,6 +58,8 @@ export class AddStudentComponent implements OnInit {
     studentId: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     sex: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     soNumber: new FormControl('', Validators.required),
+    schoolYear: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    term: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     dataImg: new FormControl(''),
     txnHash: new FormControl('')
   })
@@ -108,8 +110,6 @@ export class AddStudentComponent implements OnInit {
     return null;
   }
 
-
-
   ngOnInit(): void {
     this.MetamaskService.checkIfMetamaskInstalled();
     // this.fetchNFTs();
@@ -119,30 +119,6 @@ export class AddStudentComponent implements OnInit {
     });
 
   }
-
-  async pinFileToPinata(studentIdData: any, soNumberData: any) {
-    var responseValue;
-    const body = {
-      studentId: studentIdData,
-      qrCode: this.blobDataUrl,
-      soNumber: soNumberData
-    };
-    const options: PinataPinOptions = {
-      pinataMetadata: {
-        name: 'Student Data',
-      },
-    };
-
-    this.pinata.pinJSONToIPFS(body, options).then((result) => {
-      //handle results here
-     this.createTransaction(result.IpfsHash);
-
-  }).catch((err) => {
-      throw "Pinata pinJSONtoIPFS Failed";
-      responseValue = 'failed';
-  });
-  }
-
 
   async onSubmit() {
     const metamaskConnection = await this.MetamaskService.checkConnectionMetamask().then((res: any) => {
@@ -182,11 +158,7 @@ export class AddStudentComponent implements OnInit {
         const ipfsHash = await this.uploadToIPFS(
           this.encryptFunction.encryptData(this.studentForm.controls['studentId'].value!.trim()),
           this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value!.trim()),
-          this.encryptFunction.encryptData(this.studentForm.controls['firstname'].value!.trim()),
-          this.encryptFunction.encryptData(this.studentForm.controls['middlename'].value!.trim()),
-          this.encryptFunction.encryptData(this.studentForm.controls['lastname'].value!.trim()),
-          this.encryptFunction.encryptData(this.studentForm.controls['sex'].value!),
-          this.encryptFunction.encryptData(this.studentForm.controls['course'].value!.trim()),
+          this.encryptFunction.encryptData(this.studentForm.controls['course'].value!.trim())
           )
           .then((res) => {
             return res;
@@ -217,6 +189,8 @@ export class AddStudentComponent implements OnInit {
           sex: this.encryptFunction.encryptData(this.studentForm.controls['sex'].value?.trim()),
           soNumber: this.encryptFunction.encryptData(this.studentForm.controls['soNumber'].value?.trim()),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
+          schoolYear: this.encryptFunction.encryptData(this.studentForm.controls['schoolYear'].value?.trim()),
+          term: this.encryptFunction.encryptData(this.studentForm.controls['term'].value?.trim()),
           txnHash: this.txnHash
         })
 
@@ -251,18 +225,12 @@ export class AddStudentComponent implements OnInit {
 
 
 
-  async uploadToIPFS(studentIdData: string, soNumberData: string, firstnameData: string, middleNameData: string, lastnameData : string, sexData: string, courseData: string): Promise<string>{
+  async uploadToIPFS(studentIdData: string, soNumberData: string, courseData: string): Promise<string>{
     let responseValue: string = '';
   const body = {
       studentId: studentIdData,
-      qrCode: this.blobDataUrl,
       soNumber: soNumberData,
-      firstname: firstnameData,
-      middlename: middleNameData,
-      lastname: lastnameData,
-      sex: sexData,
-      course: courseData,
-
+      course: courseData
     };
     const options: PinataPinOptions = {
       pinataMetadata: {
@@ -341,7 +309,7 @@ export class AddStudentComponent implements OnInit {
 
   exportCsv() {
 
-      const csvHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "END"];
+      const csvHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "schoolYear", "term", "END"];
       const csvRows: any[] = [];
       const filename = "upload_template.csv";
 

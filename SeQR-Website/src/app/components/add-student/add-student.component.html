@@ -18,17 +18,28 @@
 
             <div class="card-box">
               <span class="details">First Name</span>
-              <input type="text" formControlName="firstname" placeholder="Enter your first name" required>
+              <input type="text" formControlName="firstname" placeholder="Juan" required>
             </div>
 
             <div class="card-box">
-                <span class="details">Student ID</span>
-                <input type="text" formControlName="studentId" placeholder="Enter your Student ID" required>
+              <span class="details">School Year</span>
+              <input type="text" formControlName="schoolYear" placeholder="2022-2023" required>
             </div>
-
+          
+          
             <div class="card-box">
               <span class="details">Middle Name (Optional)</span> <!--Optional-->
-              <input type="text" formControlName="middlename" placeholder="Enter your middle name">
+              <input type="text" formControlName="middlename" placeholder="Pepito">
+            </div>
+
+            <div class="card-box">
+              <span class="details">Term</span>
+              <input type="text" formControlName="term" placeholder="2nd" required>
+            </div>
+            
+            <div class="card-box">
+              <span class="details">Last Name</span>
+              <input type="text" formControlName="lastname" placeholder="Dela Cruz" required>
             </div>
 
             <div class="card-box">
@@ -37,18 +48,21 @@
             </div>
 
             <div class="card-box">
-              <span class="details">Last Name</span>
-              <input type="text" formControlName="lastname" placeholder="Enter your last name" required>
-            </div>
+              <span class="details">Student ID</span>
+              <input type="text" formControlName="studentId" placeholder="201901165" required>
+          </div>
 
-            <div class="card-box">
-              <span class="details">Course</span>
-                <select class="form-select" formControlName="course" aria-label="Default select example" required>
-                   <option disabled selected hidden>Choose Gender</option>
+         
 
-                  <option *ngFor="let item of courses" [value]="item">{{ item }}</option>
-                </select>
-            </div>
+          <div class="card-box">
+            <span class="details">Course</span>
+              <select class="form-select" formControlName="course" aria-label="Default select example" required>
+                 <option disabled selected hidden>Choose Gender</option>
+
+                <option *ngFor="let item of courses" [value]="item">{{ item }}</option>
+              </select>
+          </div>
+            
 
             <!-- <div class="card-input">
               <span class="details">ID Picture</span>
