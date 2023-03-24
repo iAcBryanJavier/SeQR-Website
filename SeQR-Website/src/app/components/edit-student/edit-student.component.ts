@@ -42,14 +42,17 @@ export class EditStudentComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
   exportStudentPDF() {
-  const doc = new jsPDF();
-  autoTable(doc, {html: '#export-table'} );
-  doc.save('table.pdf');
-    }
-    viewTxcClick(txnHash: string|null) {
-     window.open('https://goerli.etherscan.io/tx/' + txnHash);
-    }
+    const doc = new jsPDF();
+    autoTable(doc, { html: '#export-table' });
+    doc.save('table.pdf');
+  }
+
+  viewTxcClick(txnHash: string | null) {
+    window.open('https://goerli.etherscan.io/tx/' + txnHash);
+  }
+
   onSearchInputChange(event: any) {
     this.setTableItems(this.getSearch(event));
     this.setPage(1);

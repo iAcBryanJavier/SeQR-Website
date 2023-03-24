@@ -9,10 +9,9 @@ import { environment } from 'src/environments/environment';
 import { ethers } from 'ethers';
 import contract from '../../contracts/Student.json';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import FileSaver, { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { TxnObject } from '../../models/txn-object';
-import JSZip, { file } from 'jszip';
 import { ModalPopupComponent } from '../../components/modal-popup/modal-popup.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RefreshComponentService } from '../../services/refresh-component.service';
@@ -59,7 +58,7 @@ export class ImportCsvButtonComponent implements OnInit {
   }
 
 
-  constructor(   private refreshService: RefreshComponentService, private modalService: NgbModal,private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
+  constructor(private refreshService: RefreshComponentService, private modalService: NgbModal, private studentService: StudentCsvService, private db: DatabaseService, private sanitizer: DomSanitizer) { }
 
   onChangeURL(url?: SafeUrl, index?: number) {
     if (this.txnObjList.length != 0 && this.changeUrlCtr < this.txnObjList.length) {
@@ -78,25 +77,25 @@ export class ImportCsvButtonComponent implements OnInit {
               // Upload files to Firebase Storage
               const storage = getStorage();
               const storageRef = ref(storage, `qr-codes/${this.encryptionFunc.decryptData(this.studentList[index ?? 0].studentId)}.png`);
-              uploadBytes(storageRef, blobData).then((snapshot) => {})
+              uploadBytes(storageRef, blobData).then((snapshot) => { })
             });
-            this.changeUrlCtr++
+          this.changeUrlCtr++
 
-            if(this.changeUrlCtr == this.txnObjList.length){
-              // progress bar checkpoint
-              this.progressBarMsg = "Minting Complete! Creating QR Code.";
-              this.progressBarValue = 100;
-              this.progressBarMsgEvent.emit(this.progressBarMsg);
-              this.progressBarValueEvent.emit(this.progressBarValue);
-              return;
-            }
+          if (this.changeUrlCtr == this.txnObjList.length) {
+            // progress bar checkpoint
+            this.progressBarMsg = "Minting Complete! Creating QR Code.";
+            this.progressBarValue = 100;
+            this.progressBarMsgEvent.emit(this.progressBarMsg);
+            this.progressBarValueEvent.emit(this.progressBarValue);
+            return;
+          }
         }
       }
     }
   }
 
   fileChangeListener(event: Event) {
-    this.txnObjList.forEach(() =>{
+    this.txnObjList.forEach(() => {
       this.txnObjList.pop()
     })
     const input = event.target as HTMLInputElement;
@@ -121,16 +120,16 @@ export class ImportCsvButtonComponent implements OnInit {
           const dupeCounter = await this.db.checkAddDuplicate(
             jsonData[i].studentId,
             jsonData[i].course,
-           jsonData[i].soNumber,
-           jsonData[i].firstname,
-           jsonData[i].middlename,
-           jsonData[i].lastname,
-           jsonData[i].sex
-           ).then((res: any) => {
-             return res;
-           });
+            jsonData[i].soNumber,
+            jsonData[i].firstname,
+            jsonData[i].middlename,
+            jsonData[i].lastname,
+            jsonData[i].sex
+          ).then((res: any) => {
+            return res;
+          });
 
-          if(dupeCounter.dupeCount < 1){
+          if (dupeCounter.dupeCount < 1) {
             this.studentData = {
               firstname: this.encryptionFunc.encryptData(jsonData[i].firstname),
               middlename: this.encryptionFunc.encryptData(jsonData[i].middlename),
@@ -139,6 +138,8 @@ export class ImportCsvButtonComponent implements OnInit {
               studentId: this.encryptionFunc.encryptData(jsonData[i].studentId),
               sex: this.encryptionFunc.encryptData(jsonData[i].sex),
               soNumber: this.encryptionFunc.encryptData(jsonData[i].soNumber),
+              schoolYear: this.encryptionFunc.encryptData(jsonData[i].schoolYear),
+              term: this.encryptionFunc.encryptData(jsonData[i].term),
               txnHash: '',
               dataImg: ''
             }
@@ -150,16 +151,16 @@ export class ImportCsvButtonComponent implements OnInit {
           }
         }
 
-        if(this.studentList.length < 1){
+        if (this.studentList.length < 1) {
           const modalRef = this.modalService.open(ModalPopupComponent);
           modalRef.componentInstance.message = 'No students were added, please check the CSV file you uploaded for errors.';
           this.isMinting = false;
           this.isMintingEvent.emit(this.isMinting);
 
-        }else if(this.cssCounter < 1){
+        } else if (this.cssCounter < 1) {
           let ctr = 0;
 
-           // progress bar checkpoint
+          // progress bar checkpoint
           this.progressBarMsg = "Uploading Files to IPFS";
           this.progressBarValue = 50;
           this.progressBarMsgEvent.emit(this.progressBarMsg);
@@ -175,8 +176,8 @@ export class ImportCsvButtonComponent implements OnInit {
 
           this.txnHash = await this.createTransaction(ipfsHash);
 
-          if(this.txnHash){
-            this.studentList.forEach(item =>{
+          if (this.txnHash) {
+            this.studentList.forEach(item => {
               const txnObj = new TxnObject();
               txnObj.setTxnHash(this.txnHash);
               txnObj.setIndex(ctr);
@@ -186,15 +187,15 @@ export class ImportCsvButtonComponent implements OnInit {
               item.dataImg = `qr-codes/${this.encryptionFunc.decryptData(item.studentId)}.png`;
               this.saveStudent(item);
               ctr++;
-           })
-              this.isMinting = false;
-              this.isMintingEvent.emit(this.isMinting);
-            if(ctr > 0){
+            })
+            this.isMinting = false;
+            this.isMintingEvent.emit(this.isMinting);
+            if (ctr > 0) {
               const modalRef = this.modalService.open(ModalPopupComponent);
               modalRef.componentInstance.message = 'Added student record(s)!';
               this.isMinting = false;
               this.isMintingEvent.emit(this.isMinting);
-            }else{
+            } else {
               const modalRef = this.modalService.open(ModalPopupComponent);
               modalRef.componentInstance.message = 'Added student record(s)! Some students were skipped due to being a duplicate';
               this.isMinting = false;
@@ -202,13 +203,13 @@ export class ImportCsvButtonComponent implements OnInit {
             }
             this.refreshService.refresh('add-student');
           }
-        }else{
+        } else {
           const modalRef = this.modalService.open(ModalPopupComponent);
           modalRef.componentInstance.message = 'Upload Failed, there were duplicate entries';
           this.isMinting = false;
           this.isMintingEvent.emit(this.isMinting);
         };
-        }
+      }
 
     } else {
       console.error("No file selected");
@@ -227,27 +228,20 @@ export class ImportCsvButtonComponent implements OnInit {
     return false;
   }
 
-  async uploadToIPFS(studentData: any): Promise<string>{
+  async uploadToIPFS(studentData: any): Promise<string> {
     let responseValue: string = '';
     let bodyList: {}[] = [];
 
-    this.studentList.forEach(item =>{
+    this.studentList.forEach(item => {
       const body = {
         studentId: '',
         soNumber: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
-        sex: '',
         course: '',
+
       };
 
       body.studentId = item.studentId ?? 'no value';
       body.soNumber = item.soNumber ?? 'no value';
-      body.firstname = item.firstname ?? 'no value';
-      body.middlename = item.middlename ?? 'no value';
-      body.lastname = item.lastname ?? 'no value';
-      body.sex = item.sex ?? 'no value';
       body.course = item.course ?? 'no value';
       bodyList.push(body)
     })
@@ -267,7 +261,7 @@ export class ImportCsvButtonComponent implements OnInit {
     return responseValue;
   }
 
-  async createTransaction(ipfsHash: any): Promise<any>{
+  async createTransaction(ipfsHash: any): Promise<any> {
     if (!this.ethereum) {
       console.error('Ethereum object is required');
       return;
@@ -278,12 +272,12 @@ export class ImportCsvButtonComponent implements OnInit {
     const signer = provider.getSigner();
     const contract = new ethers.Contract(this.CONTRACT_ADDRESS, this.contractABI, signer);
 
-    try{
+    try {
       const createTxn = await contract['create']((this.ipfsUrlPrefix + ipfsHash + this.ipfsQuery));
       await createTxn.wait();
 
       return createTxn.hash;
-    }catch(err: any){
+    } catch (err: any) {
       console.error(err.message);
       window.alert('Minting Failed' + err.message);
       this.myAngularxQrCode = "";

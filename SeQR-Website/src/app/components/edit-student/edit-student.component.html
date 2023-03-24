@@ -46,9 +46,11 @@
                 <th scope="col">Course</th>
                 <th scope="col">Gender</th>
                 <th scope="col">SO Number</th>
+                <th scope="col">School Year</th>
+                <th scope="col">Term</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-          
+
               </tr>
             </thead>
             <tbody>
@@ -76,6 +78,12 @@
                   {{ student.soNumber }}
                 </td>
                 <td>
+                  {{student.schoolYear}}
+                </td>
+                <td>
+                  {{student.term}}
+                </td>
+                <td>
                   <button type="button" class="btn btn-primary" (click)="onEditClick(student)">EDIT</button>
 
                 </td>
@@ -83,8 +91,6 @@
                   <button type="button" class="btn btn-primary" (click)="onDeleteClick(student.key)">DELETE</button>
 
                 </td>
-    
-
 
               </tr>
             </tbody>
@@ -121,7 +127,8 @@
                 <th scope="col">Course</th>
                 <th scope="col">Gender</th>
                 <th scope="col">SO Number</th>
-        
+                <th scope="col">School Year</th>
+                <th scope="col">Term</th>
               </tr>
             </thead>
             <tbody>
@@ -148,16 +155,18 @@
                 <td>
                   {{ student.soNumber }}
                 </td>
-         
-    
-
-
+                <td>
+                  {{ student.schoolYear }}
+                </td>
+                <td>
+                  {{ student.term }}
+                </td>
               </tr>
             </tbody>
           </table>
 
           <!-- PAGINATION -->
-         
+
         </div>
 
 

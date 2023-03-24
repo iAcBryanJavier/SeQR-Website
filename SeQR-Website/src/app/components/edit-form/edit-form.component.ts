@@ -72,6 +72,8 @@ export class EditFormComponent implements OnInit {
     studentId: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     sex: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     soNumber: new FormControl('', Validators.required),
+    schoolYear: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
+    term: new FormControl('', Validators.compose([Validators.required, this.noSpacesValidator])),
     dataImg: new FormControl(''),
     txnHash: new FormControl('')
   });
@@ -251,6 +253,12 @@ export class EditFormComponent implements OnInit {
           ),
           soNumber: this.encryptFunction.encryptData(
             this.studentForm.controls['soNumber'].value
+          ),
+          schoolYear: this.encryptFunction.encryptData(
+            this.studentForm.controls['schoolYear'].value
+          ),
+          term: this.encryptFunction.encryptData(
+            this.studentForm.controls['term'].value
           ),
           dataImg: `qr-codes/${this.studentForm.controls['studentId'].value}.png`,
           txnHash: txnHash,
