@@ -25,6 +25,11 @@
         </div>
 
         <div class="card-box">
+          <span class="details">School Year</span>
+          <input type="text" formControlName="schoolYear" [(ngModel)]="passedStudent.schoolYear" placeholder="2022-2023" required>
+        </div>
+
+        <div class="card-box">
           <span class="details">Student ID</span>
           <input type="text" formControlName="studentId" [(ngModel)]="passedStudent.studentId" required>
         </div>
@@ -32,6 +37,12 @@
         <div class="card-box">
           <span class="details">Middle Name (Optional)</span> <!--Optional-->
           <input type="text" formControlName="middlename" [(ngModel)]="passedStudent.middlename">
+        </div>
+
+
+        <div class="card-box">
+          <span class="details">Term</span>
+          <input type="text" formControlName="term" placeholder="2nd" [(ngModel)]="passedStudent.term" required>
         </div>
 
         <div class="card-box">
@@ -52,11 +63,6 @@
 
           </select>
         </div>
-
-        <!-- <div class="card-input">
-              <span class="details">ID Picture</span>
-              <input class="form-control" type="file" id="formFile">
-            </div> -->
 
       </div>
       <div class="circal-form">

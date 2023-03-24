@@ -20,11 +20,8 @@ export class ExportButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.db.getStudent().subscribe(items =>{
-      for (let item of items) {
-
-      }
       this.studentData = this.items = items;
-     this.jsonStudentData = JSON.parse(JSON.stringify(this.studentData));
+      this.jsonStudentData = JSON.parse(JSON.stringify(this.studentData));
     });
   }
 
@@ -36,7 +33,7 @@ export class ExportButtonComponent implements OnInit {
   this.downloadFile(data_to_export);
 }
 downloadFile(data: any, filename = 'data') {
-  let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
+  let arrHeader =  ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "schoolYear", "term", "txnHash"];
   let csvData = this.ConvertToCSV(data, arrHeader);
   let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
   let dwldLink = document.createElement("a");
@@ -58,7 +55,7 @@ ConvertToCSV(objArray: any, headerList: any) {
   let str = '';
   let row = 'no,';
 
-  let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "txnHash"];
+  let newHeaders = ["course", "firstname", "lastname", "middlename", "sex", "soNumber", "studentId", "schoolYear", "term", "txnHash"];
 
   for (let index in newHeaders) {
     row += newHeaders[index] + ',';

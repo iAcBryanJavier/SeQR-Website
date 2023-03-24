@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { LoggingService } from './logging.service';
-import { map, switchMap, Observable, take } from 'rxjs';
+import { map, switchMap, Observable, take, catchError, throwError } from 'rxjs';
 import { Encryption } from '../models/encryption';
 import { GoerliEtherscanService } from './goerli-etherscan.service';
 import { PinataService } from './pinata.service';
@@ -22,7 +22,7 @@ export class DatabaseService {
   encryptFunction = new Encryption();
   public maleCount = 0;
   public femaleCount = 0;
-  private BASE_URL = 'https://api-goerli.etherscan.io/api';
+  private GOERLI_API_BASE_URL = 'https://api-goerli.etherscan.io/api';
 
   constructor(
     private afs: AngularFireDatabase,
@@ -197,8 +197,6 @@ export class DatabaseService {
                 const data = item.payload.val();
                 if (data) {
                   if(item.payload.key === studentKey){
-
-
                   }
                   else if (
                     this.encryptFunction.decryptData(data.soNumber) === soNumber
@@ -255,6 +253,8 @@ export class DatabaseService {
                   course: this.encryptFunction.decryptData(data.course),
                   sex: this.encryptFunction.decryptData(data.sex),
                   soNumber: this.encryptFunction.decryptData(data.soNumber),
+                  schoolYear: this.encryptFunction.decryptData(data.schoolYear),
+                  term: this.encryptFunction.decryptData(data.term),
                   dataImg: data.dataImg,
                   txnHash: data.txnHash,
                 };
@@ -731,122 +731,66 @@ export class DatabaseService {
     );
   }
 
-  blockchainSearchStudentFromDatabase(studentId: string,
-    soNumber: string,
-    course: string,
-    txnHash: string
-    ): Observable<any[]> {
-
-    try {
-      return this.studentList.pipe(
-        map((students: any[]) => {
-          return students.filter((student: any) => {
-            return (student.studentId == studentId
-              && student.soNumber == soNumber
-              && student.course == course)
-              && student.txnHash == txnHash;
-          });
-        })
-      );
-    } catch (error) {
-      const ref = this.modalService.open(ModalPopupComponent);
-      ref.componentInstance.message = error;
-      throw('Search Student From Database Error: ' + error);
-    }
-  }
-
-  getStudentDiplomaFromBlockchain(
-    qrTxnHashValue: any,
-    txnHash: string,
-    index: number,
-    componentRoute: string
-  ): Observable<any> {
-    const TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txnHash}&apikey=${environment.goerli_etherscan.apiKey}`;
-    try {
-      if (index == -1) {
-        return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
-          switchMap((item: any) => {
-            let ipfsLink: any;
-            try {
-              ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
-
-            } catch (error) {
-              const ref = this.modalService.open(ModalPopupComponent);
-              ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
-              this.refreshService.refresh(componentRoute)
-              throw('IPFS Link Error: ' + error)
-            }
-            return this.http.get(ipfsLink.toString()).pipe(
-              switchMap((user: any) => {
-                try {
-                  return this.blockchainSearchStudentFromDatabase(
-                    this.encryptFunction.decryptData(user.studentId),
-                    this.encryptFunction.decryptData(user.soNumber),
-                    this.encryptFunction.decryptData(user.course),
-                    qrTxnHashValue
-                  );
-                } catch (error) {
-                  const ref = this.modalService.open(ModalPopupComponent);
-                  ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
-                  this.refreshService.refresh(componentRoute)
-                  throw('Search Student From Database Error: ' + error);
-                }
-
-              })
-            );
-          })
-        );
-      } else {
-        return this.http.get(this.BASE_URL + TRANSACTION_BY_HASH_QUERY).pipe(
-          switchMap((item: any) => {
-            let ipfsLink: any;
-            try {
-              ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
-            } catch (error) {
-              const ref = this.modalService.open(ModalPopupComponent);
-              ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.'
-              this.refreshService.refresh(componentRoute);
-              throw('IPFS Link Error: ' + error);
-            }
-            return this.http.get(ipfsLink.toString()).pipe(
-              switchMap((user: any) => {
-                try {
-                  return this.blockchainSearchStudentFromDatabase(
-                    this.encryptFunction.decryptData(user[index].studentId),
-                    this.encryptFunction.decryptData(user[index].soNumber),
-                    this.encryptFunction.decryptData(user[index].course),
-                    qrTxnHashValue
-                  );
-                } catch (error) {
-                  const ref = this.modalService.open(ModalPopupComponent);
-                  ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
-                  this.refreshService.refresh(componentRoute)
-                  throw('Search Student From Database Error: ' + error);
-                }
-              })
-            );
-          })
-        );
-      }
-    } catch (error) {
-      throw('Get student from blockchain error: ' + error);
-    }
-  }
-
-  deleteStudentRecord(recordKey: any) {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this record?'
+  blockchainSearchStudentFromDatabase(studentId: string, soNumber: string, course: string, txnHash: string): Observable<any[]> {
+    return this.studentList.pipe(
+      map((students: any[]) => {
+        return students.filter((student: any) => {
+          return (student.studentId == studentId && student.soNumber == soNumber && student.course == course && student.txnHash == txnHash);
+        });
+      }),
+      catchError((error) => {
+        const ref = this.modalService.open(ModalPopupComponent);
+        ref.componentInstance.message = error;
+        return throwError('Search Student From Database Error: ' + error);
+      })
     );
+  }
+
+  getStudentDiplomaFromBlockchain(qrTxnHashValue: any, txnHash: string, index: number, componentRoute: string): Observable<any> {
+    const GOERLI_API_TRANSACTION_BY_HASH_QUERY = `?module=proxy&action=eth_getTransactionByHash&txhash=${txnHash}&apikey=${environment.goerli_etherscan.apiKey}`;
+
+    return this.http.get(this.GOERLI_API_BASE_URL + GOERLI_API_TRANSACTION_BY_HASH_QUERY).pipe(
+      switchMap((item: any) => {
+        let ipfsLink: any;
+        try {
+          ipfsLink = web3.utils.hexToAscii(item.result.input).slice(68, 231);
+        } catch (error) {
+          this.handleError(error, componentRoute);
+        }
+        return this.http.get(ipfsLink.toString());
+      }),
+      switchMap((user: any) => {
+        try {
+          const student = user[index] || user; // Handle both cases at once
+          return this.blockchainSearchStudentFromDatabase(
+            this.encryptFunction.decryptData(student.studentId),
+            this.encryptFunction.decryptData(student.soNumber),
+            this.encryptFunction.decryptData(student.course),
+            qrTxnHashValue
+          );
+        } catch (error) {
+          this.handleError(error, componentRoute);
+        }
+      })
+    );
+  }
+
+  private handleError(error: any, componentRoute: string): never {
+    const ref = this.modalService.open(ModalPopupComponent);
+    ref.componentInstance.message = 'We were unable to locate the student in the SeQR Database. We kindly request you to try again.';
+    this.refreshService.refresh(componentRoute);
+    throw error;
+  }
+
+  async deleteStudentRecord(recordKey: any) {
+    const confirmed = window.confirm('Are you sure you want to delete this record?');
     if (confirmed) {
+      const ref = this.afs.list('students');
       try {
-        const ref = this.afs.list('students');
-        ref.remove(recordKey);
+        await ref.remove(recordKey);
       } catch (error) {
-        throw('Delete Student Record Error: ' + error);
+        throw new Error('Delete Student Record Error: ' + error);
       }
-    } else {
-      // user clicked "Cancel"
-      // do nothing
     }
   }
 }
