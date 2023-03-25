@@ -42,7 +42,13 @@
 
         <div class="card-box">
           <span class="details">Term</span>
-          <input type="text" formControlName="term" placeholder="2nd" [(ngModel)]="passedStudent.term" required>
+            <select class="form-select" formControlName="term" aria-label="Default select example" required>
+              <option disabled hidden [selected]="true">{{passedStudent.term}}</option>
+              <option value="1st">1st</option>
+              <option value="2nd">2nd</option>
+              <option value="3rd">3rd</option>
+            </select>
+
         </div>
 
         <div class="card-box">
