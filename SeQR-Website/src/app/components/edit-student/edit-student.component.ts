@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ApplicationModule, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Student } from 'src/app/interfaces/Student';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Encryption } from 'src/app/models/encryption';
@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EditFormService } from 'src/app/services/edit-form.service';
 import { environment } from 'src/environments/environment';
 import jsPDF from 'jspdf'
+import { LoggingService } from 'src/app/services/logging.service';
 import autoTable from 'jspdf-autotable'
 @Component({
   selector: 'app-edit-student',
@@ -20,6 +21,8 @@ export class EditStudentComponent implements OnInit {
   searchQuery: string = '';
   items!: Student[];
   fillListItem!: Student[];
+  generationDate = new Date();
+  appliedFilter: string = '';
   listItem!: Student[];
   currentPage = 1;
   pageCount!: number;
@@ -39,21 +42,54 @@ export class EditStudentComponent implements OnInit {
     this.students.getCourses().subscribe((i) => {
       this.courses = i;
     });
+
+    
   }
 
   ngOnInit(): void {}
 
   exportStudentPDF() {
+  
+    var ctr = 0;
     const doc = new jsPDF();
-    autoTable(doc, { html: '#export-table' });
+    const generationDate = new Date();
+    var hours = generationDate.getHours();
+    var minutes = generationDate.getMinutes();
+    var month = (generationDate.getMonth() + 1);
+    var day = generationDate.getDate();
+    var year = generationDate.getUTCFullYear();
+    var minute = minutes < 10 ? '0'+minutes : minutes;
+    var generatedDate =  day + '/' + month + '/' + year + ' - ' + hours + ':' + minute  ;
+    const appliedFilter = this.appliedFilter;
+    autoTable(doc, {
+      html: '#export-table',
+      startY: 50, // increase startY to make more space at the top of the page
+      didParseCell: function (data: any) {
+   
+        const row = data.row.index;
+        const col = data.column.index;
+        if (row === 0 && col === 0 && ctr === 0) {
+          ctr++;
+          // add generation date to the top of the page
+          doc.text(`This report was generated on: ${generatedDate}`, data.settings.margin.left, 30);
+          // add applied filter below the generation date
+          doc.text(`The report generation filter is the following: ${appliedFilter}`, data.settings.margin.left, 40);
+        }
+      },
+    });
     doc.save('table.pdf');
+    ctr = 0;
   }
+  
+  
+
 
   viewTxcClick(txnHash: string | null) {
     window.open('https://goerli.etherscan.io/tx/' + txnHash);
   }
 
   onSearchInputChange(event: any) {
+    this.appliedFilter = event;
     this.setTableItems(this.getSearch(event));
     this.setPage(1);
   }
