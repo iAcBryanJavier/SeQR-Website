@@ -53,6 +53,7 @@ export class EditStudentComponent implements OnInit {
     var ctr = 0;
     const doc = new jsPDF();
     const generationDate = new Date();
+    const currentUrl = window.location.href;
     var hours = generationDate.getHours();
     var minutes = generationDate.getMinutes();
     var month = (generationDate.getMonth() + 1);
@@ -71,6 +72,7 @@ export class EditStudentComponent implements OnInit {
         if (row === 0 && col === 0 && ctr === 0) {
           ctr++;
           // add generation date to the top of the page
+          doc.text(`This report was generated from: ${currentUrl}`, data.settings.margin.left, 20);
           doc.text(`This report was generated on: ${generatedDate}`, data.settings.margin.left, 30);
           // add applied filter below the generation date
           doc.text(`The report generation filter is the following: ${appliedFilter}`, data.settings.margin.left, 40);
